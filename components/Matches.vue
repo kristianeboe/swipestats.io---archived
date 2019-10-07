@@ -1,8 +1,10 @@
 <template>
   <section class="matches">
     <h1>Matches</h1>
-    <Statistic name="Matches" :statistic="totalMatches" />
-    <TimeLineChart :chart-data="datacollection" />
+    <div class="visualizations">
+      <Statistic name="Matches" :statistic="totalMatches" />
+      <TimeLineChart :chart-data="datacollection" />
+    </div>
   </section>
 </template>
 
@@ -57,6 +59,12 @@ export default {
 
 <style>
 .matches {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.visualizations {
   display: flex;
 }
 </style>

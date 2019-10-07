@@ -3,66 +3,40 @@
     <section class="upload">
       <h1>Upload your data.json file here</h1>
       <client-only>
-        <form class="upload-form-filepond" @submit="onSubmit">
+        <form class="upload-form-filepond">
           <file-pond
-            name="test"
             ref="pond"
+            :instantUpload="false"
             label-idle="Drop files here..."
             accepted-file-types="image/jpeg, image/png, application/json"
-            server="/api/upload"
-            v-bind:files="myFiles"
+            :server="null"
+            :files="myFiles"
             v-on:init="handleFilePondInit"
-            v-on:processfile="handleFilePondProcessfile"
+            v-on:addfile="handleFilePondAddFile"
           />
-          <div>{{myFiles}}</div>
-          <div v-for="(item, index)  in uploadedFiles" :key="item">
-            <span>{{item}} {{index}}</span>
-            <input :value="item" type="hidden" />
-          </div>
         </form>
-        <form @submit="onSubmit">
-          <h3>React File Upload</h3>
-          <div class="form-group">
-            <input type="file" @change="handleFileOnChange" />
-          </div>
-          <div class="form-group">
-            <button class="btn btn-primary" type="submit">Upload</button>
-          </div>
-        </form>
-        <div class="small">
-          <TimeLineChart :chart-data="datacollection" />
-          <button @click="renderTinderData()">Randomize</button>
-        </div>
-        <div class="small">
-          <TimeLineChart :chart-data="messagesSendt" />
-          <button @click="renderTinderData()">Randomize</button>
-        </div>
-        <Matches :matches="getMatches" />
       </client-only>
+      <div v-if="swipeStatsData.user" class="create-user">
+        <ProfileCard :userId="secretId" :userData="swipeStatsData.user" />
+        <button class="create-user--button" @click="showMeMySwipeStats">Show me my swipe stats!</button>
+      </div>
     </section>
   </div>
 </template>
 
 <script>
-// Import Vue FilePond
 import vueFilePond from "vue-filepond";
-
-// Import FilePond styles
 import "filepond/dist/filepond.min.css";
+import * as md5 from "md5";
 
-// Import FilePond plugins
-// Please note that you need to install these plugins separately
-
-// Import image preview plugin styles
+// delete this
 import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
 
 // Import image preview and file type validation plugins
-import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
+import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 
-import TimeLineChart from "@/components/TimeLineChart";
-import Statistic from "@/components/Statistic";
-import Matches from "@/components/Matches";
+import ProfileCard from "@/components/ProfileCard";
 
 // Create component
 const FilePond = vueFilePond(
@@ -72,13 +46,14 @@ const FilePond = vueFilePond(
 
 export default {
   name: "app",
+  components: {
+    FilePond,
+    ProfileCard
+  },
   data: function() {
     return {
-      loaded: true,
-      datacollection: null,
       myFiles: [],
       uploadedFiles: [],
-      myFile2: null,
       chartdata: {
         labels: ["January", "February"],
         datasets: [
@@ -91,13 +66,17 @@ export default {
       },
       options: {},
       myTinderData: null,
-      messagesSendt: {}
+      swipeStatsData: {},
+      messagesSendt: {},
+      userData: null,
+      secretId: ""
     };
   },
   computed: {
     getAppOpens() {
       return this.myTinderData ? this.myTinderData.Usage.app_opens : {};
     },
+
     getMessages() {
       return {
         sendt: this.myTinderData ? this.myTinderData.Usage.messages_sent : {},
@@ -117,137 +96,77 @@ export default {
     }
   },
   async mounted() {
-    this.fillData();
-
     console.log("fetching kristian tinder");
     const res = await fetch("/api/get-kristian");
     if (res.ok) {
       console.log("res ok");
       const data = await res.json();
       console.log(data);
-      this.myTinderData = data;
-      this.renderTinderData();
+
+      this.secretId = data.userId;
+      this.swipeStatsData = data;
     }
   },
   methods: {
-    fillData() {
-      console.log("filling data");
-      this.datacollection = {
-        labels: [1, 10],
-        datasets: [
-          {
-            label: "Data En",
-            backgroundColor: "#f87979",
-            data: [this.getRandomInt(), this.getRandomInt()]
-          },
-          {
-            label: "Data to",
-            backgroundColor: "#545454",
-            data: [this.getRandomInt(), this.getRandomInt()]
-          }
-        ]
-      };
-    },
-    getRandomInt() {
-      return Math.floor(Math.random() * (50 - 5 + 1)) + 5;
-    },
+    async showMeMySwipeStats() {
+      console.log(this.swipeStatsData);
+      const res = await fetch("/api/uploadData", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json"
+        },
+        body: this.swipeStatsData
+      });
 
-    renderTinderData() {
-      console.log("myTinderData", this.myTinderData);
+      console.log(res.ok);
+
+      this.$router.push({
+        path: `/insights?userId=${this.secretId}`
+      });
+    },
+    setSecretId(tinderData) {
       try {
-        const appOpens = this.getAppOpens(this.myTinderData);
-        const labels = [];
-        const data = [];
-
-        Object.entries(appOpens)
-          .slice(-100)
-          .map(([date, value]) => {
-            labels.push(date);
-            data.push(value);
-          });
-
-        console.log("labels", labels);
-        console.log("data", data);
-
-        this.datacollection = {
-          labels,
-          datasets: [
-            {
-              label: "App opens",
-              backgroundColor: "#f87979",
-              data
-            }
-          ]
-        };
-      } catch (error) {
-        console.log(error);
-        console.log("fail");
+        const secretId = md5(
+          tinderData.User.email +
+            tinderData.User.username +
+            tinderData.User.create_date
+        );
+        window.localStorage.setItem("swipeStatsId", secretId);
+        this.secretId = secretId;
+      } catch (e) {
+        console.log(e);
       }
     },
-    renderMessagesSendt() {},
-    handleFileOnChange: function(e) {
-      console.log("file change");
-      this.myFile2 = e.target.files[0];
+    setSwipeStatsData(tinderData) {
+      this.swipeStatsData = {
+        userId: this.setSecretId(tinderData),
+        user: tinderData.User,
+        swipes: {
+          likes: tinderData.Usage.swipes_likes,
+          swipes: tinderData.Usage.swipes_passe
+        },
+        matches: tinderData.Usage.matches,
+        messages: {
+          sendt: tinderData.Usage.messages_sent,
+          received: tinderData.Usage.messages_receive
+        }
+      };
+    },
+    handleFilePondAddFile: function(error, file) {
+      console.log("filepond add change", file.file);
       var reader = new FileReader();
       const onReaderLoad = event => {
-        console.log(event.target.result);
         var obj = JSON.parse(event.target.result);
-        this.myTinderData = obj;
-        console.log(Object.keys(obj));
+        this.setSwipeStatsData(obj);
       };
 
       reader.onload = onReaderLoad;
-      reader.readAsText(event.target.files[0]);
-    },
-    onSubmit: function(e) {
-      e.preventDefault();
-      const formData = new FormData();
-      formData.append("file", this.myFile2);
-
-      var reader = new FileReader();
-      reader.onload = function(event) {
-        var jsonObj = JSON.parse(file);
-        console.log(jsonObj);
-        fetch("/api/uploadData", {
-          method: "POST",
-          headers: {
-            "content-type": "application/json"
-          },
-          body: jsonObj
-        });
-      };
-
-      console.log(this.myFile2);
-
-      //       reader.readAsText(this.myFile2);
-
-      // fetch("http://localhost:3000/api/upload", {
-      //   method: "post",
-      //   body: formData
-      // }).then(res => {
-      //   console.log(res);
-      // });
+      reader.readAsText(file.file);
     },
     handleFilePondInit: function() {
       console.log("FilePond has initialized");
 
       // FilePond instance methods are available on `this.$refs.pond`
-    },
-    handleFilePondProcessfile: function(error, file) {
-      console.log("FilePond succesfully processed file " + file.id);
-      console.log(file.origin);
-
-      var reader = new FileReader();
-
-      reader.onload = function(event) {
-        var jsonObj = JSON.parse(file);
-        console.log(jsonObj);
-      };
-
-      reader.readAsText(file.origin);
-
-      this.uploadedFiles.push(file.filename);
-      this.$nextTick();
     },
     handleFilePondRemovefile: function(file) {
       console.log("FilePond deleted file " + file.filename);
@@ -257,11 +176,6 @@ export default {
         this.$nextTick();
       }
     }
-  },
-  components: {
-    FilePond,
-    TimeLineChart,
-    Matches
   }
 };
 </script>
@@ -270,7 +184,6 @@ export default {
 .wrapper {
   min-height: 100vh;
   display: flex;
-  align-items: center;
   justify-content: center;
 }
 .upload {
@@ -280,11 +193,18 @@ export default {
   align-items: center;
 }
 
-.upload-form {
+.upload-form-filepond {
   width: 50rem;
   text-align: center;
 }
 
-.small {
+.create-user {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.create-user--button {
+  margin-top: 4rem;
 }
 </style>

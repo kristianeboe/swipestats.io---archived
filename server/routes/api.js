@@ -32,7 +32,7 @@ const fileConfig = {
     'text/csv': 'csv',
     'application/json': 'json',
   },
-  uploadsFolder: '../uploads',
+  uploadsFolder: 'server/uploads',
   dbConnection: 'mongodb://127.0.0.1:27017/fileuploaddb',
 };
 const multer = require('multer');
@@ -41,6 +41,7 @@ const multerUpload = multer({
   storage: multer.diskStorage({
     destination: fileConfig.uploadsFolder,
     filename: (req, file, cb) => {
+      console.log('multer req', req._fileId);
       let extension = fileConfig.supportedMimes[file.mimetype];
       let originalname = file.originalname.split('.')[0];
       let fileName =
@@ -188,8 +189,9 @@ router.post('/uploadData', bodyParser.json(), (req, res, next) => {
 
 router.get('/get-kristian', (req, res, next) => {
   const kristianTinderData = require('../models/data.json');
-  console.log(kristianTinderData.User);
-  return res.json(kristianTinderData);
+  // console.log(kristianTinderData.User);
+  const mySwipeStatsData = getSwipeStatsData(kristianTinderData);
+  return res.json(mySwipeStatsData);
 });
 
 router.get('/get-all', (req, res, next) => {
@@ -201,5 +203,29 @@ router.get('/get-all', (req, res, next) => {
     res.send(files);
   });
 });
+
+function getSwipeStatsData(tinderData) {
+  var md5 = require('md5');
+
+  const secretId = md5(
+    tinderData.User.email +
+      tinderData.User.username +
+      tinderData.User.create_date
+  );
+
+  return {
+    userId: secretId,
+    user: tinderData.User,
+    swipes: {
+      likes: tinderData.Usage.swipes_likes,
+      swipes: tinderData.Usage.swipes_passe,
+    },
+    matches: tinderData.Usage.matches,
+    messages: {
+      sendt: tinderData.Usage.messages_sent,
+      received: tinderData.Usage.messages_receive,
+    },
+  };
+}
 
 module.exports = router;
