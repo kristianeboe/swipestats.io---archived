@@ -136,14 +136,33 @@ export default {
         );
         window.localStorage.setItem("swipeStatsId", secretId);
         this.secretId = secretId;
+        return secretId;
       } catch (e) {
         console.log(e);
+        return "";
       }
     },
     setSwipeStatsData(tinderData) {
       this.swipeStatsData = {
         userId: this.setSecretId(tinderData),
-        user: tinderData.User,
+        user: {
+          birthDate: userData.birth_date,
+          ageFilterMin: tinderData.User.age_filter_min,
+          ageFilterMax: tinderData.User.age_filter_max,
+          cityName: tinderData.User.city.name,
+          country: tinderData.User.city.region,
+          createDate: tinderData.User.create_date,
+          education: tinderData.User.education,
+          gender: tinderData.User.gender,
+          interested_in: tinderData.User.interested_in,
+          gender_filter: tinderData.User.gender_filter,
+          instagram: tinderData.User.instagram.username,
+          jobsDisplayed: tinderData.User.jobs[0].company.displayed,
+          jobTitle: tinderData.User.jobs[0].title.name,
+          educationLevel: tinderData.User.education,
+          schoolDisplayed: tinderData.User.schools[0].displayed,
+          schoolName: tinderData.User.schools[0].name
+        },
         swipes: {
           likes: tinderData.Usage.swipes_likes,
           swipes: tinderData.Usage.swipes_passe

@@ -100,6 +100,7 @@ router.post(
 );
 
 router.post('/uploadData', bodyParser.json(), async (req, res, next) => {
+  console.log('creating new profile');
   let data;
 
   try {
@@ -112,6 +113,7 @@ router.post('/uploadData', bodyParser.json(), async (req, res, next) => {
   }
 
   const { userId, ...profile } = data;
+  console.log(userId);
 
   const newProfile = await profileService.createProfile({ userId, ...profile });
 
@@ -196,14 +198,10 @@ router.get('/get-kristian', (req, res, next) => {
   return res.json(mySwipeStatsData);
 });
 
-router.get('/get-all', (req, res, next) => {
-  File.find((err, files) => {
-    if (err) {
-      return res.status(404).end();
-    }
-    console.log('File fetched successfully');
-    res.send(files);
-  });
+router.get('/get-all', async (req, res, next) => {
+  const allProfileIds = await profileService.getAllIds();
+
+  return res.json(allProfileIds);
 });
 
 function getSwipeStatsData(tinderData) {

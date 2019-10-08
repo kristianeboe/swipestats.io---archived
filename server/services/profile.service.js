@@ -6,7 +6,7 @@ mongoose.connect(mongoDB, { useNewUrlParser: true });
 
 module.exports = {
   getOne: profileId => {
-    Profile.findOne(profileId, (err, file) => {
+    Profile.findOne({ profileId }, (err, file) => {
       if (err) {
         throw err;
       }
@@ -14,16 +14,20 @@ module.exports = {
     });
   },
   async createProfile(profileData) {
-    const newProfile = await Profile.create(profileData);
-    return newProfile;
+    return Profile.create(profileData, function(err, small) {
+      if (err) return handleError(err);
+      console.log('profile saved', profileData.userId);
+      // saved!
+    });
   },
-  getAll: (req, res, next) => {
-    File.find((err, files) => {
+  async getAllIds() {
+    return Profile.find((err, profiles) => {
       if (err) {
         return res.status(404).end();
       }
-      console.log('File fetched successfully');
-      res.send(files);
+      console.log('Profiles fetched successfully', profiles.length);
+
+      return profiles.map(profile => profile.userId);
     });
   },
 };
