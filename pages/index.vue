@@ -103,8 +103,8 @@ export default {
       const data = await res.json();
       console.log(data);
 
-      this.secretId = data.userId;
-      this.swipeStatsData = data;
+      // this.secretId = data.userId;
+      // this.swipeStatsData = data;
     }
   },
   methods: {
