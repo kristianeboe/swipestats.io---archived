@@ -4,7 +4,7 @@
     <h2>{{userId}}</h2>
 
     <img class="avatar" src="~/assets/svgs/undraw_superhero_kguv.svg" alt="avatar" />
-
+    <div>Age: {{getAge(userData.birth_date)}}</div>
     <div>Age filter min-max: {{userData.age_filter_min}}-{{userData.age_filter_max}}</div>
     <div>
       <h4>{{userData.city.name}}</h4>
@@ -35,6 +35,16 @@ export default {
   props: {
     userId: String,
     userData: Object
+  },
+  methods: {
+    getAge(birthDateString) {
+      birthDateString = "1992-11-01T00:00:00.000Z";
+      const birthDate = new Date(birthDateString);
+
+      const ageDifMs = Date.now() - birthDate.getTime();
+      const ageDate = new Date(ageDifMs); // miliseconds from epoch
+      return Math.abs(ageDate.getUTCFullYear() - 1970);
+    }
   }
 };
 </script>

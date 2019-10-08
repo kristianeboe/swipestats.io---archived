@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const File = require('../models/file');
 
 // const fileService = require('../services/file.service.js');
+const profileService = require('../services/profile.service.js');
 // const app = express();
 // router.get('/files', fileService.getAll);
 
@@ -98,22 +99,23 @@ router.post(
   }
 );
 
-router.post('/uploadData', bodyParser.json(), (req, res, next) => {
+router.post('/uploadData', bodyParser.json(), async (req, res, next) => {
   let data;
 
   try {
     data = req.body;
     console.log('parsed body keys', Object.keys(data));
   } catch (error) {
+    console.log(Object.keys(data));
+    console.log(error);
     return res.status(500).json(error);
   }
 
-  const userId = shortid.generate();
+  const { userId, ...profile } = data;
 
-  const user = {
-    userId,
-    data,
-  };
+  const newProfile = await profileService.createProfile({ userId, ...profile });
+
+  console.log('newProfile', newProfile);
 
   return res.status(201).json({
     userId,

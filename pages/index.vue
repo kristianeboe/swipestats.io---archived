@@ -18,7 +18,7 @@
       </client-only>
       <div v-if="swipeStatsData.user" class="create-user">
         <ProfileCard :userId="secretId" :userData="swipeStatsData.user" />
-        <button class="create-user--button" @click="showMeMySwipeStats">Show me my swipe stats!</button>
+        <button class="create-user--button" @click="submitSwipeStats">Show me my swipe stats!</button>
       </div>
     </section>
   </div>
@@ -108,14 +108,17 @@ export default {
     }
   },
   methods: {
-    async showMeMySwipeStats() {
-      console.log(this.swipeStatsData);
+    async submitSwipeStats() {
+      console.log("submitting swipeStats", this.swipeStatsData);
+
+      const body = JSON.stringify(this.swipeStatsData);
+
       const res = await fetch("/api/uploadData", {
         method: "POST",
         headers: {
-          "content-type": "application/json"
+          "Content-Type": "application/json"
         },
-        body: this.swipeStatsData
+        body
       });
 
       console.log(res.ok);
