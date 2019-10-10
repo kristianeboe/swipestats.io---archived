@@ -146,7 +146,7 @@ export default {
       this.swipeStatsData = {
         userId: this.setSecretId(tinderData),
         user: {
-          birthDate: userData.birth_date,
+          birthDate: tinderData.User.birth_date,
           ageFilterMin: tinderData.User.age_filter_min,
           ageFilterMax: tinderData.User.age_filter_max,
           cityName: tinderData.User.city.name,
@@ -173,6 +173,7 @@ export default {
           received: tinderData.Usage.messages_receive
         }
       };
+      console.log("swipeStatsData", this.swipeStatsData);
     },
     handleFilePondAddFile: function(error, file) {
       console.log("filepond add change", file.file);

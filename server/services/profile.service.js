@@ -14,11 +14,17 @@ module.exports = {
     });
   },
   async createProfile(profileData) {
-    return Profile.create(profileData, function(err, small) {
-      if (err) return handleError(err);
-      console.log('profile saved', profileData.userId);
-      // saved!
-    });
+    return Profile.create(
+      {
+        _id: profileData.userId,
+        ...profileData,
+      },
+      function(err, small) {
+        if (err) return handleError(err);
+        console.log('profile saved', profileData.userId);
+        // saved!
+      }
+    );
   },
   async getAllIds() {
     return Profile.find((err, profiles) => {

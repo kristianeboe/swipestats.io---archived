@@ -4,28 +4,28 @@
     <h2>{{userId}}</h2>
 
     <img class="avatar" src="~/assets/svgs/undraw_superhero_kguv.svg" alt="avatar" />
-    <div>Age: {{getAge(userData.birth_date)}}</div>
-    <div>Age filter min-max: {{userData.age_filter_min}}-{{userData.age_filter_max}}</div>
+    <div>Age: {{getAge(userData.birthDate)}}</div>
+    <div>Age filter min-max: {{userData.ageFilterMin}}-{{userData.ageFilterMax}}</div>
     <div>
-      <h4>{{userData.city.name}}</h4>
-      <h5>{{userData.city.region}}</h5>
+      <h4>{{userData.cityName}}</h4>
+      <h5>{{userData.country}}</h5>
     </div>
     <div>Created: {{userData.create_date}}</div>
     <div>Education: {{userData.education}}</div>
     <div>Gender: {{userData.gender}}</div>
-    <div>Looking for {{userData.interested_in}}, gender filter {{userData.gender_filter}}</div>
-    <div>Instagram: {{!!userData.instagram.username}}</div>
+    <div>Looking for {{userData.interestedIn}}, gender filter {{userData.genderFilter}}</div>
+    <div>Instagram: {{!!userData.instagram}}</div>
     <div>Spotify: todo</div>
     <section>
       <h2>Jobs data</h2>
-      <div>Show company: {{userData.jobs[0].company.displayed}}</div>
-      <div>Title: {{userData.jobs[0].title.name}}</div>
+      <div>Show company: {{userData.jobDisplayed}}</div>
+      <div>Title: {{userData.jobTitle}}</div>
     </section>
     <section>
       <h2>School data</h2>
-      <div>Education: {{userData.education}}</div>
-      <div>Show school: {{userData.schools[0].displayed}}</div>
-      <div>School: {{userData.schools[0].name}}</div>
+      <div>Education: {{userData.educationLevel}}</div>
+      <div>Show school: {{userData.schoolDisplayed}}</div>
+      <div>School: {{userData.schoolName}}</div>
     </section>
   </div>
 </template>
