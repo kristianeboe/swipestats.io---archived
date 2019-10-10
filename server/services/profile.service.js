@@ -20,7 +20,10 @@ module.exports = {
         ...profileData,
       },
       function(err, small) {
-        if (err) return handleError(err);
+        if (err) {
+          console.log(err);
+          return;
+        }
         console.log('profile saved', profileData.userId);
         // saved!
       }
