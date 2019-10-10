@@ -38,6 +38,8 @@ import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 
 import ProfileCard from "@/components/ProfileCard";
 
+import { mapMutations } from "vuex";
+
 // Create component
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,
@@ -143,7 +145,7 @@ export default {
       }
     },
     setSwipeStatsData(tinderData) {
-      this.swipeStatsData = {
+      const mappedData = {
         userId: this.setSecretId(tinderData),
         user: {
           birthDate: tinderData.User.birth_date,
@@ -154,10 +156,10 @@ export default {
           createDate: tinderData.User.create_date,
           education: tinderData.User.education,
           gender: tinderData.User.gender,
-          interested_in: tinderData.User.interested_in,
-          gender_filter: tinderData.User.gender_filter,
+          interestedIn: tinderData.User.interested_in,
+          genderFilter: tinderData.User.gender_filter,
           instagram: tinderData.User.instagram.username,
-          jobsDisplayed: tinderData.User.jobs[0].company.displayed,
+          jobDisplayed: tinderData.User.jobs[0].company.displayed,
           jobTitle: tinderData.User.jobs[0].title.name,
           educationLevel: tinderData.User.education,
           schoolDisplayed: tinderData.User.schools[0].displayed,
@@ -173,6 +175,10 @@ export default {
           received: tinderData.Usage.messages_receive
         }
       };
+      this.swipeStatsData = mappedData;
+
+      this.$store.commit("setSwipeStats", mappedData);
+
       console.log("swipeStatsData", this.swipeStatsData);
     },
     handleFilePondAddFile: function(error, file) {

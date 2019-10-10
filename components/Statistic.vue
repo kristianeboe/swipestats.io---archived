@@ -2,6 +2,7 @@
   <div class="wrapper">
     <h3 class="name">Total {{name}}</h3>
     <h2 class="statistic">{{statistic}}</h2>
+    <h5 v-for="c in comparison" :key="c">{{c}}</h5>
   </div>
 </template>
 
@@ -9,7 +10,8 @@
 export default {
   props: {
     name: String,
-    statistic: Number
+    statistic: Number,
+    comparison: Array
   }
 };
 </script>

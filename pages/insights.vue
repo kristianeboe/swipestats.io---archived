@@ -1,10 +1,13 @@
 <template>
   <div>
     <h1>Insights</h1>
+    <h3>Compare yourself with</h3>
+    <input type="text" v-model="compareId" />
+    <button @click="setComparisonData(compareId)">Compare yourself</button>
     <div>Matches</div>
     <div>Messages</div>
     <div>Total conversations</div>
-    <Matches :matches="mySwipeStatsData.matches" />
+    <Matches :matches="mySwipeStatsData.matches" :comparisonData="comparisonData" />
   </div>
 </template>
 
@@ -12,6 +15,7 @@
 import TimeLineChart from "@/components/TimeLineChart";
 import Statistic from "@/components/Statistic";
 import Matches from "@/components/Matches";
+import { mapMutations } from "vuex";
 
 export default {
   components: {
@@ -20,25 +24,37 @@ export default {
     Matches
   },
   data() {
-    return {};
+    return {
+      compareId: "",
+      comparisonData: {},
+      mySwipeStatsData: {}
+    };
   },
   computed: {},
-  async asyncData() {
-    try {
-      const res = await fetch("http://localhost:3000/api/get-kristian");
+  methods: {
+    async getProfileData(profileId) {
+      const res = await fetch(`/api/profileData/${profileId}`);
       if (res.ok) {
+        console.log("res ok");
         const data = await res.json();
-        return {
-          mySwipeStatsData: data
-        };
-      } else {
-        throw res;
+
+        console.log(data);
+        return data;
       }
-    } catch (error) {
-      console.log(error);
-      return {
-        mySwipeStatsData: {}
-      };
+    },
+    async setComparisonData(profileId) {
+      const cData = await this.getProfileData(profileId);
+      this.comparisonData = cData;
+    }
+  },
+  async asyncData() {},
+  async mounted() {
+    if (!this.mySwipeStatsData.userId) {
+      this.mySwipeStatsData = await this.getProfileData(
+        "b98535635fe77db6324d881ac92190e5"
+      );
+    } else {
+      this.mySwipeStatsData = this.$store.state.swipeStats;
     }
   }
 };

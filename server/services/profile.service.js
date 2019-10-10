@@ -5,29 +5,23 @@ const mongoDB = process.env.MONGODB_URI;
 mongoose.connect(mongoDB, { useNewUrlParser: true });
 
 module.exports = {
-  getOne: profileId => {
-    Profile.findOne({ profileId }, (err, file) => {
-      if (err) {
-        throw err;
-      }
-      return file;
-    });
+  getOne(profileId) {
+    return Profile.findOne({ _id: profileId }).exec();
   },
   async createProfile(profileData) {
-    return Profile.create(
+    return Profile.update(
+      {
+        _id: profileData.userId,
+      },
+
       {
         _id: profileData.userId,
         ...profileData,
       },
-      function(err, small) {
-        if (err) {
-          console.log(err);
-          return;
-        }
-        console.log('profile saved', profileData.userId);
-        // saved!
+      {
+        upsert: true,
       }
-    );
+    ).exec();
   },
   async getAllIds() {
     return Profile.find((err, profiles) => {

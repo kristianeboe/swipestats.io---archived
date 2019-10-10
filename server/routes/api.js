@@ -198,6 +198,16 @@ router.get('/get-kristian', (req, res, next) => {
   return res.json(mySwipeStatsData);
 });
 
+router.get('/profileData/:profileId', async (req, res, next) => {
+  const { profileId } = req.params;
+  console.log('getting data for', profileId);
+
+  const profileData = await profileService.getOne(profileId);
+  console.log('got profileData', profileData.userId);
+
+  return res.status(200).json(profileData || {});
+});
+
 router.get('/get-all', async (req, res, next) => {
   const allProfileIds = await profileService.getAllIds();
 
