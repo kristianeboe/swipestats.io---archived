@@ -1,7 +1,10 @@
 <template>
-  <nav class="flex items-center justify-between flex-wrap p-6 fixed w-full">
+  <nav
+    class="navbar flex items-center justify-between flex-wrap p-6 fixed w-full z-10 text-white"
+    :class="{ 'navbar--hidde': !showNavbar, 'bg-white': scrolled, 'text-tinder': scrolled }"
+  >
     <nuxt-link to="/">
-      <div class="flex items-center flex-shrink-0 text-white mr-6">
+      <div class="flex items-center flex-shrink-0 mr-6" :class="{'text-tinder': scrolled }">
         <svg
           class="fill-current h-8 w-8 mr-2"
           width="54"
@@ -18,7 +21,8 @@
     </nuxt-link>
     <div class="block lg:hidden">
       <button
-        class="flex items-center px-3 py-2 border rounded text-teal-200 border-teal-400 hover:text-white hover:border-white"
+        class="flex items-center px-3 py-2 border rounded text-tinder border-tinder text-white border-white"
+        :class="{'text-tinder': scrolled, 'border-tinder': scrolled }"
         @click="hideNav = !hideNav"
       >
         <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -28,27 +32,19 @@
       </button>
     </div>
 
-    <div class="hidden w-full block flex-grow lg:flex lg:items-center lg:w-auto">
-      <div class="text-sm lg:flex-grow">
-        <nuxt-link
-          class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
-          to="/profile"
-        >Profile</nuxt-link>
-        <nuxt-link
-          class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
-          to="/matches"
-        >Matches</nuxt-link>
-        <nuxt-link
-          class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
-          to="/about"
-        >About</nuxt-link>
-      </div>
-      <div>
-        <a
-          href="#"
-          class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
-        >Download</a>
-      </div>
+    <div class="text-sm hidden lg:flex lg:flex-grow" />
+    <div class="hidden w-full flex-grow lg:flex lg:items-center lg:w-auto justify-end">
+      <!-- <DropDownMenu
+          content="Mer om depositumskonto"
+          :links="subPages"
+          class="mr-4"
+      />-->
+      <nuxt-link to="/billig-depositumskonto" class="nav-link mr-8">Prosess</nuxt-link>
+      <nuxt-link to="/hvordan-opprette-depositumskonto" class="nav-link mr-8">How do I get my data?</nuxt-link>
+
+      <button
+        class="text-center bg-tinder hover:bg-red-300 text-white font-medium text-base px-6 py-4 rounded shadow-md no-underline block leading-normal w-48"
+      >Download</button>
     </div>
 
     <div
@@ -84,14 +80,69 @@ export default {
   name: "Nav",
   data() {
     return {
-      hideNav: true
+      hideNav: true,
+      showNavbar: true,
+      lastScrollPosition: 0,
+      scrolled: false
     };
   },
+  mounted() {
+    window.addEventListener("scroll", this.onScroll);
+  },
+  beforeDestroy() {
+    window.removeEventListener("scroll", this.onScroll);
+  },
   methods: {
-    toggleNav() {}
+    onScroll() {
+      const currentScrollPosition =
+        window.pageYOffset || document.documentElement.scrollTop;
+
+      this.scrolled = currentScrollPosition > 60 ? true : false;
+      if (currentScrollPosition < 0) {
+        return;
+      }
+
+      // Stop executing this function if the difference between
+      // current scroll position and last scroll position is less than some offset
+      if (Math.abs(currentScrollPosition - this.lastScrollPosition) < 60) {
+        return;
+      }
+      this.showNavbar = currentScrollPosition < this.lastScrollPosition;
+      this.lastScrollPosition = currentScrollPosition;
+    }
   }
 };
 </script>
 
-<style>
+<style lang="scss" scoped >
+.navbar {
+  transition: all ease-out 0.5s;
+}
+
+.navbar--hidden {
+  transform: translate3d(0, -100%, 0);
+}
+
+.nav-link {
+  position: relative;
+  text-decoration: none;
+}
+.nav-link:before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 2px;
+  bottom: 0;
+  left: 0;
+  visibility: hidden;
+  -webkit-transform: scaleX(0);
+  transform: scaleX(0);
+  -webkit-transition: all 0.3s ease-in-out 0s;
+  transition: all 0.3s ease-in-out 0s;
+}
+.nav-link:hover:before {
+  visibility: visible;
+  -webkit-transform: scaleX(1);
+  transform: scaleX(1);
+}
 </style>

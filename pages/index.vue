@@ -1,9 +1,9 @@
 <template>
   <div>
     <section class="landing">
-      <div class="container mx-auto min-h-screen flex">
+      <div class="container mx-auto min-h-screen flex flex-wrap">
         <div class="intro w-full md:w-1/2 flex flex-col justify-center">
-          <h1 class="text-5xl text-white font-black">Visualize your Tinder data and compare</h1>
+          <h1 class="text-6xl text-white font-black">How do you stack up?</h1>
           <p
             class="text-white"
           >Upload your data anonymusly and compare it to demographics from around the world.</p>
@@ -13,7 +13,7 @@
           <p class="text-white">How do I get my Tinder data?</p>
           <div class="cta pt-8">
             <button
-              class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+              class="bg-tinder hover:bg-red-300 text-white font-bold py-2 px-4 rounded"
               @click="loadKristian"
             >Test</button>
           </div>

@@ -2,7 +2,7 @@
   <section class="process bg-white py-24">
     <div class="container mx-auto flex flex-col text-center">
       <h2 class="text-3xl">Process</h2>
-      <div class="flex w-full justify-around">
+      <div class="flex w-full justify-around flex-wrap">
         <article v-for="step in steps">
           <img :src="step.illustration" :alt="step.step" class="w-48 h-48" />
           <div>
