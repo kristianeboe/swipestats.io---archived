@@ -1,9 +1,9 @@
 <template>
-  <div class="card">
+  <div class="card bg-white">
     <span>This will be your unique id, don't lose it:</span>
     <h2>{{userId}}</h2>
 
-    <img class="avatar" src="~/assets/svgs/undraw_superhero_kguv.svg" alt="avatar" />
+    <img class="avatar" :src="imgSrc" alt="avatar" />
     <div>Age: {{getAge(userData.birthDate)}}</div>
     <div>Age filter min-max: {{userData.ageFilterMin}}-{{userData.ageFilterMax}}</div>
     <div>
@@ -34,7 +34,8 @@
 export default {
   props: {
     userId: String,
-    userData: Object
+    userData: Object,
+    imgSrc: String
   },
   methods: {
     getAge(birthDateString) {

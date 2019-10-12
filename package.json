@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@nuxtjs/pwa": "^3.0.0-0",
+    "@nuxtjs/toast": "^3.2.1",
     "body-parser": "^1.19.0",
     "btoa": "^1.2.1",
     "chart.js": "^2.8.0",
@@ -38,7 +39,10 @@
     "jest": "^24.1.0",
     "node-sass": "^4.12.0",
     "nodemon": "^1.18.9",
+    "nuxt-purgecss": "^0.2.1",
+    "nuxt-webfontloader": "^1.1.0",
     "sass-loader": "^8.0.0",
+    "tailwindcss": "^1.1.2",
     "vue-jest": "^4.0.0-0"
   }
 }

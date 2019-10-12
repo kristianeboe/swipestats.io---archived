@@ -1,26 +1,75 @@
 <template>
-  <div class="wrapper">
-    <section class="upload">
-      <h1>Upload your data.json file here</h1>
-      <client-only>
-        <form class="upload-form-filepond">
-          <file-pond
-            ref="pond"
-            :instantUpload="false"
-            label-idle="Drop files here..."
-            accepted-file-types="image/jpeg, image/png, application/json"
-            :server="null"
-            :files="myFiles"
-            v-on:init="handleFilePondInit"
-            v-on:addfile="handleFilePondAddFile"
-          />
-        </form>
-      </client-only>
-      <div v-if="swipeStatsData.user" class="create-user">
-        <ProfileCard :userId="secretId" :userData="swipeStatsData.user" />
-        <button class="create-user--button" @click="submitSwipeStats">Show me my swipe stats!</button>
+  <div>
+    <section class="landing">
+      <div class="container mx-auto min-h-screen flex">
+        <div class="intro w-full md:w-1/2 flex flex-col justify-center">
+          <h1 class="text-5xl text-white font-black">Visualize your Tinder data and compare</h1>
+          <p
+            class="text-white"
+          >Upload your data anonymusly and compare it to demographics from around the world.</p>
+          <p
+            class="text-white"
+          >Privacy? This service is built with privacy first in mind, check out the code on Github if you want</p>
+          <p class="text-white">How do I get my Tinder data?</p>
+          <div class="cta pt-8">
+            <button
+              class="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded"
+              @click="loadKristian"
+            >Test</button>
+          </div>
+        </div>
+        <div class="upload w-full md:w-1/2 flex flex-col justify-center">
+          <client-only>
+            <form class="upload-form-filepond" v-if="!swipeStatsData.user">
+              <file-pond
+                ref="pond"
+                :instantUpload="false"
+                label-idle="Drop your data.json file here..."
+                accepted-file-types="image/jpeg, image/png, application/json"
+                :server="null"
+                :files="myFiles"
+                v-on:init="handleFilePondInit"
+                v-on:addfile="handleFilePondAddFile"
+              />
+              <p
+                class="text-white"
+              >The file is NOT uploaded to a server, just used to extract your relevant, anonymus profile information.</p>
+            </form>
+          </client-only>
+          <div v-if="swipeStatsData.user" class="create-user">
+            <!-- <SuccessAlert
+              heading="File parsed successfully"
+              body="Review your informatin in the card below before you upload :)"
+            />-->
+
+            <TailwindCard
+              :imgSrc="avatars.male_avatar"
+              class="mx-4"
+              :userId="secretId"
+              :userData="swipeStatsData.user"
+            />
+
+            <div class="mt-4">
+              <button
+                class="upload-button bg-red-300 hover:bg-red-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center pulsate-fwd"
+                @click="submitSwipeStats"
+              >
+                <svg
+                  class="fill-current w-4 h-4 mr-2"
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 20 20"
+                  style="transform: rotate(180deg);"
+                >
+                  <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
+                </svg>
+                <span>Upload</span>
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
+    <Process />
   </div>
 </template>
 
@@ -37,9 +86,21 @@ import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 
 import ProfileCard from "@/components/ProfileCard";
+import TailwindCard from "@/components/TailwindCard";
+import SuccessAlert from "@/components/SuccessAlert";
+import Process from "@/components/Process";
 
 import { mapMutations } from "vuex";
 
+import f_profile_data from "@/assets/svgs/undraw/f_profile_data.svg";
+import f_updated from "@/assets/svgs/undraw/f_updated.svg";
+import female_avatar from "@/assets/svgs/undraw/female_avatar.svg";
+import m_personalization from "@/assets/svgs/undraw/m_personalization.svg";
+import m_profile_pic from "@/assets/svgs/undraw/m_profile_pic.svg";
+import m_profile from "@/assets/svgs/undraw/m_profile.svg";
+import male_avatar from "@/assets/svgs/undraw/male_avatar.svg";
+
+console.log(male_avatar);
 // Create component
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,
@@ -50,7 +111,10 @@ export default {
   name: "app",
   components: {
     FilePond,
-    ProfileCard
+    ProfileCard,
+    TailwindCard,
+    SuccessAlert,
+    Process
   },
   data: function() {
     return {
@@ -65,6 +129,15 @@ export default {
             data: [40, 20]
           }
         ]
+      },
+      avatars: {
+        f_profile_data,
+        f_updated,
+        female_avatar,
+        m_personalization,
+        m_profile_pic,
+        m_profile,
+        male_avatar
       },
       options: {},
       myTinderData: null,
@@ -98,18 +171,21 @@ export default {
     }
   },
   async mounted() {
-    console.log("fetching kristian tinder");
-    const res = await fetch("/api/get-kristian");
-    if (res.ok) {
-      console.log("res ok");
-      const data = await res.json();
-      console.log(data);
-
-      // this.secretId = data.userId;
-      // this.swipeStatsData = data;
-    }
+    // this.loadKristian()
   },
   methods: {
+    async loadKristian() {
+      console.log("fetching kristian");
+      const res = await fetch("/api/get-kristian");
+      if (res.ok) {
+        console.log("res ok");
+        const data = await res.json();
+        console.log(data);
+
+        this.secretId = data.userId;
+        this.swipeStatsData = data;
+      }
+    },
     async submitSwipeStats() {
       console.log("submitting swipeStats", this.swipeStatsData);
 
@@ -186,7 +262,10 @@ export default {
       var reader = new FileReader();
       const onReaderLoad = event => {
         var obj = JSON.parse(event.target.result);
-        this.setSwipeStatsData(obj);
+        setTimeout(() => {
+          this.setSwipeStatsData(obj);
+          this.$toast.success("Successfully parsed file").goAway();
+        }, 500);
       };
 
       reader.onload = onReaderLoad;
@@ -210,20 +289,18 @@ export default {
 </script>
 
 <style lang="scss" scoped >
-.wrapper {
+.landing {
   min-height: 100vh;
-  display: flex;
-  justify-content: center;
-}
-.upload {
-  display: flex;
-  flex-direction: column;
-  flex: 1 1;
-  align-items: center;
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: center;
+  // align-items: center;
+  background: center / cover no-repeat fixed url("~assets/svgs/Rose-Petals.svg");
 }
 
 .upload-form-filepond {
-  width: 50rem;
+  width: 100%;
+  max-width: 70rem;
   text-align: center;
 }
 
@@ -235,5 +312,38 @@ export default {
 
 .create-user--button {
   margin-top: 4rem;
+}
+
+.pulsate-fwd {
+  -webkit-animation: pulsate-fwd 0.5s ease-in-out infinite both;
+  animation: pulsate-fwd 0.5s ease-in-out infinite both;
+}
+@-webkit-keyframes pulsate-fwd {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  50% {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+@keyframes pulsate-fwd {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  50% {
+    -webkit-transform: scale(1.1);
+    transform: scale(1.1);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
 }
 </style>
