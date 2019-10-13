@@ -97,7 +97,6 @@ import m_profile_pic from "@/assets/svgs/undraw/m_profile_pic.svg";
 import m_profile from "@/assets/svgs/undraw/m_profile.svg";
 import male_avatar from "@/assets/svgs/undraw/male_avatar.svg";
 
-console.log(male_avatar);
 // Create component
 const FilePond = vueFilePond(
   FilePondPluginFileValidateType,
