@@ -6,7 +6,9 @@ mongoose.connect(mongoDB, { useNewUrlParser: true });
 
 module.exports = {
   getOne(profileId) {
-    return Profile.findOne({ _id: profileId }).exec();
+    return Profile.findOne({ _id: profileId })
+      .lean()
+      .exec();
   },
   async createProfile(profileData) {
     return Profile.update(

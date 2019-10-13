@@ -2,7 +2,7 @@
   <div>
     <section class="landing">
       <div class="container mx-auto min-h-screen flex flex-wrap">
-        <div class="intro w-full md:w-1/2 flex flex-col justify-center">
+        <div class="intro w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16">
           <h1 class="text-6xl text-white font-black">How do you stack up?</h1>
           <p
             class="text-white"
@@ -18,7 +18,7 @@
             >Test</button>
           </div>
         </div>
-        <div class="upload w-full md:w-1/2 flex flex-col justify-center">
+        <div class="upload w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16">
           <client-only>
             <form class="upload-form-filepond" v-if="!swipeStatsData.user">
               <file-pond

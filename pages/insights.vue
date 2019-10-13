@@ -1,6 +1,6 @@
 <template>
-  <div>
-    <h1>Insights</h1>
+  <div class="pt-24 container mx-auto">
+    <h1 class="text-center text-6xl font-black">Insights</h1>
     <h3>Compare yourself with</h3>
     <input type="text" v-model="compareId" />
     <button @click="setComparisonData(compareId)">Compare yourself</button>
@@ -8,6 +8,7 @@
     <div>Messages</div>
     <div>Total conversations</div>
     <Matches :matches="mySwipeStatsData.matches" :comparisonData="comparisonData" />
+    <Matches :matches="mySwipeStatsData.matchesByMonth" :comparisonData="comparisonData" />
   </div>
 </template>
 
@@ -38,7 +39,7 @@ export default {
         console.log("res ok");
         const data = await res.json();
 
-        console.log(data);
+        console.log("api data", data);
         return data;
       }
     },

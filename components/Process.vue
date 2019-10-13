@@ -3,7 +3,7 @@
     <div class="container mx-auto flex flex-col text-center">
       <h2 class="text-3xl">Process</h2>
       <div class="flex w-full justify-around flex-wrap">
-        <article v-for="step in steps">
+        <article v-for="step in steps" class="w-full md:w-auto">
           <img :src="step.illustration" :alt="step.step" class="w-48 h-48" />
           <div>
             <h3 class="text-xl">{{step.step}}</h3>

@@ -8,6 +8,7 @@ const File = require('../models/file');
 
 // const fileService = require('../services/file.service.js');
 const profileService = require('../services/profile.service.js');
+const { aggregateByMonth } = require('../utils/normalization');
 // const app = express();
 // router.get('/files', fileService.getAll);
 
@@ -205,6 +206,12 @@ router.get('/profileData/:profileId', async (req, res, next) => {
   const profileData = await profileService.getOne(profileId);
   console.log('got profileData', profileData.userId);
 
+  const matchesByMonth = aggregateByMonth(profileData.matches);
+  console.log('aggregation complete');
+
+  profileData.matchesByMonth = matchesByMonth;
+
+  console.log('sending data to client');
   return res.status(200).json(profileData || {});
 });
 

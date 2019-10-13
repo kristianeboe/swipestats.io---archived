@@ -1,10 +1,13 @@
 <template>
   <nav
-    class="navbar flex items-center justify-between flex-wrap p-6 fixed w-full z-10 text-white"
-    :class="{ 'navbar--hidde': !showNavbar, 'bg-white': scrolled, 'text-tinder': scrolled }"
+    class="navbar flex items-center justify-between flex-wrap p-6 fixed w-full z-10 text-white h-24"
+    :class="{ 'navbar--hidde': !showNavbar, 'bg-white': scrolled || !indexPage, 'text-tinder': scrolled || !indexPage }"
   >
     <nuxt-link to="/">
-      <div class="flex items-center flex-shrink-0 mr-6" :class="{'text-tinder': scrolled }">
+      <div
+        class="flex items-center flex-shrink-0 mr-6"
+        :class="{'text-tinder': scrolled || !indexPage }"
+      >
         <svg
           class="fill-current h-8 w-8 mr-2"
           width="54"
@@ -22,7 +25,7 @@
     <div class="block lg:hidden">
       <button
         class="flex items-center px-3 py-2 border rounded text-tinder border-tinder text-white border-white"
-        :class="{'text-tinder': scrolled, 'border-tinder': scrolled }"
+        :class="{'text-tinder': scrolled || !indexPage, 'border-tinder': scrolled || !indexPage }"
         @click="hideNav = !hideNav"
       >
         <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
@@ -85,6 +88,11 @@ export default {
       lastScrollPosition: 0,
       scrolled: false
     };
+  },
+  computed: {
+    indexPage() {
+      return this.$router.history.current.path === "/";
+    }
   },
   mounted() {
     window.addEventListener("scroll", this.onScroll);
