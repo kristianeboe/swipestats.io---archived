@@ -93,3 +93,5 @@ sw.*
 filesData/
 
 uploads/
+
+server/data
