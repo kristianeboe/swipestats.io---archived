@@ -75,11 +75,8 @@
 
 <script>
 import vueFilePond from "vue-filepond";
-import "filepond/dist/filepond.min.css";
+// import "filepond/dist/filepond.min.css";
 import * as md5 from "md5";
-
-// delete this
-import "filepond-plugin-image-preview/dist/filepond-plugin-image-preview.min.css";
 
 // Import image preview and file type validation plugins
 import FilePondPluginImagePreview from "filepond-plugin-image-preview";
