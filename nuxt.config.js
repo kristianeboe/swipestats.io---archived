@@ -28,7 +28,8 @@ module.exports = {
   css: [
     '~assets/scss/tailwind.scss',
     '~assets/scss/swipestats.scss',
-    '~assets/scss/filepond.scss',
+    'filepond/dist/filepond.min.css',
+    //'~assets/scss/filepond.scss',
   ],
   /*
    ** Plugins to load before mounting the App
@@ -44,7 +45,7 @@ module.exports = {
   modules: [
     '@nuxtjs/pwa',
     'nuxt-webfontloader',
-    'nuxt-purgecss',
+    // 'nuxt-purgecss',
     '@nuxtjs/toast',
   ],
   toast: {
@@ -80,6 +81,8 @@ module.exports = {
     },
     purgeCSS: {
       mode: 'postcss',
+      whitelistPatterns: [/filepond$/],
+      whitelistPatternsChildren: [/filepond$/],
     },
     extend(config, ctx) {},
   },
