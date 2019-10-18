@@ -100,31 +100,128 @@ router.post(
   }
 );
 
-router.post('/uploadData', bodyParser.json(), async (req, res, next) => {
-  console.log('creating new profile');
-  let data;
+function treatAsUTC(date) {
+  var result = new Date(date);
+  result.setMinutes(result.getMinutes() - result.getTimezoneOffset());
+  return result;
+}
 
-  try {
-    data = req.body;
-    console.log('parsed body keys', Object.keys(data));
-  } catch (error) {
-    console.log(Object.keys(data));
-    console.log(error);
-    return res.status(500).json(error);
-  }
+function daysBetween(startDate, endDate) {
+  var millisecondsPerDay = 24 * 60 * 60 * 1000;
+  return (treatAsUTC(endDate) - treatAsUTC(startDate)) / millisecondsPerDay;
+}
 
-  const { userId, ...profile } = data;
-  console.log(userId);
+function getConversationsMeta(conversations) {
+  const meta = {
+    nrOfConversations: conversations.length,
+    longestConversation: 0,
+    longestConversationInDays: 0, //days
+    averageConversationLength: 0,
+    averageConversationLengthInDays: 0, //days
+    medianConversationLength: 0,
+    medianConversationLengthInDays: 0, // days
+    nrOfOneMessageConversations: 0,
+    percentOfOneMessageConversations: 0,
+    nrOfGhostingsAfterInitialMessage: 0,
+    //nrOfGhostings
+  };
 
-  const newProfile = await profileService.createProfile({ userId, ...profile });
+  const conversationLengths = [];
 
-  console.log('newProfile', newProfile);
+  conversations.forEach(conversation => {
+    const messagesSent = conversation.messages.length;
 
-  return res.status(201).json({
-    userId,
-    success: true,
+    if (messagesSent === 0) {
+      meta.nrOfGhostingsAfterInitialMessage += 1;
+      conversationLengths.push({
+        days: 0,
+        messages: 0,
+      });
+    } else {
+      if (messagesSent === 1) {
+        meta.nrOfOneMessageConversations += 1;
+      }
+
+      const conversationStartDate = new Date(
+        conversation.messages[0].sent_date
+      );
+      const conversationEndDate = new Date(
+        conversation.messages[messagesSent - 1].sent_date
+      );
+      const conversationLength = daysBetween(
+        conversationStartDate,
+        conversationEndDate
+      );
+
+      conversationLengths.push({
+        days: conversationLength,
+        messages: messagesSent,
+      });
+
+      if (messagesSent > meta.longestConversation) {
+        meta.longestConversation = messagesSent;
+      }
+
+      if (conversationLength > meta.longestConversationInDays) {
+        meta.longestConversationInDays = conversationLength;
+      }
+
+      meta.averageConversationLengthInDays += conversationLength;
+    }
   });
-});
+
+  meta.medianConversationLengthInDays = conversationLengths.sort(
+    (a, b) => a.days - b.days
+  )[Math.floor(conversationLengths.length / 2)].days; // fake median
+
+  meta.medianConversationLength = conversationLengths.sort(
+    (a, b) => a.messages - b.messages
+  )[Math.floor(conversationLengths.length / 2)].messages; // fake median
+
+  meta.averageConversationLengthInDays = Number(
+    Number(meta.averageConversationLengthInDays / meta.nrOfConversations)
+  );
+
+  meta.percentOfOneMessageConversations =
+    (meta.nrOfOneMessageConversations / meta.nrOfConversations) * 100;
+
+  return meta;
+}
+
+router.post(
+  '/uploadData',
+  bodyParser.json({ limit: '10mb', extended: true }),
+  async (req, res, next) => {
+    console.log('creating new profile');
+    let data;
+
+    try {
+      data = req.body;
+      console.log('parsed body keys', Object.keys(data));
+    } catch (error) {
+      console.log(Object.keys(data));
+      console.log(error);
+      return res.status(500).json(error);
+    }
+
+    const { userId, conversations, ...profile } = data;
+    console.log(userId);
+
+    const newProfile = await profileService.createProfile({
+      userId,
+      conversationsMeta: getConversationsMeta(conversations),
+      conversations,
+      ...profile,
+    });
+
+    console.log('newProfile', newProfile);
+
+    return res.status(201).json({
+      userId,
+      success: true,
+    });
+  }
+);
 
 // router.patch('/upload/:id', multerUpload.any(), async (req, res, next) => {
 //   console.log('patching');
@@ -207,11 +304,23 @@ router.get('/profileData/:profileId', async (req, res, next) => {
   console.log('got profileData', profileData.userId);
 
   const matchesByMonth = aggregateByMonth(profileData.matches);
+  const appOpensByMonth = aggregateByMonth(profileData.appOpens);
   console.log('aggregation complete');
 
-  profileData.matchesByMonth = matchesByMonth;
+  const messagesByMonth = {
+    sent: aggregateByMonth(profileData.messages.sent),
+    received: aggregateByMonth(profileData.messages.received),
+  };
 
-  console.log('sending data to client');
+  profileData.matchesByMonth = matchesByMonth;
+  profileData.appOpensByMonth = appOpensByMonth;
+  profileData.messagesByMonth = messagesByMonth;
+
+  console.log(
+    'profileData keys to be sent to client',
+    Object.keys(profileData)
+  );
+
   return res.status(200).json(profileData || {});
 });
 
@@ -239,8 +348,8 @@ function getSwipeStatsData(tinderData) {
     },
     matches: tinderData.Usage.matches,
     messages: {
-      sendt: tinderData.Usage.messages_sent,
-      received: tinderData.Usage.messages_receive,
+      sent: tinderData.Usage.messages_sent,
+      received: tinderData.Usage.messages_received,
     },
   };
 }

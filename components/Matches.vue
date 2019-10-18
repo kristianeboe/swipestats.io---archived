@@ -1,20 +1,13 @@
 <template>
-  <section class="matches">
-    <h1>Matches</h1>
-    <div class="visualizations">
-      <Statistic name="Matches" :statistic="totalMatches" :comparison="totalComparisonMatches" />
-      <TimeLineChart :chart-data="datacollection" />
-    </div>
-  </section>
+  <InsightsSegment title="Matches" :data="matches" />
 </template>
 
 <script>
-import TimeLineChart from "@/components/TimeLineChart";
-import Statistic from "@/components/Statistic";
+import InsightsSegment from "@/components/InsightsSegment";
+
 export default {
   props: {
-    matches: Object,
-    comparisonData: Object
+    matches: Object
   },
   data() {
     return {
@@ -89,8 +82,7 @@ export default {
     }
   },
   components: {
-    Statistic,
-    TimeLineChart
+    InsightsSegment
   }
 };
 </script>

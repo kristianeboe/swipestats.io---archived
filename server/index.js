@@ -9,7 +9,6 @@ const app = express();
 const config = require('../nuxt.config.js');
 config.dev = process.env.NODE_ENV !== 'production';
 
-app.use(express.json());
 const apiRoutes = require('./routes/api');
 app.use('/api', apiRoutes);
 

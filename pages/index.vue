@@ -138,7 +138,7 @@ export default {
       options: {},
       myTinderData: null,
       swipeStatsData: {},
-      messagesSendt: {},
+      messagessent: {},
       userData: null,
       secretId: ""
     };
@@ -150,9 +150,9 @@ export default {
 
     getMessages() {
       return {
-        sendt: this.myTinderData ? this.myTinderData.Usage.messages_sent : {},
+        sent: this.myTinderData ? this.myTinderData.Usage.messages_sent : {},
         received: this.myTinderData
-          ? this.myTinderData.Usage.messages_receive
+          ? this.myTinderData.Usage.messages_received
           : {}
       };
     },
@@ -217,6 +217,14 @@ export default {
       }
     },
     setSwipeStatsData(tinderData) {
+      const conversations = tinderData.Messages.map(
+        ({ match_id, messages }) => ({
+          match_id,
+          messages: messages.map(({ message, ...messageMeta }) => messageMeta)
+        })
+      );
+
+      // a = [{"to":523,"from":"You","message":"Hola gorgeous, what are you up to?","sent_date":"Thu, 11 Jan 2018 11:03:58 GMT"},{"to":523,"from":"You","message":"Un Poco","sent_date":"Thu, 11 Jan 2018 11:06:44 GMT"},{"to":523,"from":"You","message":", but mostly English","sent_date":"Thu, 11 Jan 2018 11:06:50 GMT"},{"to":523,"from":"You","message":"Sex needs no language","sent_date":"Thu, 11 Jan 2018 11:07:58 GMT"}]
       const mappedData = {
         userId: this.setSecretId(tinderData),
         user: {
@@ -243,9 +251,12 @@ export default {
         },
         matches: tinderData.Usage.matches,
         messages: {
-          sendt: tinderData.Usage.messages_sent,
-          received: tinderData.Usage.messages_receive
-        }
+          sent: tinderData.Usage.messages_sent,
+          received: tinderData.Usage.messages_received
+        },
+        conversations,
+        //messages: tinderData.Messages,
+        appOpens: tinderData.Usage.app_opens
       };
       this.swipeStatsData = mappedData;
 

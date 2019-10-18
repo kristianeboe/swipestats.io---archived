@@ -4,11 +4,16 @@
     <h3>Compare yourself with</h3>
     <input type="text" v-model="compareId" />
     <button @click="setComparisonData(compareId)">Compare yourself</button>
-    <div>Matches</div>
-    <div>Messages</div>
-    <div>Total conversations</div>
-    <Matches :matches="mySwipeStatsData.matches" :comparisonData="comparisonData" />
-    <Matches :matches="mySwipeStatsData.matchesByMonth" :comparisonData="comparisonData" />
+    <section class="insights flex flex-wrap">
+      <Matches
+        class="m-4"
+        :matches="mySwipeStatsData.matchesByMonth"
+        :comparisonData="comparisonData"
+      />
+      <AppOpens class="m-4" :appOpens="mySwipeStatsData.appOpensByMonth" />
+      <Conversations :conversationsMeta="mySwipeStatsData.conversationsMeta" />
+      <Messages :messages="mySwipeStatsData.messagesByMonth" />
+    </section>
   </div>
 </template>
 
@@ -16,13 +21,20 @@
 import TimeLineChart from "@/components/TimeLineChart";
 import Statistic from "@/components/Statistic";
 import Matches from "@/components/Matches";
+import AppOpens from "@/components/AppOpens";
+import Conversations from "@/components/Conversations";
+import Messages from "@/components/Messages";
+
 import { mapMutations } from "vuex";
 
 export default {
   components: {
     TimeLineChart,
     Statistic,
-    Matches
+    Matches,
+    AppOpens,
+    Conversations,
+    Messages
   },
   data() {
     return {

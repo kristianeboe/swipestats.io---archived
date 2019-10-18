@@ -11,7 +11,8 @@ module.exports = {
       .exec();
   },
   async createProfile(profileData) {
-    return Profile.update(
+    console.log('profileData keys', Object.keys(profileData));
+    return Profile.updateOne(
       {
         _id: profileData.userId,
       },
