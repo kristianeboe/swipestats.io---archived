@@ -2,7 +2,7 @@
   <div>
     <section class="landing">
       <div class="container mx-auto min-h-screen flex flex-wrap">
-        <div class="intro w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16">
+        <div class="intro w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 py-24">
           <h1 class="text-6xl text-white font-black">How do you stack up?</h1>
           <p
             class="text-white"
@@ -11,14 +11,14 @@
             class="text-white"
           >Privacy? This service is built with privacy first in mind, check out the code on Github if you want</p>
           <p class="text-white">How do I get my Tinder data?</p>
-          <div class="cta pt-8">
+          <div class="cta pt-8 mx-auto md:mx-0">
             <button
               class="bg-tinder hover:bg-red-300 text-white font-bold py-2 px-4 rounded"
               @click="loadKristian"
             >Test</button>
           </div>
         </div>
-        <div class="upload w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16">
+        <div class="upload w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 py-24">
           <client-only>
             <form class="upload-form-filepond" v-if="!swipeStatsData.user">
               <file-pond
@@ -44,7 +44,9 @@
 
             <TailwindCard
               :imgSrc="avatars.male_avatar"
-              class="mx-4"
+              ref="profileCard"
+              id="profile-card"
+              class="mx-4 profile-card"
               :userId="secretId"
               :userData="swipeStatsData.user"
             />
@@ -263,6 +265,16 @@ export default {
       this.$store.commit("setSwipeStats", mappedData);
 
       console.log("swipeStatsData", this.swipeStatsData);
+      this.$nextTick(() => {
+        console.log(document.getElementById("#profile-card"));
+        console.log(document.querySelector(".profile-card"));
+        document.querySelector(".profile-card").scrollIntoView({
+          block: "center",
+          behavior: "smooth"
+        });
+        console.log(this.$refs.profileCard);
+        // this.$refs["profile-card"].scrollIntoView();
+      });
     },
     handleFilePondAddFile: function(error, file) {
       console.log("filepond add change", file.file);

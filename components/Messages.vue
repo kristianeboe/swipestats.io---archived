@@ -1,5 +1,5 @@
 <template>
-  <div class="flex w-full flex-wrap">
+  <div class="flex w-full flex-wrap justify-center">
     <InsightsSegment class="m-4" title="Messages sent" :data="messages.sent" />
     <InsightsSegment class="m-4" title="Messages recieved" :data="messages.received" />
   </div>

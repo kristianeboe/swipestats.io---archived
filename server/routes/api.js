@@ -178,6 +178,10 @@ function getConversationsMeta(conversations) {
     (a, b) => a.messages - b.messages
   )[Math.floor(conversationLengths.length / 2)].messages; // fake median
 
+  meta.averageConversationLength = Number(
+    Number(meta.averageConversationLength / meta.nrOfConversations)
+  );
+
   meta.averageConversationLengthInDays = Number(
     Number(meta.averageConversationLengthInDays / meta.nrOfConversations)
   );

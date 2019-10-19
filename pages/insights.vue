@@ -4,7 +4,7 @@
     <h3>Compare yourself with</h3>
     <input type="text" v-model="compareId" />
     <button @click="setComparisonData(compareId)">Compare yourself</button>
-    <section class="insights flex flex-wrap">
+    <section class="insights flex flex-wrap justify-center">
       <Matches
         class="m-4"
         :matches="mySwipeStatsData.matchesByMonth"
