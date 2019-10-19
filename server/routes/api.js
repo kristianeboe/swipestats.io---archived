@@ -131,6 +131,8 @@ function getConversationsMeta(conversations) {
   conversations.forEach(conversation => {
     const messagesSent = conversation.messages.length;
 
+    meta.averageConversationLength += messagesSent;
+
     if (messagesSent === 0) {
       meta.nrOfGhostingsAfterInitialMessage += 1;
       conversationLengths.push({
