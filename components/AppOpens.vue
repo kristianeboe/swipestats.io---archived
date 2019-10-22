@@ -1,5 +1,10 @@
 <template>
-  <InsightsSegment title="App opens" :data="appOpens" />
+  <InsightsSegment
+    title="App opens"
+    data-key="appOpens"
+    :data="appOpens"
+    :comparisonData="appOpensComparisonData"
+  />
 </template>
 
 <script>
@@ -9,7 +14,16 @@ export default {
     InsightsSegment
   },
   props: {
-    appOpens: Object
+    myProfile: Object,
+    comparisonData: Array
+  },
+  computed: {
+    appOpens() {
+      return this.myProfile.appOpens;
+    },
+    appOpensComparisonData() {
+      return this.comparisonData.map(profile => profile.appOpens);
+    }
   }
 };
 </script>

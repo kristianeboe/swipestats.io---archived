@@ -40,7 +40,8 @@ export default {
       const datasets = [
         {
           label: "Matches",
-          backgroundColor: "#f87979",
+          backgroundColor: "transparent", //"#f87979",
+          borderColor: "#f87979",
           data
         }
       ];
@@ -63,7 +64,7 @@ export default {
 
         datasets.push({
           label: "Comparison matches",
-          backgroundColor: "#000",
+          // backgroundColor: "#000",
           data: comparisonData1
         });
 

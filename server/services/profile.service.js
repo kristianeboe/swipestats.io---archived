@@ -26,14 +26,12 @@ module.exports = {
       }
     ).exec();
   },
-  async getAllIds() {
-    return Profile.find((err, profiles) => {
-      if (err) {
-        return res.status(404).end();
-      }
-      console.log('Profiles fetched successfully', profiles.length);
-
-      return profiles.map(profile => profile.userId);
-    });
+  async getAllProfiles() {
+    return Profile.find()
+      .lean()
+      .exec();
+  },
+  async deleteProfile(profileId) {
+    return Profile.deleteOne({}).exec();
   },
 };

@@ -14,7 +14,7 @@
           <div class="cta pt-8 mx-auto md:mx-0">
             <button
               class="bg-tinder hover:bg-red-300 text-white font-bold py-2 px-4 rounded"
-              @click="loadKristian"
+              @click="loadMe"
             >Test</button>
           </div>
         </div>
@@ -25,7 +25,7 @@
                 ref="pond"
                 :instantUpload="false"
                 label-idle="Drop your data.json file here..."
-                accepted-file-types="image/jpeg, image/png, application/json"
+                accepted-file-types="application/json"
                 :server="null"
                 :files="myFiles"
                 v-on:init="handleFilePondInit"
@@ -37,17 +37,12 @@
             </form>
           </client-only>
           <div v-if="swipeStatsData.user" class="create-user">
-            <!-- <SuccessAlert
-              heading="File parsed successfully"
-              body="Review your informatin in the card below before you upload :)"
-            />-->
-
-            <TailwindCard
+            <TinderProfileCard
               :imgSrc="avatars.male_avatar"
               ref="profileCard"
               id="profile-card"
               class="mx-4 profile-card"
-              :userId="secretId"
+              :userId="swipeStatsData.userId"
               :userData="swipeStatsData.user"
             />
 
@@ -80,14 +75,11 @@ import vueFilePond from "vue-filepond";
 // import "filepond/dist/filepond.min.css";
 import * as md5 from "md5";
 
-// Import image preview and file type validation plugins
-import FilePondPluginImagePreview from "filepond-plugin-image-preview";
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 
-import ProfileCard from "@/components/ProfileCard";
-import TailwindCard from "@/components/TailwindCard";
-import SuccessAlert from "@/components/SuccessAlert";
+import TinderProfileCard from "@/components/TinderProfileCard";
 import Process from "@/components/Process";
+import extractAnonymizedTinderData from "@/utils/extractAnonymizedTinderData";
 
 import { mapMutations } from "vuex";
 
@@ -100,34 +92,19 @@ import m_profile from "@/assets/svgs/undraw/m_profile.svg";
 import male_avatar from "@/assets/svgs/undraw/male_avatar.svg";
 
 // Create component
-const FilePond = vueFilePond(
-  FilePondPluginFileValidateType,
-  FilePondPluginImagePreview
-);
+const FilePond = vueFilePond(FilePondPluginFileValidateType);
 
 export default {
   name: "app",
   components: {
     FilePond,
-    ProfileCard,
-    TailwindCard,
-    SuccessAlert,
+    TinderProfileCard,
     Process
   },
   data: function() {
     return {
       myFiles: [],
       uploadedFiles: [],
-      chartdata: {
-        labels: ["January", "February"],
-        datasets: [
-          {
-            label: "Data One",
-            backgroundColor: "#f87979",
-            data: [40, 20]
-          }
-        ]
-      },
       avatars: {
         f_profile_data,
         f_updated,
@@ -137,52 +114,54 @@ export default {
         m_profile,
         male_avatar
       },
-      options: {},
       myTinderData: null,
       swipeStatsData: {},
       messagessent: {},
-      userData: null,
-      secretId: ""
+      userData: null
     };
   },
-  computed: {
-    getAppOpens() {
-      return this.myTinderData ? this.myTinderData.Usage.app_opens : {};
-    },
-
-    getMessages() {
-      return {
-        sent: this.myTinderData ? this.myTinderData.Usage.messages_sent : {},
-        received: this.myTinderData
-          ? this.myTinderData.Usage.messages_received
-          : {}
-      };
-    },
-    getMatches() {
-      return this.myTinderData ? this.myTinderData.Usage.matches : {};
-    },
-    getSwipes() {
-      return {
-        likes: this.myTinderData ? this.myTinderData.Usage.swipes_likes : {},
-        passes: this.myTinderData ? this.myTinderData.Usage.swipes_passe : {}
-      };
-    }
-  },
   async mounted() {
-    // this.loadKristian()
+    //     this.loadMe();
   },
   methods: {
-    async loadKristian() {
-      console.log("fetching kristian");
-      const res = await fetch("/api/get-kristian");
-      if (res.ok) {
-        console.log("res ok");
-        const data = await res.json();
-        console.log(data);
+    handleFilePondAddFile: function(error, file) {
+      console.log("filepond add change", file.file);
+      var reader = new FileReader();
+      const onReaderLoad = event => {
+        var tinderData = JSON.parse(event.target.result);
+        setTimeout(() => {
+          const swipeStatsData = extractAnonymizedTinderData(tinderData);
+          this.setSwipeStatsData(swipeStatsData);
+          this.$toast.success("Successfully parsed file").goAway();
+        }, 500);
+      };
 
-        this.secretId = data.userId;
-        this.swipeStatsData = data;
+      reader.onload = onReaderLoad;
+      reader.readAsText(file.file);
+    },
+    handleFilePondInit: function() {
+      console.log("FilePond has initialized");
+      // FilePond instance methods are available on `this.$refs.pond`
+    },
+    handleFilePondRemovefile: function(file) {
+      console.log("FilePond deleted file " + file.filename);
+      var index = this.myFiles.indexOf(file.filename);
+      if (index > -1) {
+        this.uploadedFiles.splice(index, 1);
+        this.$nextTick();
       }
+    },
+    setSwipeStatsData(swipeStatsData) {
+      this.swipeStatsData = swipeStatsData;
+      this.$store.commit("setSwipeStats", swipeStatsData);
+      console.log("swipeStatsData", swipeStatsData);
+
+      this.$nextTick(() => {
+        document.querySelector(".profile-card").scrollIntoView({
+          block: "center",
+          behavior: "smooth"
+        });
+      });
     },
     async submitSwipeStats() {
       console.log("submitting swipeStats", this.swipeStatsData);
@@ -197,110 +176,25 @@ export default {
         body
       });
 
-      console.log(res.ok);
-
-      this.$router.push({
-        path: `/insights?userId=${this.secretId}`
-      });
-    },
-    setSecretId(tinderData) {
-      try {
-        const secretId = md5(
-          tinderData.User.email +
-            tinderData.User.username +
-            tinderData.User.create_date
-        );
-        window.localStorage.setItem("swipeStatsId", secretId);
-        this.secretId = secretId;
-        return secretId;
-      } catch (e) {
-        console.log(e);
-        return "";
+      console.log("res ok?", res.ok);
+      if (res.ok) {
+        window.localStorage.setItem("swipeStatsId", this.swipeStatsData.userId);
+        this.$router.push({
+          path: `/insights`
+        });
+      } else {
+        this.$toast.error("Something went wrong with upload").goAway();
       }
     },
-    setSwipeStatsData(tinderData) {
-      const conversations = tinderData.Messages.map(
-        ({ match_id, messages }) => ({
-          match_id,
-          messages: messages.map(({ message, ...messageMeta }) => messageMeta)
-        })
-      );
+    async loadMe() {
+      console.log("fetching kristian");
+      const res = await fetch("/api/get-kristian");
+      if (res.ok) {
+        console.log("res ok");
+        const data = await res.json();
+        console.log(data);
 
-      // a = [{"to":523,"from":"You","message":"Hola gorgeous, what are you up to?","sent_date":"Thu, 11 Jan 2018 11:03:58 GMT"},{"to":523,"from":"You","message":"Un Poco","sent_date":"Thu, 11 Jan 2018 11:06:44 GMT"},{"to":523,"from":"You","message":", but mostly English","sent_date":"Thu, 11 Jan 2018 11:06:50 GMT"},{"to":523,"from":"You","message":"Sex needs no language","sent_date":"Thu, 11 Jan 2018 11:07:58 GMT"}]
-      const mappedData = {
-        userId: this.setSecretId(tinderData),
-        user: {
-          birthDate: tinderData.User.birth_date,
-          ageFilterMin: tinderData.User.age_filter_min,
-          ageFilterMax: tinderData.User.age_filter_max,
-          cityName: tinderData.User.city.name,
-          country: tinderData.User.city.region,
-          createDate: tinderData.User.create_date,
-          education: tinderData.User.education,
-          gender: tinderData.User.gender,
-          interestedIn: tinderData.User.interested_in,
-          genderFilter: tinderData.User.gender_filter,
-          instagram: tinderData.User.instagram.username,
-          jobDisplayed: tinderData.User.jobs[0].company.displayed,
-          jobTitle: tinderData.User.jobs[0].title.name,
-          educationLevel: tinderData.User.education,
-          schoolDisplayed: tinderData.User.schools[0].displayed,
-          schoolName: tinderData.User.schools[0].name
-        },
-        swipes: {
-          likes: tinderData.Usage.swipes_likes,
-          swipes: tinderData.Usage.swipes_passe
-        },
-        matches: tinderData.Usage.matches,
-        messages: {
-          sent: tinderData.Usage.messages_sent,
-          received: tinderData.Usage.messages_received
-        },
-        conversations,
-        //messages: tinderData.Messages,
-        appOpens: tinderData.Usage.app_opens
-      };
-      this.swipeStatsData = mappedData;
-
-      this.$store.commit("setSwipeStats", mappedData);
-
-      console.log("swipeStatsData", this.swipeStatsData);
-      this.$nextTick(() => {
-        console.log(document.getElementById("#profile-card"));
-        console.log(document.querySelector(".profile-card"));
-        document.querySelector(".profile-card").scrollIntoView({
-          block: "center",
-          behavior: "smooth"
-        });
-        console.log(this.$refs.profileCard);
-        // this.$refs["profile-card"].scrollIntoView();
-      });
-    },
-    handleFilePondAddFile: function(error, file) {
-      console.log("filepond add change", file.file);
-      var reader = new FileReader();
-      const onReaderLoad = event => {
-        var obj = JSON.parse(event.target.result);
-        setTimeout(() => {
-          this.setSwipeStatsData(obj);
-          this.$toast.success("Successfully parsed file").goAway();
-        }, 500);
-      };
-
-      reader.onload = onReaderLoad;
-      reader.readAsText(file.file);
-    },
-    handleFilePondInit: function() {
-      console.log("FilePond has initialized");
-
-      // FilePond instance methods are available on `this.$refs.pond`
-    },
-    handleFilePondRemovefile: function(file) {
-      console.log("FilePond deleted file " + file.filename);
-      var index = this.myFiles.indexOf(file.filename);
-      if (index > -1) {
-        this.uploadedFiles.splice(index, 1);
-        this.$nextTick();
+        this.setSwipeStatsData(data);
       }
     }
   }

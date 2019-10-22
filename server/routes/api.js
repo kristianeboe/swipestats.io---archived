@@ -9,6 +9,7 @@ const File = require('../models/file');
 // const fileService = require('../services/file.service.js');
 const profileService = require('../services/profile.service.js');
 const { aggregateByMonth } = require('../utils/normalization');
+const extractAnonymizedTinderData = require('../utils/extractAnonymizedTinderData');
 // const app = express();
 // router.get('/files', fileService.getAll);
 
@@ -298,7 +299,8 @@ router.post(
 router.get('/get-kristian', (req, res, next) => {
   const kristianTinderData = require('../models/data.json');
   // console.log(kristianTinderData.User);
-  const mySwipeStatsData = getSwipeStatsData(kristianTinderData);
+
+  const mySwipeStatsData = extractAnonymizedTinderData(kristianTinderData);
   return res.json(mySwipeStatsData);
 });
 
@@ -331,33 +333,17 @@ router.get('/profileData/:profileId', async (req, res, next) => {
 });
 
 router.get('/get-all', async (req, res, next) => {
-  const allProfileIds = await profileService.getAllIds();
+  const allProfiles = await profileService.getAllProfiles();
+  const allProfileIds = allProfiles.map(profile => profile._id);
+  // const allProfileIds = await profileService.getAllIds();
 
   return res.json(allProfileIds);
 });
 
-function getSwipeStatsData(tinderData) {
-  var md5 = require('md5');
+router.get('/deleteProfile/:profileId', async (req, res, next) => {
+  const deleteRes = await profileService.deleteProfile(req.params.profileId);
 
-  const secretId = md5(
-    tinderData.User.email +
-      tinderData.User.username +
-      tinderData.User.create_date
-  );
-
-  return {
-    userId: secretId,
-    user: tinderData.User,
-    swipes: {
-      likes: tinderData.Usage.swipes_likes,
-      swipes: tinderData.Usage.swipes_passe,
-    },
-    matches: tinderData.Usage.matches,
-    messages: {
-      sent: tinderData.Usage.messages_sent,
-      received: tinderData.Usage.messages_received,
-    },
-  };
-}
+  return res.json(deleteRes);
+});
 
 module.exports = router;

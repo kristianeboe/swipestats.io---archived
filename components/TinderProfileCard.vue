@@ -12,35 +12,39 @@
       <div>Education: {{userData.educationLevel}}</div>
 
       <div>gender filter {{userData.genderFilter}}</div>
-      <p class="text-gray-700 text-base">This will be your unique id, don't lose it:</p>
-      <h2>{{userId}}</h2>
+      <div>Account created: {{(() => new Date(userData.createDate))().toDateString()}}</div>
 
-      <div>Created: {{(() => new Date(userData.createDate))().toDateString()}}</div>
+      <br />
+      <p class="text-gray-700 text-base">This will be your unique id, don't lose it:</p>
+      <h2 class="text-xl font-bold">{{userId}}</h2>
+
       <section class="mt-4">
         <h2 class="font-bold">Jobs data</h2>
-        <button type="button" class="float-right">Don't share</button>
-        <div>Show company: {{userData.jobDisplayed}}</div>
-        <div>Title: {{userData.jobTitle}}</div>
+        <div v-for="job in userData.jobs" :key="job.title">
+          <button type="button" class="float-right">Don't share</button>
+          <div>Title: {{job.title}}</div>
+          <div>Show title: {{job.titleDisplayed}}</div>
+          <div>Show company: {{job.companyDisplayed}}</div>
+        </div>
       </section>
       <section class="mt-4">
         <h2 class="font-bold">School data</h2>
-        <button type="button" class="float-right">Don't share</button>
-        <div>Show school: {{userData.schoolDisplayed}}</div>
-        <div>School: {{userData.schoolName}}</div>
+        <div v-for="school in userData.schools" :key="school.name">
+          <button type="button" class="float-right">Don't share</button>
+          <div>School: {{school.name}}</div>
+          <div>Show school: {{school.displayed}}</div>
+        </div>
       </section>
     </div>
     <div class="px-6 py-4">
       <span
-        v-if="!!userData.instagram"
+        v-if="userData.instagram"
         class="inline-block bg-purple-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
       >#instagram</span>
       <span
-        v-if="!userData.spotify"
+        v-if="userData.spotify"
         class="inline-block bg-green-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700 mr-2"
       >#spotify</span>
-      <span
-        class="inline-block bg-gray-200 rounded-full px-3 py-1 text-sm font-semibold text-gray-700"
-      >#winter</span>
     </div>
   </div>
 </template>
