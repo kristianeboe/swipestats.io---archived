@@ -43,11 +43,8 @@
     </div>
     <section v-if="mySwipeStatsData.userId" class="insights flex flex-wrap justify-center">
       <AppOpens class="m-4" :myProfile="mySwipeStatsData" :comparisonData="comparisonData" />
-      <!-- <Matches
-        class="m-4"
-        :matches="mySwipeStatsData.matchesByMonth"
-        :comparisonData="comparisonData"
-      />
+      <Matches class="m-4" :myProfile="mySwipeStatsData" :comparisonData="comparisonData" />
+      <!-- 
       <Conversations :conversationsMeta="mySwipeStatsData.conversationsMeta" />
       
       <Messages :messages="mySwipeStatsData" />
@@ -110,6 +107,7 @@ export default {
       console.log("getting comparison data from", profileId);
       const profile = await this.getProfileData(profileId);
       this.comparisonData.push(profile);
+      this.compareId = "";
     }
   },
   async mounted() {

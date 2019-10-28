@@ -33,7 +33,7 @@
       </svg>
     </button>
     <div class="visualizations">
-      <Statistic :name="title" :statistic="total" />
+      <Statistic :name="title" :statistic="myTotal" :comparisonStatistics="comparisonTotals" />
     </div>
     <div class="chart-container" style="position: relative; height:auto; width:100%">
       <TimeLineChart :chart-data="localDataCollection" />
@@ -76,6 +76,8 @@ export default {
     return {
       fullWidth: false,
       localData: {},
+      myTotal: 0,
+      comparisonTotals: [],
       localComparisonData: [],
       totalComparisonData: [],
       localDataCollection: {}
@@ -87,37 +89,40 @@ export default {
   methods: {
     aggregateDataByYear() {
       this.localData = aggregateByYear(this.data);
-      this.updateLocalDataCollection(this.localData);
+      this.localComparisonData = this.comparisonData.map(data =>
+        aggregateByYear(data)
+      );
+      this.updateLocalDataCollection(this.localData, this.localComparisonData);
     },
     aggregateDataByMonth() {
       this.localData = aggregateByMonth(this.data);
-      this.updateLocalDataCollection(this.localData);
+      this.localComparisonData = this.comparisonData.map(data =>
+        aggregateByMonth(data)
+      );
+      this.updateLocalDataCollection(this.localData, this.localComparisonData);
     },
     aggregateDataByWeek() {},
     aggregateDataByDay() {
-      this.updateLocalDataCollection(this.data);
+      this.updateLocalDataCollection(this.data, this.comparisonData);
     },
-    updateLocalDataCollection(timeLine) {
-      // console.log("key", this.dataKey);
-      // if (this.dataKey) {
-      //   this.data = this.data[this.dataKey];
-      //   console.log("key data", this.data);
-      //   this.comparisonData = this.comparisonData.map(
-      //     profile => profile[this.dataKey]
-      //   );
-      // }
-
+    updateLocalDataCollection(myTimeLine, comparisonData = []) {
       const labels = [];
       const data = [];
+      this.comparisonTotals = [];
 
-      Object.entries(timeLine).map(([date, value]) => {
+      let myTotal = 0;
+
+      Object.entries(myTimeLine).map(([date, value]) => {
         labels.push(date);
         data.push({ x: date, y: value });
+        myTotal += value;
       });
+
+      this.myTotal = myTotal;
 
       const datasets = [
         {
-          label: `Your ${this.title}`,
+          label: `${this.title}`,
           backgroundColor: "transparent", //"#f87979",
           borderColor: "#f87979",
           data
@@ -125,28 +130,22 @@ export default {
       ];
 
       const borderColors = {
-        1: "blue",
-        2: "green",
-        3: "yellow"
+        0: "blue",
+        1: "green",
+        2: "yellow"
       };
 
-      // if (this.comparisonData) {
-      //   objectComparisonData.forEach((p, index) => {
-      //     const comparisonData = [];
-
-      //     Object.entries(p).map(([date, value]) => {
-      //       labels.push(date);
-      //       comparisonData.push({ x: date, y: value });
-      //     });
-
-      //     datasets.push({
-      //       label: index,
-      //       backgroundColor: "transparent",
-      //       borderColor: borderColors[index],
-      //       comparisonData
-      //     });
-      //   });
-      // }
+      if (comparisonData) {
+        comparisonData.forEach((timeLine, i) => {
+          const dataset = this.createDataset(
+            i,
+            "transparent",
+            borderColors[i],
+            timeLine
+          );
+          datasets.push(dataset);
+        });
+      }
 
       this.localDataCollection = {
         labels,
@@ -157,11 +156,15 @@ export default {
       const labels = [];
       const data = [];
 
+      let total = 0;
+
       Object.entries(timeLine).map(([date, value]) => {
         labels.push(date);
         data.push({ x: date, y: value });
+        total += value;
       });
 
+      this.comparisonTotals.push(total);
       const dataset = {
         label: `Your ${title}`,
         backgroundColor, // "transparent", //"#f87979",
@@ -173,32 +176,35 @@ export default {
     }
   },
   watch: {
-    comparisonData(timeLines) {
-      const datasets = [];
-      console.log("watching comparisonData", timeLines);
-      timeLines.forEach(timeLine => {
-        console.log("creating dataset");
-        const dataset = this.createDataset(
-          "lol",
-          "transparent",
-          "blue",
-          timeLine
-        );
+    comparisonData() {
+      // const datasets = [];
+      // console.log("watching comparisonData", timeLines);
+      // timeLines.forEach(timeLine => {
+      //   console.log("creating dataset");
+      //   const dataset = this.createDataset(
+      //     "lol",
+      //     "transparent",
+      //     "blue",
+      //     timeLine
+      //   );
 
-        console.log("pushing dataset", dataset);
-        datasets.push(dataset);
-      });
+      //   console.log("pushing dataset", dataset);
+      //   datasets.push(dataset);
+      // });
 
-      const myData = this.createDataset(
-        "Me",
-        "transparent",
-        "#f87979",
-        this.localData
-      );
-      this.localDataCollection = {
-        labels: this.localDataCollection.labels,
-        datasets: [myData, ...datasets]
-      };
+      // const myData = this.createDataset(
+      //   "Me",
+      //   "transparent",
+      //   "#f87979",
+      //   this.localData
+      // );
+      // this.localDataCollection = {
+      //   labels: this.localDataCollection.labels,
+      //   datasets: [myData, ...datasets]
+      // };
+
+      this.updateLocalDataCollection(this.data, this.comparisonData);
+      this.aggregateDataByMonth();
     }
   },
 
@@ -211,7 +217,7 @@ export default {
             0
           );
     },
-    datacollection() {
+    datacollection1() {
       if (!this.data.userId) {
         return {};
       }
@@ -272,6 +278,47 @@ export default {
             borderColor: borderColors[index],
             comparisonData
           });
+        });
+      }
+
+      return {
+        labels,
+        datasets
+      };
+    },
+    datacollection() {
+      const labels = [];
+      const data = [];
+
+      Object.entries(this.data).map(([date, value]) => {
+        labels.push(date);
+        data.push({ x: date, y: value });
+      });
+
+      const datasets = [
+        {
+          label: `${this.title}`,
+          backgroundColor: "transparent", //"#f87979",
+          borderColor: "#f87979",
+          data
+        }
+      ];
+
+      const borderColors = {
+        0: "blue",
+        1: "green",
+        2: "yellow"
+      };
+
+      if (this.comparisonData) {
+        this.comparisonData.forEach((timeLine, i) => {
+          const dataset = this.createDataset(
+            i,
+            "transparent",
+            borderColors[i],
+            timeLine
+          );
+          datasets.push(dataset);
         });
       }
 

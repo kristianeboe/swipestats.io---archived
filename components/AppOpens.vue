@@ -1,10 +1,5 @@
 <template>
-  <InsightsSegment
-    title="App opens"
-    data-key="appOpens"
-    :data="appOpens"
-    :comparisonData="appOpensComparisonData"
-  />
+  <InsightsSegment title="App opens" :data="appOpens" :comparisonData="appOpensComparisonData" />
 </template>
 
 <script>

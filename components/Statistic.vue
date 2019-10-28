@@ -2,7 +2,7 @@
   <div class="wrapper p-4">
     <h3 class="name text-base font-light">{{name}}</h3>
     <h2 class="statistic text-xl font-bold">{{statisticString}}</h2>
-    <h5 v-for="c in comparison" :key="c">{{c}}</h5>
+    <h5 v-for="c in comparisonStrings" :key="c">{{c}}</h5>
   </div>
 </template>
 
@@ -11,13 +11,19 @@ export default {
   props: {
     name: String,
     statistic: Number,
-    comparison: Array
+    comparisonStatistics: Array
   },
   computed: {
     statisticString() {
-      return Number.isInteger(this.statistic)
-        ? this.statistic
-        : this.statistic.toFixed(2);
+      return this.statisticToString(this.statistic);
+    },
+    comparisonStrings() {
+      return this.comparisonStatistics.map(s => this.statisticToString(s));
+    }
+  },
+  methods: {
+    statisticToString(s) {
+      return Number.isInteger(s) ? s : s.toFixed(2);
     }
   }
 };
