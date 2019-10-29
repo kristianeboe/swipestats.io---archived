@@ -10,6 +10,8 @@ export default {
     InsightsSegment
   },
   props: {
+    title: String,
+    dataKey: String,
     myProfile: Object,
     comparisonData: Array
   },

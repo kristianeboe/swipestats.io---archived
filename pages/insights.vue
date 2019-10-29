@@ -39,7 +39,7 @@
         class="shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
         type="button"
         @click="getComparisonData(compareId)"
-      >Girl</button>
+      >Girls</button>
     </div>
     <section v-if="mySwipeStatsData.userId" class="insights flex flex-wrap justify-center">
       <AppOpens class="m-4" :myProfile="mySwipeStatsData" :comparisonData="comparisonData" />
@@ -49,6 +49,12 @@
       
       <Messages :messages="mySwipeStatsData" />
       -->
+      <InsightsSegment
+        class="m-4"
+        title="Messages sent"
+        data-key="sent"
+        :data="mySwipeStatsData.messages.messagesByMonth"
+      />
     </section>
     <script
       data-name="BMC-Widget"
@@ -69,6 +75,7 @@ import Matches from "@/components/Matches";
 import AppOpens from "@/components/AppOpens";
 import Conversations from "@/components/Conversations";
 import Messages from "@/components/Messages";
+import InsightsSegment from "@/components/InsightsSegment";
 
 import { mapMutations } from "vuex";
 
