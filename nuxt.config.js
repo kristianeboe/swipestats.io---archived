@@ -28,8 +28,8 @@ module.exports = {
   css: [
     '~assets/scss/tailwind.scss',
     '~assets/scss/swipestats.scss',
-    'filepond/dist/filepond.min.css',
-    //'~assets/scss/filepond.scss',
+    '~assets/scss/filepond.scss',
+    //'filepond/dist/filepond.min.css',
   ],
   /*
    ** Plugins to load before mounting the App

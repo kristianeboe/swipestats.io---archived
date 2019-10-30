@@ -107,7 +107,7 @@ export default {
     },
     aggregateDataByDay() {
       this.aggregateBy = "day";
-      this.updateDataCollection(this.data, this.comparisonData);
+      this.updateDataCollection(this.categoryData);
     },
     updateDataCollection(timeLines) {
       if (timeLines.length === 0) return;
