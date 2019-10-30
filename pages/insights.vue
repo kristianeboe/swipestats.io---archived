@@ -41,19 +41,31 @@
         @click="getComparisonData(compareId)"
       >Girls</button>
     </div>
-    <section v-if="mySwipeStatsData.userId" class="insights flex flex-wrap justify-center">
-      <AppOpens class="m-4" :myProfile="mySwipeStatsData" :comparisonData="comparisonData" />
-      <Matches class="m-4" :myProfile="mySwipeStatsData" :comparisonData="comparisonData" />
-      <!-- 
-      <Conversations :conversationsMeta="mySwipeStatsData.conversationsMeta" />
-      
-      <Messages :messages="mySwipeStatsData" />
-      -->
-      <InsightsSegment
+    <section v-if="profiles.length > 0" class="insights flex flex-wrap justify-center">
+      <InsightsSegment2 class="m-4" title="Matches" data-key="matches" :profiles="profiles" />
+      <InsightsSegment2 class="m-4" title="App opens" data-key="appOpens" :profiles="profiles" />
+      <Conversations :profiles="profiles" />
+      <InsightsSegment2
         class="m-4"
         title="Messages sent"
-        data-key="sent"
-        :data="mySwipeStatsData.messages.messagesByMonth"
+        data-key="messagesSent"
+        :profiles="profiles"
+      />
+
+      <InsightsSegment2
+        class="m-4"
+        title="Messages received"
+        data-key="messagesReceived"
+        :profiles="profiles"
+      />
+
+      <InsightsSegment2 class="m-4" title="Swipe likes" data-key="swipeLikes" :profiles="profiles" />
+
+      <InsightsSegment2
+        class="m-4"
+        title="Swipe passes"
+        data-key="swipePasses"
+        :profiles="profiles"
       />
     </section>
     <script
@@ -76,6 +88,7 @@ import AppOpens from "@/components/AppOpens";
 import Conversations from "@/components/Conversations";
 import Messages from "@/components/Messages";
 import InsightsSegment from "@/components/InsightsSegment";
+import InsightsSegment2 from "@/components/InsightsSegment2";
 
 import { mapMutations } from "vuex";
 
@@ -84,15 +97,19 @@ export default {
     Matches,
     AppOpens,
     Conversations,
-    Messages
+    Messages,
+    InsightsSegment,
+    InsightsSegment2
     // swipes
   },
   data() {
     return {
       compareId: "",
-      cloneId: "336eb591eef99bf7ee13efc27fd387b4",
+      cloneId: "f67257bfb88c9c9e4123306e2245d62a",
       comparisonData: [],
-      mySwipeStatsData: {}
+      messagesSent: [],
+      mySwipeStatsData: {},
+      profiles: []
     };
   },
   computed: {},
@@ -114,6 +131,7 @@ export default {
       console.log("getting comparison data from", profileId);
       const profile = await this.getProfileData(profileId);
       this.comparisonData.push(profile);
+      this.profiles.push(profile);
       this.compareId = "";
     }
   },
@@ -123,6 +141,7 @@ export default {
     if (swipeStatsId) {
       const myProfile = await this.getProfileData(swipeStatsId);
       this.mySwipeStatsData = myProfile;
+      this.profiles.push(myProfile);
     }
   }
 };

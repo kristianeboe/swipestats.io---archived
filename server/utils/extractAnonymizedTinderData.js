@@ -52,11 +52,15 @@ module.exports = function(tinderData) {
       educationLevel: tinderData.User.education,
       schools: tinderData.User.schools,
     },
+    swipeLikes: tinderData.Usage.swipes_likes,
+    swipePasses: tinderData.Usage.swipes_passes,
     swipes: {
       likes: tinderData.Usage.swipes_likes,
       passes: tinderData.Usage.swipes_passes,
     },
     matches: tinderData.Usage.matches,
+    messagesSent: tinderData.Usage.messages_sent,
+    messagesReceived: tinderData.Usage.messages_received,
     messages: {
       sent: tinderData.Usage.messages_sent,
       received: tinderData.Usage.messages_received,

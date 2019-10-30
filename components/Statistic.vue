@@ -10,15 +10,19 @@
 export default {
   props: {
     name: String,
-    statistic: Number,
-    comparisonStatistics: Array
+    statistics: {
+      type: Array,
+      default: () => []
+    }
   },
   computed: {
     statisticString() {
-      return this.statisticToString(this.statistic);
+      return this.statisticToString(
+        this.statistics.length > 0 ? this.statistics[0] : 0
+      );
     },
     comparisonStrings() {
-      return this.comparisonStatistics.map(s => this.statisticToString(s));
+      return this.statistics.slice(1).map(s => this.statisticToString(s));
     }
   },
   methods: {

@@ -3,9 +3,9 @@
     <h2 class="text-2xl font-bold">Conversations</h2>
     <div class="flex flex-wrap mx-auto w-full">
       <Statistic
-        v-for="([meta, value]) in conversationsMetaArray"
+        v-for="meta in Object.keys(metaTitles)"
         :name="metaTitles[meta]"
-        :statistic="value"
+        :statistics="conversationsMetaArray.map(conversationsMeta => conversationsMeta[meta])"
         :key="meta"
         class="shadow-md m-4 rounded w-48 text-center"
       />
@@ -38,6 +38,10 @@ export default {
     };
   },
   props: {
+    profiles: {
+      type: Array,
+      default: () => []
+    },
     conversationsMeta: {
       type: Object,
       default: () => ({})
@@ -45,7 +49,7 @@ export default {
   },
   computed: {
     conversationsMetaArray() {
-      return Object.entries(this.conversationsMeta);
+      return this.profiles.map(profile => profile.conversationsMeta);
     }
   }
 };

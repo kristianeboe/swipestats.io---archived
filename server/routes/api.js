@@ -320,9 +320,9 @@ router.get('/profileData/:profileId', async (req, res, next) => {
     received: aggregateByMonth(profileData.messages.received),
   };
 
-  profileData.matchesByMonth = matchesByMonth;
-  profileData.appOpensByMonth = appOpensByMonth;
-  profileData.messagesByMonth = messagesByMonth;
+  // profileData.matchesByMonth = matchesByMonth;
+  // profileData.appOpensByMonth = appOpensByMonth;
+  // profileData.messagesByMonth = messagesByMonth;
 
   console.log(
     'profileData keys to be sent to client',

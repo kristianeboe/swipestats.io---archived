@@ -14,7 +14,7 @@ const cloneTinderData = {
     ...kristianTinderData.Usage,
     matches: Object.entries(kristianTinderData.Usage.matches).reduce(
       (acc, [key, val]) => {
-        const newVal = val - 3; // Math.floor(Math.random() * 8 - 4);
+        const newVal = val - Math.floor(Math.random() * 8 - 4);
         return {
           ...acc,
           [key]: newVal >= 0 ? newVal : 0,
@@ -24,7 +24,7 @@ const cloneTinderData = {
     ),
     app_opens: Object.entries(kristianTinderData.Usage.app_opens).reduce(
       (acc, [key, val]) => {
-        const newVal = val - 5; // Math.floor(Math.random() * 8 - 4);
+        const newVal = val - Math.floor(Math.random() * 8 - 4);
         return {
           ...acc,
           [key]: newVal >= 0 ? newVal : 0,
@@ -32,6 +32,43 @@ const cloneTinderData = {
       },
       {}
     ),
+    messages_sent: Object.entries(
+      kristianTinderData.Usage.messages_sent
+    ).reduce((acc, [key, val]) => {
+      const newVal = val - Math.floor(Math.random() * 8 - 4);
+      return {
+        ...acc,
+        [key]: newVal >= 0 ? newVal : 0,
+      };
+    }, {}),
+    messages_received: Object.entries(
+      kristianTinderData.Usage.messages_received
+    ).reduce((acc, [key, val]) => {
+      const newVal = val - Math.floor(Math.random() * 8 - 4);
+      return {
+        ...acc,
+        [key]: newVal >= 0 ? newVal : 0,
+      };
+    }, {}),
+    swipes_likes: Object.entries(kristianTinderData.Usage.swipes_likes).reduce(
+      (acc, [key, val]) => {
+        const newVal = val - Math.floor(Math.random() * 8 - 4);
+        return {
+          ...acc,
+          [key]: newVal >= 0 ? newVal : 0,
+        };
+      },
+      {}
+    ),
+    swipes_passes: Object.entries(
+      kristianTinderData.Usage.swipes_passes
+    ).reduce((acc, [key, val]) => {
+      const newVal = val - Math.floor(Math.random() * 8 - 4);
+      return {
+        ...acc,
+        [key]: newVal >= 0 ? newVal : 0,
+      };
+    }, {}),
   },
 };
 
