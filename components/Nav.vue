@@ -86,12 +86,13 @@ export default {
       hideNav: true,
       showNavbar: true,
       lastScrollPosition: 0,
-      scrolled: false
+      scrolled: false,
+      indexPage: this.$router.history.current.path === "/"
     };
   },
-  computed: {
-    indexPage() {
-      return this.$router.history.current.path === "/";
+  watch: {
+    $route() {
+      this.indexPage = this.$router.history.current.path === "/";
     }
   },
   mounted() {

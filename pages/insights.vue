@@ -51,16 +51,13 @@
         data-key="messagesSent"
         :profiles="profiles"
       />
-
       <InsightsSegment2
         class="m-4"
         title="Messages received"
         data-key="messagesReceived"
         :profiles="profiles"
       />
-
       <InsightsSegment2 class="m-4" title="Swipe likes" data-key="swipeLikes" :profiles="profiles" />
-
       <InsightsSegment2
         class="m-4"
         title="Swipe passes"
@@ -68,17 +65,6 @@
         :profiles="profiles"
       />
     </section>
-    <script
-      data-name="BMC-Widget"
-      src="https://cdn.buymeacoffee.com/widget/1.0.0/prod/widget.prod.min.js"
-      data-id="CXVUmPd"
-      data-description="Help democratize data!"
-      data-message="Thank you for visiting. You can now buy me a coffee!"
-      data-color="#5F7FFF"
-      data-position="right"
-      data-x_margin="18"
-      data-y_margin="18"
-    ></script>
   </div>
 </template>
 
@@ -143,6 +129,25 @@ export default {
       this.mySwipeStatsData = myProfile;
       this.profiles.push(myProfile);
     }
+  },
+  head() {
+    return {
+      script: [
+        // {
+        //   src:
+        //     "https://cdn.buymeacoffee.com/widget/1.0.0/prod/widget.prod.min.js",
+        //   async: true,
+        //   ssr: false,
+        //   "data-id": "CXVUmPd",
+        //   "data-description": "Help democratize data!",
+        //   "data-message": "Like what you see? Buy me a coffee:)",
+        //   "data-color": "#5F7FFF",
+        //   "data-position": "right",
+        //   "data-x_margin": "18",
+        //   "data-y_margin": "18"
+        // }
+      ]
+    };
   }
 };
 </script>
