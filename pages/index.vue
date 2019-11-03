@@ -71,7 +71,7 @@
       </div>
     </section>
     <Process />
-    <HowDoIgetMyData2 />
+    <HowDoIGetMyData />
   </div>
 </template>
 
@@ -84,7 +84,7 @@ import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 
 import TinderProfileCard from "@/components/TinderProfileCard";
 import Process from "@/components/Process";
-import HowDoIgetMyData2 from "@/components/HowDoIgetMyData2";
+import HowDoIGetMyData from "@/components/HowDoIGetMyData";
 
 import extractAnonymizedTinderData from "@/utils/extractAnonymizedTinderData";
 
@@ -107,7 +107,7 @@ export default {
     FilePond,
     TinderProfileCard,
     Process,
-    HowDoIgetMyData2
+    HowDoIGetMyData
   },
   data: function() {
     return {
