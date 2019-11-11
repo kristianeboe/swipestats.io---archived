@@ -6,7 +6,7 @@
         <article v-for="step in steps" class="w-full md:w-auto m-8">
           <img :src="step.illustration" :alt="step.step" class="w-48 mx-auto" />
           <div>
-            <p class="text-base max-w-md">{{step.step}}</p>
+            <p class="text-base max-w-md" v-html="step.step"></p>
           </div>
         </article>
       </div>
@@ -25,7 +25,7 @@ export default {
       steps: [
         {
           step:
-            'Go to <a href="https://account.gotinder.com/request-data" >https://account.gotinder.com/request-data</a> and log in',
+            '<a href="https://account.gotinder.com/request-data" >Go to this <span class="text-blue-500">link</span> and log in</a> ',
           illustration: Step1
         },
         { step: "Enter your email address and confirm", illustration: Step2 },
