@@ -53,17 +53,19 @@
             <div class="mt-4">
               <button
                 class="upload-button bg-red-300 hover:bg-red-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center pulsate-fwd"
+                :class="{'spinner': uploading}"
                 @click="submitSwipeStats"
               >
                 <svg
                   class="fill-current w-4 h-4 mr-2"
+                  :class="{'hidden': uploading}"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   style="transform: rotate(180deg);"
                 >
                   <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
                 </svg>
-                <span>Upload</span>
+                <span :class="{'hidden': uploading}">Upload</span>
               </button>
             </div>
           </div>
@@ -113,6 +115,7 @@ export default {
     return {
       myFiles: [],
       uploadedFiles: [],
+      uploading: false,
       avatars: {
         f_profile_data,
         f_updated,
@@ -172,6 +175,7 @@ export default {
       });
     },
     async submitSwipeStats() {
+      this.uploading = true;
       console.log("submitting swipeStats", this.swipeStatsData);
 
       const body = JSON.stringify(this.swipeStatsData);
@@ -266,5 +270,27 @@ export default {
     -webkit-transform: scale(1);
     transform: scale(1);
   }
+}
+
+@keyframes spinner {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner:before {
+  content: "";
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin-top: -10px;
+  margin-left: -10px;
+  border-radius: 50%;
+  border: 2px solid #ccc;
+  border-top-color: #000;
+  animation: spinner 0.6s linear infinite;
 }
 </style>
