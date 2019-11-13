@@ -1,4 +1,4 @@
-import * as md5 from "md5";
+const md5 = require("md5");
 
 function anonymizeConversations(conversations) {
   return conversations.map(({ match_id, messages }) => ({
@@ -17,7 +17,7 @@ function getSecretId(tinderData) {
   return secretId;
 }
 
-export default function(tinderData) {
+module.exports = function(tinderData) {
   const anonymizedConversations = anonymizeConversations(tinderData.Messages);
   const secretId = getSecretId(tinderData);
 
@@ -69,4 +69,4 @@ export default function(tinderData) {
     //messages: tinderData.Messages,
     appOpens: tinderData.Usage.app_opens
   };
-}
+};
