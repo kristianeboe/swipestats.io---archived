@@ -58,7 +58,6 @@ export default {
   },
   methods: {
     getAge(birthDateString) {
-      birthDateString = "1992-11-01T00:00:00.000Z";
       const birthDate = new Date(birthDateString);
 
       const ageDifMs = Date.now() - birthDate.getTime();
