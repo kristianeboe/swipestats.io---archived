@@ -17,7 +17,14 @@ module.exports = {
           "See how you stack up against other Tinder users across the world"
       }
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
+    link: [
+      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+      {
+        hid: "og:image",
+        property: "og:image",
+        content: "~assets/images/swipestats-logo.png"
+      }
+    ]
   },
   /*
    ** Customize the progress-bar color
