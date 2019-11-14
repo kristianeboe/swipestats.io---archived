@@ -3,7 +3,7 @@
     <div class="container mx-auto flex flex-col text-center">
       <h2 class="text-3xl">Wait, how do I get my Tinder data?</h2>
       <div class="flex w-full justify-around flex-wrap">
-        <article v-for="step in steps" class="w-full md:w-auto m-8">
+        <article v-for="step in steps" class="w-full md:max-w-xs m-8">
           <img :src="step.illustration" :alt="step.step" class="w-48 mx-auto" />
           <div>
             <p class="text-base max-w-md" v-html="step.step"></p>

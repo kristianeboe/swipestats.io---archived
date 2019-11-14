@@ -8,7 +8,7 @@
           <h1 class="text-6xl text-white font-black">How do you stack up?</h1>
           <p
             class="text-white"
-          >Upload your data anonymusly and compare it to demographics from around the world.</p>
+          >Upload your data anonymously and compare it to demographics from around the world.</p>
           <p
             class="text-white"
           >Privacy? This service is built with privacy first in mind, check out the code on Github if you want</p>
@@ -37,7 +37,7 @@
               />
               <p
                 class="text-white"
-              >The file is NOT uploaded to a server, just used to extract your relevant, anonymus profile information.</p>
+              >The file is NOT uploaded to a server, just used to extract your relevant, anonymous profile information.</p>
             </form>
           </client-only>
           <div v-if="swipeStatsData.user" class="create-user">
