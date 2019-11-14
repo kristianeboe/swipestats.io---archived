@@ -22,7 +22,7 @@ module.exports = {
       {
         hid: "og:image",
         property: "og:image",
-        content: "~assets/images/swipestats-logo.png"
+        content: "/swipestats-logo.png"
       }
     ]
   },
