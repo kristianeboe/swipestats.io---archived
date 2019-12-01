@@ -28,15 +28,6 @@ export function getDaysArray(start, end) {
   return arr;
 }
 
-export function getMonthsArray(start, end) {
-  start.setDate(1);
-  end.setDate(28);
-  for (var arr = [], dt = start; dt <= end; dt.setMonth(dt.getMonth() + 1)) {
-    arr.push(new Date(dt));
-  }
-  return arr;
-}
-
 export function getDaysInMonth(month, year) {
   // Here January is 1 based
   //Day 0 is the last day in the previous month
@@ -76,7 +67,26 @@ export function aggregateByYear(timeSeriesObject) {
   return normalizedYearData;
 }
 
+export function getMonthsArray(startDate, endDate) {
+  var start = startDate.split("-");
+  var end = endDate.split("-");
+  var startYear = parseInt(start[0]);
+  var endYear = parseInt(end[0]);
+  var dates = [];
+
+  for (var i = startYear; i <= endYear; i++) {
+    var endMonth = i != endYear ? 11 : parseInt(end[1]) - 1;
+    var startMon = i === startYear ? parseInt(start[1]) - 1 : 0;
+    for (var j = startMon; j <= endMonth; j = j > 12 ? j % 12 || 11 : j + 1) {
+      var month = j + 1;
+      var displayMonth = month < 10 ? "0" + month : month;
+      dates.push([i, displayMonth].join("-"));
+    }
+  }
+  return dates;
+}
 export function aggregateByMonth(timeSeriesObject) {
+  console.log("timeSeriesObect", timeSeriesObject);
   const valuesByMonth = Object.entries(timeSeriesObject).reduce(
     (acc, [date, value]) => {
       const yearMonth = date.substr(0, 7);
@@ -95,10 +105,10 @@ export function aggregateByMonth(timeSeriesObject) {
   const maxMonth = months[months.length - 1];
   console.log(minMonth, maxMonth);
 
-  const monthArray = getMonthsArray(new Date(minMonth), new Date(maxMonth));
-  console.log(monthArray);
+  const monthKeys = getMonthsArray(minMonth, maxMonth);
 
-  const monthKeys = monthArray.map(v => v.toISOString().slice(0, 7));
+  console.log("monthKeys", monthKeys);
+  console.log("valuesByMonth", Object.keys(valuesByMonth));
 
   const normalizedMonthData = monthKeys.reduce((acc, cur) => {
     acc[cur] = valuesByMonth[cur] || 0;
@@ -106,6 +116,13 @@ export function aggregateByMonth(timeSeriesObject) {
   }, {});
 
   return normalizedMonthData;
+}
+
+export function aggregateTotal(timeSeriesObject) {
+  return Object.entries(timeSeriesObject).reduce(
+    (acc, [key, value]) => (acc += value),
+    0
+  );
 }
 
 // aggregateByWeek

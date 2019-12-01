@@ -44,11 +44,6 @@
         @click="aggregateDataByMonth"
       >Month</button>
       <button
-        class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4"
-        :class="{'bg-gray-400': aggregateBy === 'week'}"
-        @click="aggregateDataByWeek"
-      >Week</button>
-      <button
         class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r"
         :class="{'bg-gray-400': aggregateBy === 'day'}"
         @click="aggregateDataByDay"
@@ -61,7 +56,11 @@
 import TimeLineChart from "@/components/TimeLineChart";
 import Statistic from "@/components/Statistic";
 
-import { aggregateByYear, aggregateByMonth } from "@/utils/timeLineUtils";
+import {
+  aggregateByYear,
+  aggregateByMonth,
+  aggregateTotal
+} from "@/utils/timeLineUtils";
 
 export default {
   props: {
@@ -85,6 +84,7 @@ export default {
   },
   mounted() {
     this.categoryData = this.profiles.map(profile => profile[this.dataKey]);
+    this.totals = this.categoryData.map(data => aggregateTotal(data));
     this.aggregateDataByMonth();
   },
   methods: {
@@ -124,7 +124,6 @@ export default {
         2: "yellow",
         3: "blue"
       };
-      this.totals = [];
 
       const [labels, myDataset] = this.createDataset(
         `Your ${this.title.toLowerCase()}`,
@@ -154,15 +153,11 @@ export default {
       const labels = [];
       const data = [];
 
-      let total = 0;
-
       Object.entries(timeLine).map(([date, value]) => {
         labels.push(date);
         data.push({ x: date, y: value });
-        total += value;
       });
 
-      this.totals.push(total);
       const dataset = {
         label: `Your ${title}`,
         backgroundColor, // "transparent", //"#f87979",
