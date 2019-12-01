@@ -17,6 +17,11 @@ module.exports = {
           'See how you stack up against other Tinder users across the world',
       },
       {
+        hid: 'og:title',
+        name: 'title',
+        content: 'Visualize your tinder data | Swipestats.io',
+      },
+      {
         hid: 'og:description',
         name: 'og:description',
         content:

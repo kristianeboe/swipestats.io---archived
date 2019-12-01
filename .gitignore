@@ -95,3 +95,7 @@ filesData/
 uploads/
 
 server/data
+
+# tinderdata
+utils/data.json
+utils/kyleTinderData.json

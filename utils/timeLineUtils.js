@@ -13,7 +13,7 @@ export function timeSeriesNormalizer(timeSeriesObject) {
   const keys = Object.keys(timeSeriesObject);
   const start = keys[0];
   const end = keys[keys.length - 1];
-  console.log('start end', start, end);
+  console.log("start end", start, end);
   const daysArray = getDaysArray(new Date(start), new Date(end));
 
   const dayList = daysArray.map(v => v.toISOString().slice(0, 10));
@@ -29,6 +29,8 @@ export function getDaysArray(start, end) {
 }
 
 export function getMonthsArray(start, end) {
+  start.setDate(1);
+  end.setDate(28);
   for (var arr = [], dt = start; dt <= end; dt.setMonth(dt.getMonth() + 1)) {
     arr.push(new Date(dt));
   }
@@ -44,17 +46,17 @@ export function getDaysInMonth(month, year) {
 }
 
 export function aggregateByYear(timeSeriesObject) {
-  console.log('start aggregation');
   const valuesByYear = Object.entries(timeSeriesObject).reduce(
     (acc, [date, value]) => {
       const year = date.substr(0, 4);
-      console.log(year);
       acc[year] = (acc[year] || 0) + value;
 
       return acc;
     },
     {}
   );
+
+  console.log("valuesByYear", valuesByYear);
 
   const years = Object.keys(valuesByYear).map(y => Number(y));
   let minYear = years[0];
@@ -85,12 +87,16 @@ export function aggregateByMonth(timeSeriesObject) {
     {}
   );
 
+  console.log("valuesByMonth", valuesByMonth);
+
   const months = Object.keys(valuesByMonth);
 
   let minMonth = months[0];
   const maxMonth = months[months.length - 1];
+  console.log(minMonth, maxMonth);
 
   const monthArray = getMonthsArray(new Date(minMonth), new Date(maxMonth));
+  console.log(monthArray);
 
   const monthKeys = monthArray.map(v => v.toISOString().slice(0, 7));
 
