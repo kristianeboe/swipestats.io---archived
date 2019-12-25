@@ -1,5 +1,5 @@
 <template>
-  <section class="process bg-white py-24 px-8">
+  <section class="process bg-white py-24 px-8" id="how-do-i-get-my-data">
     <div class="container mx-auto flex flex-col text-center">
       <h2 class="text-3xl">Wait, how do I get my Tinder data?</h2>
       <div class="flex w-full justify-around flex-wrap">

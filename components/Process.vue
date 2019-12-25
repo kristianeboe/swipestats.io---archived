@@ -1,5 +1,5 @@
 <template>
-  <section class="process bg-white py-24">
+  <section class="process bg-white py-24" id="process">
     <div class="container mx-auto flex flex-col text-center">
       <h2 class="text-3xl">Process</h2>
       <div class="flex w-full justify-around flex-wrap">

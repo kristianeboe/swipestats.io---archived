@@ -42,12 +42,12 @@
           </client-only>
           <div v-if="swipeStatsData.user" class="create-user">
             <TinderProfileCard
-              :imgSrc="avatars.male_avatar"
               ref="profileCard"
               id="profile-card"
               class="mx-4 profile-card"
               :userId="swipeStatsData.userId"
               :userData="swipeStatsData.user"
+              :removeKeyFromUserData="removeKeyFromUserData"
             />
 
             <div class="mt-4">
@@ -92,14 +92,6 @@ import extractAnonymizedTinderData from "@/utils/extractAnonymizedTinderData";
 
 import { mapMutations } from "vuex";
 
-import f_profile_data from "@/assets/svgs/undraw/f_profile_data.svg";
-import f_updated from "@/assets/svgs/undraw/f_updated.svg";
-import female_avatar from "@/assets/svgs/undraw/female_avatar.svg";
-import m_personalization from "@/assets/svgs/undraw/m_personalization.svg";
-import m_profile_pic from "@/assets/svgs/undraw/m_profile_pic.svg";
-import m_profile from "@/assets/svgs/undraw/m_profile.svg";
-import male_avatar from "@/assets/svgs/undraw/male_avatar.svg";
-
 // Create component
 const FilePond = vueFilePond(FilePondPluginFileValidateType);
 
@@ -111,22 +103,17 @@ export default {
     Process,
     HowDoIGetMyData
   },
+  computed: {
+    swipeStatsData() {
+      return this.$store.state.swipeStats;
+    }
+  },
   data: function() {
     return {
       myFiles: [],
       uploadedFiles: [],
       uploading: false,
-      avatars: {
-        f_profile_data,
-        f_updated,
-        female_avatar,
-        m_personalization,
-        m_profile_pic,
-        m_profile,
-        male_avatar
-      },
       myTinderData: null,
-      swipeStatsData: {},
       messagessent: {},
       userData: null
     };
@@ -163,7 +150,6 @@ export default {
       }
     },
     setSwipeStatsData(swipeStatsData) {
-      this.swipeStatsData = swipeStatsData;
       this.$store.commit("setSwipeStats", swipeStatsData);
       console.log("swipeStatsData", swipeStatsData);
 
@@ -197,6 +183,9 @@ export default {
       } else {
         this.$toast.error("Something went wrong with upload").goAway();
       }
+    },
+    removeKeyFromUserData(key) {
+      this.$store.commit("removeKeyFromSwipeStatsUser", key);
     },
     async loadMe() {
       console.log("fetching kristian");

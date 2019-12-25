@@ -1,20 +1,20 @@
-const express = require('express');
+const express = require("express");
 const router = express.Router();
-const shortid = require('shortid');
-const fs = require('fs');
-const bodyParser = require('body-parser');
+const shortid = require("shortid");
+const fs = require("fs");
+const bodyParser = require("body-parser");
 
-const File = require('../models/file');
+const File = require("../models/file");
 
 // const fileService = require('../services/file.service.js');
-const profileService = require('../services/profile.service.js');
-const { aggregateByMonth } = require('../utils/normalization');
-const extractAnonymizedTinderData = require('../utils/extractAnonymizedTinderData');
+const profileService = require("../services/profile.service.js");
+const { aggregateByMonth } = require("../utils/normalization");
+const extractAnonymizedTinderData = require("../utils/extractAnonymizedTinderData");
 // const app = express();
 // router.get('/files', fileService.getAll);
 
-router.get('/', (req, res) => {
-  res.send('Hello Kristian');
+router.get("/", (req, res) => {
+  res.send("Hello Kristian");
 });
 
 // Get one subscriber
@@ -22,37 +22,37 @@ router.get('/', (req, res) => {
 // })
 
 // Create one subscriber
-router.post('/', (req, res) => {});
+router.post("/", (req, res) => {});
 
 // Update one subscriber
-router.patch('/:id', (req, res) => {});
+router.patch("/:id", (req, res) => {});
 
 // Delete one subscriber
-router.delete('/:id', (req, res) => {});
+router.delete("/:id", (req, res) => {});
 
 const fileConfig = {
   supportedMimes: {
-    'text/csv': 'csv',
-    'application/json': 'json',
+    "text/csv": "csv",
+    "application/json": "json"
   },
-  uploadsFolder: 'server/uploads',
-  dbConnection: 'mongodb://127.0.0.1:27017/fileuploaddb',
+  uploadsFolder: "server/uploads",
+  dbConnection: "mongodb://127.0.0.1:27017/fileuploaddb"
 };
-const multer = require('multer');
+const multer = require("multer");
 
 const multerUpload = multer({
   storage: multer.diskStorage({
     destination: fileConfig.uploadsFolder,
     filename: (req, file, cb) => {
-      console.log('multer req', req._fileId);
+      console.log("multer req", req._fileId);
       let extension = fileConfig.supportedMimes[file.mimetype];
-      let originalname = file.originalname.split('.')[0];
+      let originalname = file.originalname.split(".")[0];
       let fileName =
-        (req._fileId || originalname + '-' + new Date().getMilliseconds()) +
-        '.' +
+        (req._fileId || originalname + "-" + new Date().getMilliseconds()) +
+        "." +
         extension;
       cb(null, fileName);
-    },
+    }
   }),
   fileFilter: (req, file, cb) => {
     let extension = fileConfig.supportedMimes[file.mimetype];
@@ -61,12 +61,11 @@ const multerUpload = multer({
     } else {
       cb(null, true);
     }
-  },
+  }
 });
 
-console.log(multerUpload);
 router.post(
-  '/upload',
+  "/upload",
   (req, res, next) => {
     const fileId = shortid.generate();
     req._fileId = fileId;
@@ -74,10 +73,10 @@ router.post(
   },
   multerUpload.any(),
   async (req, res, next) => {
-    console.log('initiate upload');
+    console.log("initiate upload");
 
     const fileId = req._fileId;
-    console.log('fileId', fileId);
+    console.log("fileId", fileId);
 
     // const [tinderData] = req.files;
 
@@ -123,7 +122,7 @@ function getConversationsMeta(conversations) {
     medianConversationLengthInDays: 0, // days
     nrOfOneMessageConversations: 0,
     percentOfOneMessageConversations: 0,
-    nrOfGhostingsAfterInitialMessage: 0,
+    nrOfGhostingsAfterInitialMessage: 0
     //nrOfGhostings
   };
 
@@ -138,7 +137,7 @@ function getConversationsMeta(conversations) {
       meta.nrOfGhostingsAfterInitialMessage += 1;
       conversationLengths.push({
         days: 0,
-        messages: 0,
+        messages: 0
       });
     } else {
       if (messagesSent === 1) {
@@ -158,7 +157,7 @@ function getConversationsMeta(conversations) {
 
       conversationLengths.push({
         days: conversationLength,
-        messages: messagesSent,
+        messages: messagesSent
       });
 
       if (messagesSent > meta.longestConversation) {
@@ -196,15 +195,15 @@ function getConversationsMeta(conversations) {
 }
 
 router.post(
-  '/uploadData',
-  bodyParser.json({ limit: '10mb', extended: true }),
+  "/uploadData",
+  bodyParser.json({ limit: "10mb", extended: true }),
   async (req, res, next) => {
-    console.log('creating new profile');
+    console.log("creating new profile");
     let data;
 
     try {
       data = req.body;
-      console.log('parsed body keys', Object.keys(data));
+      console.log("parsed body keys", Object.keys(data));
     } catch (error) {
       console.log(Object.keys(data));
       console.log(error);
@@ -218,14 +217,14 @@ router.post(
       userId,
       conversationsMeta: getConversationsMeta(conversations),
       conversations,
-      ...profile,
+      ...profile
     });
 
-    console.log('newProfile', newProfile);
+    console.log("newProfile", newProfile);
 
     return res.status(201).json({
       userId,
-      success: true,
+      success: true
     });
   }
 );
@@ -296,28 +295,28 @@ router.post(
 //   // }
 // });
 
-router.get('/get-kristian', (req, res, next) => {
-  const kristianTinderData = require('../models/data.json');
+router.get("/get-kristian", (req, res, next) => {
+  const kristianTinderData = require("../models/data.json");
   // console.log(kristianTinderData.User);
 
   const mySwipeStatsData = extractAnonymizedTinderData(kristianTinderData);
   return res.json(mySwipeStatsData);
 });
 
-router.get('/profileData/:profileId', async (req, res, next) => {
+router.get("/profileData/:profileId", async (req, res, next) => {
   const { profileId } = req.params;
-  console.log('getting data for', profileId);
+  console.log("getting data for", profileId);
 
   const profileData = await profileService.getOne(profileId);
-  console.log('got profileData', profileData.userId);
+  console.log("got profileData", profileData.userId);
 
   const matchesByMonth = aggregateByMonth(profileData.matches);
   const appOpensByMonth = aggregateByMonth(profileData.appOpens);
-  console.log('aggregation complete');
+  console.log("aggregation complete");
 
   const messagesByMonth = {
     sent: aggregateByMonth(profileData.messages.sent),
-    received: aggregateByMonth(profileData.messages.received),
+    received: aggregateByMonth(profileData.messages.received)
   };
 
   // profileData.matchesByMonth = matchesByMonth;
@@ -325,14 +324,14 @@ router.get('/profileData/:profileId', async (req, res, next) => {
   // profileData.messagesByMonth = messagesByMonth;
 
   console.log(
-    'profileData keys to be sent to client',
+    "profileData keys to be sent to client",
     Object.keys(profileData)
   );
 
   return res.status(200).json(profileData || {});
 });
 
-router.get('/get-all', async (req, res, next) => {
+router.get("/get-all", async (req, res, next) => {
   const allProfiles = await profileService.getAllProfiles();
   const allProfileIds = allProfiles.map(profile => profile._id);
   // const allProfileIds = await profileService.getAllIds();
@@ -340,7 +339,7 @@ router.get('/get-all', async (req, res, next) => {
   return res.json(allProfileIds);
 });
 
-router.get('/deleteProfile/:profileId', async (req, res, next) => {
+router.get("/deleteProfile/:profileId", async (req, res, next) => {
   const deleteRes = await profileService.deleteProfile(req.params.profileId);
 
   return res.json(deleteRes);

@@ -95,6 +95,8 @@ filesData/
 uploads/
 
 server/data
+server/models/data.json
+server/models/trainingData
 
 # tinderdata
 utils/data.json

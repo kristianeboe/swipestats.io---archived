@@ -21,7 +21,11 @@
       <section class="mt-4">
         <h2 class="font-bold">Jobs data</h2>
         <div v-for="job in userData.jobs" :key="job.title">
-          <button type="button" class="float-right">Don't share</button>
+          <button
+            type="button"
+            class="float-right"
+            @click="removeKeyFromUserData('jobs')"
+          >Don't share</button>
           <div>Title: {{job.title}}</div>
           <div>Show title: {{job.titleDisplayed}}</div>
           <div>Show company: {{job.companyDisplayed}}</div>
@@ -30,7 +34,11 @@
       <section class="mt-4">
         <h2 class="font-bold">School data</h2>
         <div v-for="school in userData.schools" :key="school.name">
-          <button type="button" class="float-right">Don't share</button>
+          <button
+            type="button"
+            class="float-right"
+            @click="removeKeyFromUserData('schools')"
+          >Don't share</button>
           <div>School: {{school.name}}</div>
           <div>Show school: {{school.displayed}}</div>
         </div>
@@ -50,16 +58,23 @@
 </template>
 
 <script>
+import male_avatar from "@/assets/svgs/undraw/male_avatar.svg";
+import female_avatar from "@/assets/svgs/undraw/female_avatar.svg";
+
 export default {
   props: {
     userId: String,
-    imgSrc: String,
-    userData: Object
+    userData: Object,
+    removeKeyFromUserData: Function
+  },
+  computed: {
+    imgSrc() {
+      return this.userData.gender === "M" ? male_avatar : female_avatar;
+    }
   },
   methods: {
     getAge(birthDateString) {
       const birthDate = new Date(birthDateString);
-
       const ageDifMs = Date.now() - birthDate.getTime();
       const ageDate = new Date(ageDifMs); // miliseconds from epoch
       return Math.abs(ageDate.getUTCFullYear() - 1970);

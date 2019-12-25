@@ -37,13 +37,8 @@
 
     <div class="text-sm hidden lg:flex lg:flex-grow" />
     <div class="hidden w-full flex-grow lg:flex lg:items-center lg:w-auto justify-end">
-      <!-- <DropDownMenu
-          content="Mer om depositumskonto"
-          :links="subPages"
-          class="mr-4"
-      />-->
-      <nuxt-link to="/billig-depositumskonto" class="nav-link mr-8">Prosess</nuxt-link>
-      <nuxt-link to="/hvordan-opprette-depositumskonto" class="nav-link mr-8">How do I get my data?</nuxt-link>
+      <nuxt-link to="/#process" class="nav-link mr-8">Prosess</nuxt-link>
+      <nuxt-link to="/#how-do-i-get-my-data" class="nav-link mr-8">How do I get my data?</nuxt-link>
 
       <button
         class="text-center bg-tinder hover:bg-red-300 text-white font-medium text-base px-6 py-4 rounded shadow-md no-underline block leading-normal w-48"
