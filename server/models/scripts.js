@@ -1,8 +1,10 @@
 const fs = require("fs");
 const path = require("path");
 const kristianTinderData = require("./data.json");
+const extractAnonymizedTinderData = require("../utils/extractAnonymizedTinderData");
 
 const companies = ["McKinsey", "BCG", "Netlight", "Bekk"];
+const title = ["Developer", "Product Manager", "Consultant"];
 const schools = ["NTNU", "UiO", "MIT", "Stanford"];
 const locations = [
   { name: "New York", region: "USA" },
@@ -34,16 +36,21 @@ function createRandomUser(baseData, index) {
       ? "M"
       : "F";
 
-  const startDate = `${Math.floor(Math.random() * 5 + 2014)}-01-01`;
+  const createDate = `${Math.floor(
+    Math.random() * 3 + 2014
+  )}-01-01T09:30:07.551Z`;
+
+  const startDate = createDate.substring(0, 10);
   const endDate = `${Math.floor(Math.random() * 2 + 2017)}-01-01`;
 
   return {
     ...baseData,
     User: {
       ...baseData.User,
+      create_date: createDate,
       email: `user+${index}@email.com`,
       birth_date: `${Math.floor(
-        Math.random() * 44 + 1975
+        Math.random() * 25 + 1975
       )}-01-01T00:00:00.000Z`,
       gender,
       gender_filter: interestedIn,
@@ -53,6 +60,10 @@ function createRandomUser(baseData, index) {
           company: {
             displayed: Math.random < 0.5,
             name: getRandomElementFromArray(companies)
+          },
+          title: {
+            displayed: Math.random < 0.5,
+            name: getRandomElementFromArray(title)
           }
         }
       ],
@@ -142,11 +153,8 @@ function createRandomUser(baseData, index) {
 function create500Users() {
   for (let index = 0; index < 500; index++) {
     const user = createRandomUser(kristianTinderData, index);
-    fs.writeFileSync(
-      "./trainingData/" + String(index) + ".json",
-      JSON.stringify(user)
-    );
-    console.log(user.User.email);
+
+    const swipeStats = console.log(user.User.email);
   }
 }
 

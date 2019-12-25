@@ -18,7 +18,7 @@
       <p class="text-gray-700 text-base">This will be your unique id, don't lose it:</p>
       <h2 class="text-xl font-bold">{{userId}}</h2>
 
-      <section class="mt-4">
+      <section class="mt-4" v-if="userData.jobs.length > 0">
         <h2 class="font-bold">Jobs data</h2>
         <div v-for="job in userData.jobs" :key="job.title">
           <button
@@ -31,7 +31,7 @@
           <div>Show company: {{job.companyDisplayed}}</div>
         </div>
       </section>
-      <section class="mt-4">
+      <section class="mt-4" v-if="userData.schools.length > 0">
         <h2 class="font-bold">School data</h2>
         <div v-for="school in userData.schools" :key="school.name">
           <button
