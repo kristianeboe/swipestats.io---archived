@@ -5,7 +5,11 @@
       <Statistic
         v-for="meta in Object.keys(metaTitles)"
         :name="metaTitles[meta]"
-        :statistics="conversationsMetaArray.map(conversationsMeta => conversationsMeta[meta])"
+        :statistics="
+          conversationsMetaArray.map(
+            conversationsMeta => conversationsMeta[meta]
+          )
+        "
         :key="meta"
         class="shadow-md m-4 rounded w-48 text-center"
       />
@@ -28,8 +32,8 @@ export default {
         longestConversationInDays: "Longest amount of days spoken to a match", //days
         averageConversationLength: "Average messages sent",
         averageConversationLengthInDays: "Average days pr conversation", //days
-        medianConversationLength: "Medain messages sent pr conversation",
-        medianConversationLengthInDays: "Medain days pr conversation", // days
+        medianConversationLength: "Median messages sent pr conversation",
+        medianConversationLengthInDays: "Median days pr conversation", // days
         nrOfOneMessageConversations: "Nr of initiated 1-message conversations",
         percentOfOneMessageConversations: "% of 1-message conversations",
         nrOfGhostingsAfterInitialMessage:
@@ -55,5 +59,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

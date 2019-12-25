@@ -26,7 +26,7 @@ module.exports = function(tinderData) {
       companyDisplayed: company ? company.displayed : false,
       // company: company.name // demmed to sensitive
       titleDisplayed: title ? title.displayed : false,
-      title: title ? title.nam : false
+      title: title ? title.name : false
     })
   );
   // schools are deemed anonymus enough for collection

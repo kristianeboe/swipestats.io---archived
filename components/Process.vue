@@ -4,9 +4,13 @@
       <h2 class="text-3xl">Process</h2>
       <div class="flex w-full justify-around flex-wrap">
         <article v-for="step in steps" class="w-full md:w-auto m-8">
-          <img :src="step.illustration" :alt="step.step" class="w-48 h-48 mx-auto" />
+          <img
+            :src="step.illustration"
+            :alt="step.step"
+            class="w-48 h-48 mx-auto"
+          />
           <div>
-            <h3 class="text-xl">{{step.step}}</h3>
+            <h3 class="text-xl">{{ step.step }}</h3>
           </div>
         </article>
       </div>
@@ -23,14 +27,13 @@ export default {
   data() {
     return {
       steps: [
-        { step: "Parse file", illustration: Step1 },
-        { step: "Submit data", illustration: Step2 },
-        { step: "Compare", illustration: Step3 }
+        { step: "Parse tinder file", illustration: Step1 },
+        { step: "Submit anonymized data", illustration: Step2 },
+        { step: "Compare with others", illustration: Step3 }
       ]
     };
   }
 };
 </script>
 
-<style>
-</style>
+<style></style>

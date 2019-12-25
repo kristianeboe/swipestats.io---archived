@@ -97,18 +97,12 @@ export function aggregateByMonth(timeSeriesObject) {
     {}
   );
 
-  console.log("valuesByMonth", valuesByMonth);
-
   const months = Object.keys(valuesByMonth);
 
   let minMonth = months[0];
   const maxMonth = months[months.length - 1];
-  console.log(minMonth, maxMonth);
 
   const monthKeys = getMonthsArray(minMonth, maxMonth);
-
-  console.log("monthKeys", monthKeys);
-  console.log("valuesByMonth", Object.keys(valuesByMonth));
 
   const normalizedMonthData = monthKeys.reduce((acc, cur) => {
     acc[cur] = valuesByMonth[cur] || 0;

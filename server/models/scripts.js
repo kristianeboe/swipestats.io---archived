@@ -1,5 +1,6 @@
 const fs = require("fs");
 const path = require("path");
+const got = require("got");
 const kristianTinderData = require("./data.json");
 const extractAnonymizedTinderData = require("../utils/extractAnonymizedTinderData");
 
@@ -150,11 +151,17 @@ function createRandomUser(baseData, index) {
   };
 }
 
-function create500Users() {
+async function create500Users() {
   for (let index = 0; index < 500; index++) {
     const user = createRandomUser(kristianTinderData, index);
 
-    const swipeStats = console.log(user.User.email);
+    const swipeStatsData = extractAnonymizedTinderData(user);
+
+    const res = await got.post("http://localhost:3000/api/uploadData", {
+      json: swipeStatsData
+    });
+
+    console.log("res ok?", res.ok);
   }
 }
 

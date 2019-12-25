@@ -5,20 +5,19 @@
         <div
           class="intro w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 pt-24 md:py-24"
         >
-          <h1 class="text-6xl text-white font-black">How do you stack up?</h1>
-          <p
-            class="text-white"
-          >Upload your data anonymously and compare it to demographics from around the world.</p>
-          <p
-            class="text-white"
-          >Privacy? This service is built with privacy first in mind, check out the code on Github if you want</p>
-          <p class="text-white">How do I get my Tinder data?</p>
-          <div class="cta pt-8 mx-auto md:mx-0">
+          <h1 class="text-4xl md:text-6xl text-white font-black">
+            How do you stack up?
+          </h1>
+          <p class="text-white text-xl pt-4">
+            Upload your data anonymously and compare it to demographics from
+            around the world!
+          </p>
+          <!-- <div class="cta pt-8 mx-auto md:mx-0">
             <button
               class="bg-tinder hover:bg-red-300 text-white font-bold py-2 px-4 rounded"
               @click="loadMe"
             >Test</button>
-          </div>
+          </div> -->
         </div>
         <div
           class="upload w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 pt-8 md:pt-24 md:py-24"
@@ -35,9 +34,10 @@
                 v-on:init="handleFilePondInit"
                 v-on:addfile="handleFilePondAddFile"
               />
-              <p
-                class="text-white"
-              >The file is NOT uploaded to a server, just used to extract your relevant, anonymous profile information.</p>
+              <p class="text-white">
+                The file is NOT uploaded to a server, just used to extract your
+                relevant, anonymous profile information.
+              </p>
             </form>
           </client-only>
           <div v-if="swipeStatsData.user" class="create-user">
@@ -53,19 +53,19 @@
             <div class="mt-4">
               <button
                 class="upload-button bg-red-300 hover:bg-red-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center pulsate-fwd"
-                :class="{'spinner': uploading}"
+                :class="{ spinner: uploading }"
                 @click="submitSwipeStats"
               >
                 <svg
                   class="fill-current w-4 h-4 mr-2"
-                  :class="{'hidden': uploading}"
+                  :class="{ hidden: uploading }"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   style="transform: rotate(180deg);"
                 >
                   <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
                 </svg>
-                <span :class="{'hidden': uploading}">Upload</span>
+                <span :class="{ hidden: uploading }">Upload</span>
               </button>
             </div>
           </div>
@@ -202,7 +202,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped >
+<style lang="scss" scoped>
 .landing {
   min-height: 100vh;
   // display: flex;

@@ -1,76 +1,105 @@
 <template>
-  <nav
-    class="navbar flex items-center justify-between flex-wrap p-6 fixed w-full z-10 text-white h-24"
-    :class="{ 'navbar--hidde': !showNavbar, 'bg-white': scrolled || !indexPage, 'text-tinder': scrolled || !indexPage }"
-  >
-    <nuxt-link to="/">
-      <div
-        class="flex items-center flex-shrink-0 mr-6"
-        :class="{'text-tinder': scrolled || !indexPage }"
-      >
-        <svg
-          class="fill-current h-8 w-8 mr-2"
-          width="54"
-          height="54"
-          viewBox="0 0 54 54"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z"
-          />
-        </svg>
-        <span class="font-semibold text-xl tracking-tight">Swipestats.io</span>
-      </div>
-    </nuxt-link>
-    <div class="block lg:hidden">
-      <button
-        class="flex items-center px-3 py-2 border rounded text-tinder border-tinder text-white border-white"
-        :class="{'text-tinder': scrolled || !indexPage, 'border-tinder': scrolled || !indexPage }"
-        @click="hideNav = !hideNav"
-      >
-        <svg class="fill-current h-3 w-3" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
-          <title>Menu</title>
-          <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
-        </svg>
-      </button>
-    </div>
-
-    <div class="text-sm hidden lg:flex lg:flex-grow" />
-    <div class="hidden w-full flex-grow lg:flex lg:items-center lg:w-auto justify-end">
-      <nuxt-link to="/#process" class="nav-link mr-8">Prosess</nuxt-link>
-      <nuxt-link to="/#how-do-i-get-my-data" class="nav-link mr-8">How do I get my data?</nuxt-link>
-
-      <button
-        class="text-center bg-tinder hover:bg-red-300 text-white font-medium text-base px-6 py-4 rounded shadow-md no-underline block leading-normal w-48"
-      >Download</button>
-    </div>
-
-    <div
-      class="lg:hidden w-full block flex-grow lg:flex lg:items-center lg:w-auto h-screen"
-      :class="{'hidden' : hideNav}"
+  <div>
+    <nav
+      class="navbar flex items-center justify-between flex-wrap p-6 fixed w-full z-20 text-white h-24"
+      :class="{
+        'navbar--hidde': !showNavbar,
+        'bg-white': scrolled || !indexPage,
+        'text-tinder': scrolled || !indexPage
+      }"
     >
-      <div class="text-sm lg:flex-grow">
-        <nuxt-link
-          class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
-          to="/profile"
-        >Profile</nuxt-link>
-        <nuxt-link
-          class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
-          to="/matches"
-        >Matches</nuxt-link>
-        <nuxt-link
-          class="block mt-4 lg:inline-block lg:mt-0 text-teal-200 hover:text-white mr-4"
-          to="/about"
-        >About</nuxt-link>
+      <nuxt-link to="/">
+        <div
+          class="flex items-center flex-shrink-0 mr-6"
+          :class="{ 'text-tinder': scrolled || !indexPage }"
+        >
+          <svg
+            class="fill-current h-8 w-8 mr-2"
+            width="54"
+            height="54"
+            viewBox="0 0 54 54"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              d="M13.5 22.1c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05zM0 38.3c1.8-7.2 6.3-10.8 13.5-10.8 10.8 0 12.15 8.1 17.55 9.45 3.6.9 6.75-.45 9.45-4.05-1.8 7.2-6.3 10.8-13.5 10.8-10.8 0-12.15-8.1-17.55-9.45-3.6-.9-6.75.45-9.45 4.05z"
+            />
+          </svg>
+          <span class="font-semibold text-xl tracking-tight"
+            >Swipestats.io</span
+          >
+        </div>
+      </nuxt-link>
+      <div class="block lg:hidden">
+        <button
+          class="flex items-center px-3 py-2 border rounded text-tinder border-tinder text-white border-white"
+          :class="{
+            'text-tinder': scrolled || !indexPage,
+            'border-tinder': scrolled || !indexPage
+          }"
+          @click="hideNav = !hideNav"
+        >
+          <svg
+            class="fill-current h-3 w-3"
+            viewBox="0 0 20 20"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <title>Menu</title>
+            <path d="M0 3h20v2H0V3zm0 6h20v2H0V9zm0 6h20v2H0v-2z" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="text-sm hidden lg:flex lg:flex-grow" />
+      <div
+        class="hidden w-full flex-grow lg:flex lg:items-center lg:w-auto justify-end"
+      >
+        <nuxt-link to="/#process" class="nav-link mr-8"
+          >How does this work?</nuxt-link
+        >
+        <nuxt-link to="/#how-do-i-get-my-data" class="nav-link mr-8"
+          >How do I get my data?</nuxt-link
+        >
+
+        <button
+          class="text-center bg-tinder hover:bg-red-300 text-white font-medium text-base px-6 py-4 rounded shadow-md no-underline block leading-normal w-48"
+        >
+          Upload
+        </button>
+      </div>
+    </nav>
+    <div
+      class="lg:hidden fixed h-screen w-screen bg-white z-10 flex flex-col justify-center items-center"
+      :class="{ hidden: hideNav }"
+    >
+      <div
+        class="text-sm h-64 flex flex-col justify-around items-center mx-auto"
+      >
+        <nuxt-link class="" to="/#process">
+          <button
+            @click="hideNav = !hideNav"
+            class="p-6 rounded block bg-tinder text-white text-xl "
+          >
+            How does this work?
+          </button>
+        </nuxt-link>
+        <nuxt-link class="" to="/#how-do-i-get-my-data">
+          <button
+            @click="hideNav = !hideNav"
+            class="p-6 rounded block bg-tinder text-white text-xl "
+          >
+            How do I get my data?
+          </button>
+        </nuxt-link>
       </div>
       <div>
         <a
-          href="#"
+          href="/"
           class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
-        >Download</a>
+          >Upload</a
+        >
       </div>
     </div>
-  </nav>
+  </div>
 </template>
 
 <script>
@@ -118,7 +147,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped >
+<style lang="scss" scoped>
 .navbar {
   transition: all ease-out 0.5s;
 }
