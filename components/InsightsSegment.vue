@@ -1,13 +1,13 @@
 <template>
   <section
     class="segment shadow-lg rounded px-6 py-4 relative"
-    :class="{ 'w-4/5': fullWidth }"
+    :class="{'w-full': fullWidth, 'w-full md:w-2/5': !fullWidth}"
   >
     <div class="flex w-full justify-start">
       <h2 class="text-2xl font-bold">{{ title }}</h2>
     </div>
     <button
-      class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-2 rounded absolute items-center right-0 top-0 m-4"
+      class="hidden bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-2 rounded absolute items-center right-0 top-0 m-4"
       @click="fullWidth = !fullWidth"
     >
       <svg
@@ -32,34 +32,25 @@
     <div class="visualizations">
       <Statistic :name="title" :statistics="totals" />
     </div>
-    <div
-      class="chart-container"
-      style="position: relative; height:auto; width:100%"
-    >
+    <div class="chart-container" style="position: relative; width:100%">
       <TimeLineChart :chart-data="dataCollection" />
     </div>
-    <div class="inline-flex">
+    <div class="inline-flex pt-4">
       <button
         class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l"
         :class="{ 'bg-gray-400': aggregateBy === 'year' }"
         @click="aggregateDataByYear"
-      >
-        Year
-      </button>
+      >Year</button>
       <button
         class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4"
         :class="{ 'bg-gray-400': aggregateBy === 'month' }"
         @click="aggregateDataByMonth"
-      >
-        Month
-      </button>
+      >Month</button>
       <button
         class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r"
         :class="{ 'bg-gray-400': aggregateBy === 'day' }"
         @click="aggregateDataByDay"
-      >
-        Day
-      </button>
+      >Day</button>
     </div>
   </section>
 </template>
@@ -216,6 +207,9 @@ export default {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+.chart-container {
 }
 
 .visualizations {

@@ -1,7 +1,7 @@
 <template>
   <section class="shadow-lg rounded px-6 py-4 max-w-5xl">
     <h2 class="text-2xl font-bold">Conversations</h2>
-    <div class="flex flex-wrap mx-auto w-full">
+    <div class="flex flex-wrap mx-auto w-full justify-center">
       <Statistic
         v-for="meta in Object.keys(metaTitles)"
         :name="metaTitles[meta]"

@@ -10,7 +10,7 @@ export default {
     return {
       defaultOptions: {
         fill: false,
-        maintainAspectRatio: true,
+        maintainAspectRatio: false,
         responsive: true
       }
     };

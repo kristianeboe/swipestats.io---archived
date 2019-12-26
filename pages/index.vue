@@ -3,11 +3,9 @@
     <section class="landing">
       <div class="container mx-auto min-h-screen flex flex-wrap">
         <div
-          class="intro w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 pt-24 md:py-24"
+          class="intro w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 pt-24 md:py-16"
         >
-          <h1 class="text-4xl md:text-6xl text-white font-black">
-            How do you stack up?
-          </h1>
+          <h1 class="text-4xl md:text-6xl text-white font-black">How do you stack up?</h1>
           <p class="text-white text-xl pt-4">
             Upload your data anonymously and compare it to demographics from
             around the world!
@@ -17,10 +15,10 @@
               class="bg-tinder hover:bg-red-300 text-white font-bold py-2 px-4 rounded"
               @click="loadMe"
             >Test</button>
-          </div> -->
+          </div>-->
         </div>
         <div
-          class="upload w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 pt-8 md:pt-24 md:py-24"
+          class="upload w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 pt-8 md:pt-24 md:py-16"
         >
           <client-only>
             <form class="upload-form-filepond" v-if="!swipeStatsData.user">
@@ -50,21 +48,21 @@
               :removeKeyFromUserData="removeKeyFromUserData"
             />
 
-            <div class="mt-4">
+            <div class="m-4">
               <button
-                class="upload-button bg-red-300 hover:bg-red-400 text-gray-800 font-bold py-2 px-4 rounded inline-flex items-center pulsate-fwd"
+                class="upload-button bg-red-300 hover:bg-red-400 text-gray-800 font-bold py-2 px-4 rounded flex items-center justify-center pulsate-fwd w-24 h-12"
                 :class="{ spinner: uploading }"
                 @click="submitSwipeStats"
               >
-                <svg
-                  class="fill-current w-4 h-4 mr-2"
+                <!-- <svg
+                  class="fill-current mr-2 w-full h-8"
                   :class="{ hidden: uploading }"
                   xmlns="http://www.w3.org/2000/svg"
                   viewBox="0 0 20 20"
                   style="transform: rotate(180deg);"
                 >
                   <path d="M13 8V2H7v6H2l8 8 8-8h-5zM0 18h20v2H0v-2z" />
-                </svg>
+                </svg>-->
                 <span :class="{ hidden: uploading }">Upload</span>
               </button>
             </div>

@@ -2,14 +2,13 @@
   <div class="pt-24 container mx-auto">
     <h1 class="text-center text-6xl font-black">Insights</h1>
     <div class="md:flex md:items-center m-6">
-      <div class="md:w-1/3">
+      <div class="md:w-1/3 pt-2">
         <label
           class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 mr-4"
           for="inline-full-name"
-          >Compare yourself with</label
-        >
+        >Compare yourself with</label>
       </div>
-      <div class="md:w-1/3">
+      <div class="md:w-1/3 pt-2">
         <input
           class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-tinder"
           id="inline-full-name"
@@ -17,55 +16,38 @@
           v-model="compareId"
         />
       </div>
-      <div class="md:w-1/3">
+      <div class="md:w-1/3 pt-2">
         <button
           class="shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
           type="button"
           @click="getComparisonData(compareId)"
-        >
-          Compare
-        </button>
+        >Compare</button>
       </div>
     </div>
-    <div class="md:flex md:items-center m-6 justify-center">
+    <div class="md:flex md:items-center mx-6 justify-center">
+      <label
+        class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0"
+        for="inline-full-name"
+      >Demographics</label>
       <button
         class="shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
         type="button"
         @click="getComparisonData('b98535635fe77db6324d881ac92190e5')"
-      >
-        Creator
-      </button>
+      >Creator</button>
       <button
         class="shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
         type="button"
         @click="getComparisonData(compareId)"
-      >
-        Boys
-      </button>
+      >Boys</button>
       <button
         class="shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
         type="button"
         @click="getComparisonData(compareId)"
-      >
-        Girls
-      </button>
+      >Girls</button>
     </div>
-    <section
-      v-if="profiles.length > 0"
-      class="insights flex flex-wrap justify-center"
-    >
-      <InsightsSegment
-        class="m-4"
-        title="Matches"
-        data-key="matches"
-        :profiles="profiles"
-      />
-      <InsightsSegment
-        class="m-4"
-        title="App opens"
-        data-key="appOpens"
-        :profiles="profiles"
-      />
+    <section v-if="profiles.length > 0" class="insights flex flex-wrap justify-center px-4">
+      <InsightsSegment class="m-4" title="Matches" data-key="matches" :profiles="profiles" />
+      <InsightsSegment class="m-4" title="App opens" data-key="appOpens" :profiles="profiles" />
       <Conversations :profiles="profiles" />
       <InsightsSegment
         class="m-4"
@@ -79,12 +61,7 @@
         data-key="messagesReceived"
         :profiles="profiles"
       />
-      <InsightsSegment
-        class="m-4"
-        title="Swipe likes"
-        data-key="swipeLikes"
-        :profiles="profiles"
-      />
+      <InsightsSegment class="m-4" title="Swipe likes" data-key="swipeLikes" :profiles="profiles" />
       <InsightsSegment
         class="m-4"
         title="Swipe passes"

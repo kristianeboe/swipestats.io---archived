@@ -3,7 +3,7 @@
     <div class="container mx-auto">
       <h1 class="text-xl text-white p-8">Made with 🔥 in Norway</h1>
     </div>
-    <!-- <script
+    <script
       data-name="BMC-Widget"
       src="https://cdn.buymeacoffee.com/widget/1.0.0/prod/widget.prod.min.js"
       data-id="CXVUmPd"
@@ -13,7 +13,7 @@
       data-position="right"
       data-x_margin="18"
       data-y_margin="18"
-    ></script> -->
+    ></script>
   </section>
 </template>
 
@@ -23,4 +23,5 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+</style>
