@@ -6,8 +6,7 @@
         <label
           class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 mr-4"
           for="inline-full-name"
-          >Compare yourself with</label
-        >
+        >Compare yourself with</label>
       </div>
       <div class="md:w-1/3 pt-2">
         <input
@@ -22,17 +21,14 @@
           class="shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
           type="button"
           @click="getComparisonData(compareId)"
-        >
-          Compare
-        </button>
+        >Compare</button>
       </div>
     </div>
     <div class="md:flex md:items-center mx-6 justify-center">
       <label
         class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0"
         for="inline-full-name"
-        >Demographics</label
-      >
+      >Demographics</label>
       <button
         class="shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
         type="button"
@@ -40,27 +36,28 @@
           getComparisonData('b98535635fe77db6324d881ac92190e5') &&
             trackDemographics('creator')
         "
-      >
-        Creator
-      </button>
+      >Creator</button>
+      <button
+        class="shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
+        type="button"
+        @click="
+          showNotImplemented('Global average') && trackDemographics('global-average')
+        "
+      >Global average</button>
       <button
         class="shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
         type="button"
         @click="
           showNotImplemented('Men demographic') && trackDemographics('men')
         "
-      >
-        Men
-      </button>
+      >Men</button>
       <button
         class="shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
         type="button"
         @click="
           showNotImplemented('Women demographic') && trackDemographics('women')
         "
-      >
-        Women
-      </button>
+      >Women</button>
       <button
         class="shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
         type="button"
@@ -68,26 +65,11 @@
           showNotImplemented('Country demographic') &&
             trackDemographics('country')
         "
-      >
-        Country
-      </button>
+      >Country</button>
     </div>
-    <section
-      v-if="profiles.length > 0"
-      class="insights flex flex-wrap justify-center px-4"
-    >
-      <InsightsSegment
-        class="m-4"
-        title="Matches"
-        data-key="matches"
-        :profiles="profiles"
-      />
-      <InsightsSegment
-        class="m-4"
-        title="App opens"
-        data-key="appOpens"
-        :profiles="profiles"
-      />
+    <section v-if="profiles.length > 0" class="insights flex flex-wrap justify-center px-4">
+      <InsightsSegment class="m-4" title="Matches" data-key="matches" :profiles="profiles" />
+      <InsightsSegment class="m-4" title="App opens" data-key="appOpens" :profiles="profiles" />
       <Conversations :profiles="profiles" />
       <InsightsSegment
         class="m-4"
@@ -101,12 +83,7 @@
         data-key="messagesReceived"
         :profiles="profiles"
       />
-      <InsightsSegment
-        class="m-4"
-        title="Swipe likes"
-        data-key="swipeLikes"
-        :profiles="profiles"
-      />
+      <InsightsSegment class="m-4" title="Swipe likes" data-key="swipeLikes" :profiles="profiles" />
       <InsightsSegment
         class="m-4"
         title="Swipe passes"

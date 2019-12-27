@@ -17,13 +17,11 @@
             type="text/css"
           />
           <style type="text/css">
-            /* Add your own Mailchimp form style overrides in your site stylesheet or in this style block.
+  /* Add your own Mailchimp form style overrides in your site stylesheet or in this style block.
 	   We recommend moving this block and the preceding CSS link to the HEAD of your HTML file. */
           </style>
           <div>
-            <p class="text-base max-w-md">
-              Afraid you'll forget about Swipestats?
-            </p>
+            <p class="text-base max-w-md">Afraid you'll forget about Swipestats?</p>
           </div>
           <div id="mc_embed_signup">
             <form
@@ -37,37 +35,20 @@
             >
               <div id="mc_embed_signup_scroll">
                 <div class="mc-field-group">
-                  <label for="mce-EMAIL">Email Address </label>
-                  <input
-                    type="email"
-                    value=""
-                    name="EMAIL"
-                    class="required email"
-                    id="mce-EMAIL"
-                  />
+                  <label for="mce-EMAIL">Email Address</label>
+                  <input type="email" value name="EMAIL" class="required email" id="mce-EMAIL" />
                 </div>
                 <div id="mce-responses" class="clear">
-                  <div
-                    class="response"
-                    id="mce-error-response"
-                    style="display:none"
-                  ></div>
-                  <div
-                    class="response"
-                    id="mce-success-response"
-                    style="display:none"
-                  ></div>
+                  <div class="response" id="mce-error-response" style="display:none"></div>
+                  <div class="response" id="mce-success-response" style="display:none"></div>
                 </div>
                 <!-- real people should not fill this in and expect good things - do not remove this or risk form bot signups-->
-                <div
-                  style="position: absolute; left: -5000px;"
-                  aria-hidden="true"
-                >
+                <div style="position: absolute; left: -5000px;" aria-hidden="true">
                   <input
                     type="text"
                     name="b_2f100a8bbcda9a834b7ab997b_90dddf015e"
                     tabindex="-1"
-                    value=""
+                    value
                   />
                 </div>
 
@@ -82,6 +63,7 @@
                     name="subscribe"
                     id="mc-embedded-subscribe"
                     class="button"
+                    style="background: #FE3C72;"
                   />
                 </div>
               </div>

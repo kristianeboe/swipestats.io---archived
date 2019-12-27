@@ -1,20 +1,18 @@
 <template>
-  <section class="w-full bg-blue-500">
+  <section class="w-full" style="background: #008DD5;">
     <div class="container mx-auto">
       <!-- <h2>Master plan</h2>
       <div class="flex text-white flex-wrap">
         <p class="p-2 w-64" v-for="step in masterPlan">
           {{ step.step }}
         </p>
-      </div> -->
+      </div>-->
       <div class="py-4">
-        <h1 class="text-xl font-bold text-white pl-8">
-          Made with 🔥 in Norway
-        </h1>
+        <h1 class="text-xl font-bold text-white pl-8">Made with 🔥 in Norway</h1>
         <h2 class="text-base text-white pl-8">By Kristian Elset Bø</h2>
-        <h2 class="text-sm font-thin text-white pl-8">
-          Full stack developer / Product Manager @ boe.ventures
-        </h2>
+        <h2
+          class="text-sm font-thin text-white pl-8"
+        >Full stack developer / Product Manager @ boe.ventures</h2>
         <SocialIcons />
       </div>
     </div>

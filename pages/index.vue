@@ -5,9 +5,7 @@
         <div
           class="intro w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 pt-24 md:py-16"
         >
-          <h1 class="text-4xl md:text-6xl text-white font-black">
-            Visualize your Tinder data
-          </h1>
+          <h1 class="text-4xl md:text-6xl text-white font-black">Visualize your Tinder data</h1>
           <p class="text-white text-xl pt-4">
             Upload your data anonymously and compare it to demographics from
             around the world!
@@ -26,8 +24,9 @@
             <form class="upload-form-filepond" v-if="!swipeStatsData.user">
               <file-pond
                 ref="pond"
+                class="cursor-pointer"
                 :instantUpload="false"
-                label-idle="Drop your data.json file here..."
+                label-idle="Drop your Tinder data file (data.json) here..."
                 accepted-file-types="application/json"
                 :server="null"
                 :files="myFiles"
