@@ -1,27 +1,52 @@
 <template>
   <section class="w-full bg-blue-500">
     <div class="container mx-auto">
-      <h1 class="text-xl text-white p-8">Made with 🔥 in Norway</h1>
+      <!-- <h2>Master plan</h2>
+      <div class="flex text-white flex-wrap">
+        <p class="p-2 w-64" v-for="step in masterPlan">
+          {{ step.step }}
+        </p>
+      </div> -->
+      <div class="py-4">
+        <h1 class="text-xl font-bold text-white pl-8">
+          Made with 🔥 in Norway
+        </h1>
+        <h2 class="text-base text-white pl-8">By Kristian Elset Bø</h2>
+        <h2 class="text-sm font-thin text-white pl-8">
+          Full stack developer / Product Manager @ boe.ventures
+        </h2>
+      </div>
     </div>
-    <script
-      data-name="BMC-Widget"
-      src="https://cdn.buymeacoffee.com/widget/1.0.0/prod/widget.prod.min.js"
-      data-id="CXVUmPd"
-      data-description="Help democratize data!"
-      data-message="Like what you see? Buy me a coffee:)"
-      data-color="#5F7FFF"
-      data-position="right"
-      data-x_margin="18"
-      data-y_margin="18"
-    ></script>
   </section>
 </template>
 
 <script>
 export default {
-  name: "Footer"
+  name: "Footer",
+
+  data() {
+    return {
+      masterPlan: [
+        {
+          step:
+            "1. Individuals use swipestats.io to visualize their Tinder data for fun"
+        },
+        {
+          step:
+            "2. Friends and groups can engage in friendly competition and bets among each other, causing the userbase / dataset to increase"
+        },
+        {
+          step:
+            "3. With sufficient users, entire demographics can be constructed and compared with"
+        },
+        {
+          step:
+            "4. Long term, the goal is to provide anonymized datasets to research inistitutions"
+        }
+      ]
+    };
+  }
 };
 </script>
 
-<style lang="scss" scoped>
-</style>
+<style lang="scss" scoped></style>

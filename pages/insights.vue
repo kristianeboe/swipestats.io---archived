@@ -149,10 +149,8 @@ export default {
     async getProfileData(profileId) {
       const res = await fetch(`/api/profileData/${profileId}`);
       if (res.ok) {
-        console.log("res ok");
         const data = await res.json();
 
-        console.log("api data", data);
         return data;
       } else {
         return {};
@@ -160,7 +158,6 @@ export default {
     },
 
     async getComparisonData(profileId) {
-      console.log("getting comparison data from", profileId);
       const profile = await this.getProfileData(profileId);
       this.comparisonData.push(profile);
       this.profiles.push(profile);
@@ -189,17 +186,22 @@ export default {
     return {
       script: [
         {
-          src:
-            "https://cdn.buymeacoffee.com/widget/1.0.0/prod/widget.prod.min.js",
-          async: true,
-          ssr: false,
+          hid: "bmc",
+          "data-name": "BMC-Widget",
+          src: "https://cdnjs.buymeacoffee.com/1.0.0/widget.prod.min.js",
           "data-id": "CXVUmPd",
-          "data-description": "Help democratize data!",
-          "data-message": "Like what you see? Buy me a coffee:)",
-          "data-color": "#5F7FFF",
+          "data-description": "Support Swipestats.io",
+          "data-message": "Help democratize dating data",
+          "data-color": "#FE3C72",
           "data-position": "right",
           "data-x_margin": "18",
-          "data-y_margin": "18"
+          "data-y_margin": "18",
+          defer: true,
+          ssr: false,
+          async: true,
+          callback() {
+            console.log("bmc loaded");
+          }
         }
       ]
     };

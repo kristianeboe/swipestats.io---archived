@@ -123,7 +123,6 @@ export default {
   },
   methods: {
     handleFilePondAddFile: function(error, file) {
-      console.log("filepond add change", file.file);
       this.$ga.event("uploadData", "addFile", "start");
       const reader = new FileReader();
       const onReaderLoad = event => {
@@ -132,7 +131,7 @@ export default {
           tinderData = JSON.parse(event.target.result);
           this.$ga.event("uploadData", "addFile", "success");
         } catch (e) {
-          console.log(e);
+          console.log("Add file failed", e);
           this.$ga.event("uploadData", "addFile", "fail");
         }
         setTimeout(() => {
@@ -143,7 +142,7 @@ export default {
             this.setSwipeStatsData(swipeStatsData);
             this.$toast.success("Successfully parsed file").goAway();
           } catch (e) {
-            console.log(e);
+            console.log("Parse file failed", e);
             this.$ga.event("uploadData", "parseFile", "fail");
           }
         }, 500);
@@ -156,7 +155,6 @@ export default {
       // FilePond instance methods are available on `this.$refs.pond`
     },
     handleFilePondRemovefile: function(file) {
-      console.log("FilePond deleted file " + file.filename);
       var index = this.myFiles.indexOf(file.filename);
       if (index > -1) {
         this.uploadedFiles.splice(index, 1);
@@ -165,7 +163,6 @@ export default {
     },
     setSwipeStatsData(swipeStatsData) {
       this.$store.commit("setSwipeStats", swipeStatsData);
-      console.log("swipeStatsData", swipeStatsData);
 
       this.$nextTick(() => {
         document.querySelector(".profile-card").scrollIntoView({
@@ -176,7 +173,6 @@ export default {
     },
     async submitSwipeStats() {
       this.uploading = true;
-      console.log("submitting swipeStats", this.swipeStatsData);
       this.$ga.event("uploadData", "submitSwipeStats", "start");
 
       const body = JSON.stringify(this.swipeStatsData);
@@ -189,7 +185,6 @@ export default {
         body
       });
 
-      console.log("res ok?", res.ok);
       if (res.ok) {
         this.$ga.event("uploadData", "submitSwipeStats", "success");
         window.localStorage.setItem("swipeStatsId", this.swipeStatsData.userId);
@@ -206,12 +201,9 @@ export default {
       this.$ga.event("uploadData", "remove", key);
     },
     async loadMe() {
-      console.log("fetching kristian");
       const res = await fetch("/api/get-kristian");
       if (res.ok) {
-        console.log("res ok");
         const data = await res.json();
-        console.log(data);
 
         this.setSwipeStatsData(data);
       }

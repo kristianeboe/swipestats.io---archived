@@ -1,7 +1,7 @@
 <template>
   <section class="process bg-white py-24" id="process">
     <div class="container mx-auto flex flex-col text-center">
-      <h2 class="text-3xl">Process</h2>
+      <h2 class="text-3xl">How does this work?</h2>
       <div class="flex w-full justify-around flex-wrap">
         <article v-for="step in steps" class="w-full md:w-auto m-8">
           <img
@@ -27,8 +27,8 @@ export default {
   data() {
     return {
       steps: [
-        { step: "Parse tinder file", illustration: Step1 },
-        { step: "Submit anonymized data", illustration: Step2 },
+        { step: "Parse the tinder data file", illustration: Step1 },
+        { step: "Submit your anonymized data", illustration: Step2 },
         { step: "Compare with others", illustration: Step3 }
       ]
     };

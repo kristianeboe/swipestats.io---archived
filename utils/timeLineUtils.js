@@ -86,7 +86,6 @@ export function getMonthsArray(startDate, endDate) {
   return dates;
 }
 export function aggregateByMonth(timeSeriesObject) {
-  console.log("timeSeriesObect", timeSeriesObject);
   const valuesByMonth = Object.entries(timeSeriesObject).reduce(
     (acc, [date, value]) => {
       const yearMonth = date.substr(0, 7);
