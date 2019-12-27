@@ -27,7 +27,7 @@
           </div>
           <div id="mc_embed_signup">
             <form
-              action="https://inntektssikring.us13.list-manage.com/subscribe/post?u=2f100a8bbcda9a834b7ab997b&amp;id=90dddf015e"
+              action="https://swipestats.us13.list-manage.com/subscribe/post?u=2f100a8bbcda9a834b7ab997b&amp;id=90dddf015e"
               method="post"
               id="mc-embedded-subscribe-form"
               name="mc-embedded-subscribe-form"
@@ -106,7 +106,7 @@ export default {
       steps: [
         {
           step:
-            '<a href="https://account.gotinder.com/request-data" >Go to this <span class="text-blue-500">link</span> and log in</a> ',
+            '<a target="blank" href="https://account.gotinder.com/request-data" >Go to this <span class="text-blue-500">link</span> and log in</a> ',
           illustration: Step1
         },
         { step: "Enter your email address and confirm", illustration: Step2 },
