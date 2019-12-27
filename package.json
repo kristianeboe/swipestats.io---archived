@@ -33,6 +33,7 @@
     "vue-filepond": "^5.1.3"
   },
   "devDependencies": {
+    "@nuxtjs/google-analytics": "^2.2.2",
     "@vue/test-utils": "^1.0.0-beta.27",
     "babel-jest": "^24.1.0",
     "dotenv": "^8.1.0",

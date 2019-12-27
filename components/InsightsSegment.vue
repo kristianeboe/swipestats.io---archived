@@ -1,7 +1,7 @@
 <template>
   <section
     class="segment shadow-lg rounded px-6 py-4 relative"
-    :class="{'w-full': fullWidth, 'w-full md:w-2/5': !fullWidth}"
+    :class="{ 'w-full': fullWidth, 'w-full md:w-2/5': !fullWidth }"
   >
     <div class="flex w-full justify-start">
       <h2 class="text-2xl font-bold">{{ title }}</h2>
@@ -40,17 +40,23 @@
         class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-l"
         :class="{ 'bg-gray-400': aggregateBy === 'year' }"
         @click="aggregateDataByYear"
-      >Year</button>
+      >
+        Year
+      </button>
       <button
         class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4"
         :class="{ 'bg-gray-400': aggregateBy === 'month' }"
         @click="aggregateDataByMonth"
-      >Month</button>
+      >
+        Month
+      </button>
       <button
         class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r"
         :class="{ 'bg-gray-400': aggregateBy === 'day' }"
         @click="aggregateDataByDay"
-      >Day</button>
+      >
+        Day
+      </button>
     </div>
   </section>
 </template>
@@ -88,7 +94,11 @@ export default {
   mounted() {
     this.categoryData = this.profiles.map(profile => profile[this.dataKey]);
     this.totals = this.categoryData.map(data => aggregateTotal(data));
-    this.aggregateDataByMonth();
+    this.aggregateBy = "month";
+    const aggregatedTimelines = this.categoryData.map(data =>
+      aggregateByMonth(data)
+    );
+    this.updateDataCollection(aggregatedTimelines);
   },
   methods: {
     aggregateDataByYear() {
@@ -97,6 +107,7 @@ export default {
         aggregateByYear(data)
       );
       this.updateDataCollection(aggregatedTimelines);
+      this.$ga.event("insights", "aggregateByYear", this.title);
     },
     aggregateDataByMonth() {
       this.aggregateBy = "month";
@@ -104,13 +115,12 @@ export default {
         aggregateByMonth(data)
       );
       this.updateDataCollection(aggregatedTimelines);
-    },
-    aggregateDataByWeek() {
-      this.aggregateBy = "week";
+      this.$ga.event("insights", "aggregateByMonth", this.title);
     },
     aggregateDataByDay() {
       this.aggregateBy = "day";
       this.updateDataCollection(this.categoryData);
+      this.$ga.event("insights", "aggregateByDay", this.title);
     },
     updateDataCollection(timeLines) {
       if (timeLines.length === 0) return;
@@ -139,7 +149,7 @@ export default {
 
       timeLines.slice(1).forEach((timeLine, i) => {
         const [_, dataset] = this.createDataset(
-          "user" + i,
+          "rival " + (i + 1),
           "transparent",
           borderColors[i + 1],
           timeLine

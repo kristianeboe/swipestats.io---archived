@@ -36,7 +36,7 @@
             'text-tinder': scrolled || !indexPage,
             'border-tinder': scrolled || !indexPage
           }"
-          @click="hideNav = !hideNav"
+          @click="toggleNav"
         >
           <svg
             class="fill-current h-3 w-3"
@@ -60,43 +60,44 @@
           >How do I get my data?</nuxt-link
         >
 
-        <button
-          class="text-center bg-tinder hover:bg-red-300 text-white font-medium text-base px-6 py-4 rounded shadow-md no-underline block leading-normal w-48"
-        >
-          Upload
-        </button>
+        <nuxt-link to="/">
+          <button
+            class="text-center bg-tinder hover:bg-red-300 text-white font-medium text-base px-6 py-4 rounded shadow-md no-underline block leading-normal w-48"
+          >
+            Upload
+          </button>
+        </nuxt-link>
       </div>
     </nav>
     <div
       class="lg:hidden fixed h-screen w-screen bg-white z-10 flex flex-col justify-center items-center"
       :class="{ hidden: hideNav }"
     >
-      <div
-        class="text-sm h-64 flex flex-col justify-around items-center mx-auto"
-      >
+      <div class="text-sm flex flex-col justify-around items-center mx-auto">
         <nuxt-link class="" to="/#process">
           <button
-            @click="hideNav = !hideNav"
-            class="p-6 rounded block bg-tinder text-white text-xl "
+            @click="toggleNav"
+            class="p-6 mt-8 w-64 rounded block bg-tinder text-white text-xl "
           >
             How does this work?
           </button>
         </nuxt-link>
         <nuxt-link class="" to="/#how-do-i-get-my-data">
           <button
-            @click="hideNav = !hideNav"
-            class="p-6 rounded block bg-tinder text-white text-xl "
+            @click="toggleNav"
+            class="p-6 mt-8 w-64 rounded block bg-tinder text-white text-xl "
           >
             How do I get my data?
           </button>
         </nuxt-link>
-      </div>
-      <div>
-        <a
-          href="/"
-          class="inline-block text-sm px-4 py-2 leading-none border rounded text-white border-white hover:border-transparent hover:text-teal-500 hover:bg-white mt-4 lg:mt-0"
-          >Upload</a
-        >
+        <nuxt-link class="" to="/">
+          <button
+            @click="toggleNav"
+            class="p-6 mt-8 w-64 rounded block bg-tinder text-white text-xl "
+          >
+            Upload
+          </button>
+        </nuxt-link>
       </div>
     </div>
   </div>
@@ -126,6 +127,10 @@ export default {
     window.removeEventListener("scroll", this.onScroll);
   },
   methods: {
+    toggleNav() {
+      this.$ga.event("nav", "toggleNav", !this.hideNav);
+      this.hideNav = !this.hideNav;
+    },
     onScroll() {
       const currentScrollPosition =
         window.pageYOffset || document.documentElement.scrollTop;

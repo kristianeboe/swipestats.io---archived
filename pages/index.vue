@@ -5,7 +5,9 @@
         <div
           class="intro w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 pt-24 md:py-16"
         >
-          <h1 class="text-4xl md:text-6xl text-white font-black">How do you stack up?</h1>
+          <h1 class="text-4xl md:text-6xl text-white font-black">
+            Visualize your Tinder data
+          </h1>
           <p class="text-white text-xl pt-4">
             Upload your data anonymously and compare it to demographics from
             around the world!
@@ -122,13 +124,28 @@ export default {
   methods: {
     handleFilePondAddFile: function(error, file) {
       console.log("filepond add change", file.file);
-      var reader = new FileReader();
+      this.$ga.event("uploadData", "addFile", "start");
+      const reader = new FileReader();
       const onReaderLoad = event => {
-        var tinderData = JSON.parse(event.target.result);
+        let tinderData = {};
+        try {
+          tinderData = JSON.parse(event.target.result);
+          this.$ga.event("uploadData", "addFile", "success");
+        } catch (e) {
+          console.log(e);
+          this.$ga.event("uploadData", "addFile", "fail");
+        }
         setTimeout(() => {
-          const swipeStatsData = extractAnonymizedTinderData(tinderData);
-          this.setSwipeStatsData(swipeStatsData);
-          this.$toast.success("Successfully parsed file").goAway();
+          this.$ga.event("uploadData", "parseFile", "start");
+          try {
+            const swipeStatsData = extractAnonymizedTinderData(tinderData);
+            this.$ga.event("uploadData", "parseFile", "success");
+            this.setSwipeStatsData(swipeStatsData);
+            this.$toast.success("Successfully parsed file").goAway();
+          } catch (e) {
+            console.log(e);
+            this.$ga.event("uploadData", "parseFile", "fail");
+          }
         }, 500);
       };
 
@@ -136,7 +153,6 @@ export default {
       reader.readAsText(file.file);
     },
     handleFilePondInit: function() {
-      console.log("FilePond has initialized");
       // FilePond instance methods are available on `this.$refs.pond`
     },
     handleFilePondRemovefile: function(file) {
@@ -161,6 +177,7 @@ export default {
     async submitSwipeStats() {
       this.uploading = true;
       console.log("submitting swipeStats", this.swipeStatsData);
+      this.$ga.event("uploadData", "submitSwipeStats", "start");
 
       const body = JSON.stringify(this.swipeStatsData);
 
@@ -174,16 +191,19 @@ export default {
 
       console.log("res ok?", res.ok);
       if (res.ok) {
+        this.$ga.event("uploadData", "submitSwipeStats", "success");
         window.localStorage.setItem("swipeStatsId", this.swipeStatsData.userId);
         this.$router.push({
           path: `/insights`
         });
       } else {
+        this.$ga.event("uploadData", "submitSwipeStats", "fail");
         this.$toast.error("Something went wrong with upload").goAway();
       }
     },
     removeKeyFromUserData(key) {
       this.$store.commit("removeKeyFromSwipeStatsUser", key);
+      this.$ga.event("uploadData", "remove", key);
     },
     async loadMe() {
       console.log("fetching kristian");
