@@ -6,7 +6,7 @@
         <label
           class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 mr-4"
           for="inline-full-name"
-        >Compare yourself with</label>
+        >Compare yourself with another Id</label>
       </div>
       <div class="md:w-1/3 pt-2">
         <input
@@ -26,11 +26,11 @@
     </div>
     <div class="md:flex md:items-center mx-6 justify-center">
       <label
-        class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0"
+        class="block text-gray-500 font-bold md:text-right mb-1 mt-2 md:mb-0"
         for="inline-full-name"
-      >Demographics</label>
+      >or a specific Demographic</label>
       <button
-        class="shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
+        class="mt-2 shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
         type="button"
         @click="
           getComparisonData('b98535635fe77db6324d881ac92190e5') &&
@@ -38,28 +38,28 @@
         "
       >Creator</button>
       <button
-        class="shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
+        class="mt-2 shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
         type="button"
         @click="
           showNotImplemented('Global average') && trackDemographics('global-average')
         "
       >Global average</button>
       <button
-        class="shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
+        class="mt-2 shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
         type="button"
         @click="
           showNotImplemented('Men demographic') && trackDemographics('men')
         "
       >Men</button>
       <button
-        class="shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
+        class="mt-2 shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
         type="button"
         @click="
           showNotImplemented('Women demographic') && trackDemographics('women')
         "
       >Women</button>
       <button
-        class="shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
+        class="mt-2 shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
         type="button"
         @click="
           showNotImplemented('Country demographic') &&
