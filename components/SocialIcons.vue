@@ -20,7 +20,7 @@
 
 <script>
 import FacebookSVG from "@/assets/svgs/icons/facebook-with-circle.svg";
-import LinkedInSVG from "@/assets/svgs/icons/linkedIn-with-circle.svg";
+import LinkedInSVG from "@/assets/svgs/icons/linkedin-with-circle.svg";
 import InstagramSVG from "@/assets/svgs/icons/instagram-with-circle.svg";
 import GithubSVG from "@/assets/svgs/icons/github-with-circle.svg";
 import AircraftSVG from "@/assets/svgs/icons/aircraft.svg";
