@@ -15,15 +15,19 @@
         <h2 class="text-sm font-thin text-white pl-8">
           Full stack developer / Product Manager @ boe.ventures
         </h2>
+        <SocialIcons />
       </div>
     </div>
   </section>
 </template>
 
 <script>
+import SocialIcons from "./SocialIcons";
 export default {
   name: "Footer",
-
+  components: {
+    SocialIcons
+  },
   data() {
     return {
       masterPlan: [
