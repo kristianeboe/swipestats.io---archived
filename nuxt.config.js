@@ -57,11 +57,7 @@ module.exports = {
    */
   buildModules: ["@nuxtjs/google-analytics"],
   googleAnalytics: {
-    id: "UA-155039033-1",
-    debug: {
-      enabled: true,
-      sendHitTask: true
-    }
+    id: "UA-155039033-1"
   },
   /*
    ** Nuxt.js modules
