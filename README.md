@@ -12,10 +12,15 @@
 ## Privacy
 
 Swipestats generates a unique id for you by hashing your email and account creation date with the md5 algorithm.
+
 [md5 NPM](https://www.npmjs.com/package/md5)
+
 [md5 Wikipedia](https://en.wikipedia.org/wiki/MD5)
 
 ## Demo
 
-![alt text](https://raw.githubusercontent.com/kristianeboe/swipestats.io/readMeAssets/swipeStatsInsights.png)
-![alt text](https://raw.githubusercontent.com/kristianeboe/swipestats.io/readMeAssets/swipeStatsUpload.png)
+![Upload](https://raw.githubusercontent.com/kristianeboe/swipestats.io/readMeAssets/swipeStatsUpload.png)
+![Upload](./readMeAssets/swipeStatsUpload.png)
+
+![Insights](https://raw.githubusercontent.com/kristianeboe/swipestats.io/readMeAssets/swipeStatsInsights.png)
+![Insights](./readMeAssets/swipeStatsInsights.png)
