@@ -1,10 +1,14 @@
-# tinderV
+# Swipestats.io
 
-> My awesome Nuxt.js project
+> Visualize your dating data
+
+## Privacy
+
+Swipestats generates a unique id for you by hashing your email and account creation date with the md5 algorithm
 
 ## Build Setup
 
-``` bash
+```bash
 # install dependencies
 $ yarn install
 
@@ -18,5 +22,3 @@ $ yarn start
 # generate static project
 $ yarn generate
 ```
-
-For detailed explanation on how things work, check out [Nuxt.js docs](https://nuxtjs.org).

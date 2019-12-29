@@ -1,5 +1,6 @@
 <template>
-  <section class="w-full" style="background: #008DD5;">
+  <section class="w-full" style="background: #fafbfb;">
+    <div class="break"></div>
     <div class="container mx-auto">
       <!-- <h2>Master plan</h2>
       <div class="flex text-white flex-wrap">
@@ -7,24 +8,25 @@
           {{ step.step }}
         </p>
       </div>-->
-      <div class="py-4">
-        <h1 class="text-xl font-bold text-white pl-8">Made with 🔥 in Norway</h1>
-        <h2 class="text-base text-white pl-8">By Kristian Elset Bø</h2>
-        <h2
-          class="text-sm font-thin text-white pl-8"
-        >Full stack developer / Product Manager @ boe.ventures</h2>
-        <SocialIcons />
+      <div class="py-4 flex flex-col items-center">
+        <h1 class="text-base opacity-75">Made with 🔥 in Norway</h1>
+        <!-- <SocialIcons /> -->
+        <p class="opacity-75 text-base">by</p>
       </div>
+      <CreatorProfileCard />
     </div>
   </section>
 </template>
 
 <script>
 import SocialIcons from "./SocialIcons";
+import CreatorProfileCard from "./CreatorProfileCard";
+
 export default {
   name: "Footer",
   components: {
-    SocialIcons
+    SocialIcons,
+    CreatorProfileCard
   },
   data() {
     return {
@@ -75,4 +77,15 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.break::before {
+  content: "";
+  display: block;
+  left: 0;
+  top: 50%;
+  right: 0;
+  height: 1px;
+  width: 100vw;
+  background-color: #fe3c72;
+}
+</style>
