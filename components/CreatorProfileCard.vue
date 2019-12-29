@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="max-w-4xl flex items-center h-auto flex-wrap mx-auto mb-24 mt-16 md:mt-0">
+    <div class="max-w-4xl flex items-center h-auto flex-wrap mx-auto pb-24 mt-16 md:mt-0">
       <!--Main Col-->
       <div
         id="profile"
