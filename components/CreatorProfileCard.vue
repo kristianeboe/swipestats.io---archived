@@ -48,7 +48,7 @@
             class="pt-8 text-sm"
           >Ambitious young professional working in consulting, starting startups, learning new technologies and traveling the world.</p>
 
-          <a href="mailto:kristian@boe.ventures">
+          <a href="mailto:kristian@boe.ventures" target="blank">
             <div class="py-6 flex items-center flex-wrap justify-center">
               <button
                 class="bg-teal-700 hover:bg-teal-900 text-white font-bold py-2 px-4 rounded-full"
@@ -62,6 +62,7 @@
           >
             <a
               class="link"
+              target="blank"
               href="https://www.linkedin.com/in/kristianeboe/"
               data-tippy-content="@linkedin_handle"
             >
@@ -81,6 +82,7 @@
             </a>
             <a
               class="link"
+              target="blank"
               href="https://www.facebook.com/kristianeboe"
               data-tippy-content="@facebook_handle"
             >
@@ -98,6 +100,7 @@
             </a>
             <a
               class="link"
+              target="blank"
               href="https://github.com/kristianeboe/"
               data-tippy-content="@github_handle"
             >
@@ -116,6 +119,7 @@
 
             <a
               class="link"
+              target="blank"
               href="https://www.instagram.com/kristianeboe/"
               data-tippy-content="@instagram_handle"
             >

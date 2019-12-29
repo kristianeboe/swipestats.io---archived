@@ -11,7 +11,7 @@
         </article>
       </div>
       <div class="flex w-full justify-around flex-wrap">
-        <a href="https://github.com/kristianeboe/swipestats.io">
+        <a href="https://github.com/kristianeboe/swipestats.io" target="blank">
           <article class="md:w-auto m-8 shadow-lg rounded p-8">
             <div>
               <div class="flex flex-wrap justify-around">
