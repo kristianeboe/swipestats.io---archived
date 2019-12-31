@@ -4,7 +4,7 @@ import {
   aggregateTotal,
   getMonthsArray
 } from "./timeLineUtils";
-import tinderData from "./kyleTinderData.json";
+import tinderData from "./testData1.json";
 
 const timeSeriesObject = {
   "2014-12-05": 5,

@@ -1,34 +1,15 @@
 const express = require("express");
 const router = express.Router();
 const shortid = require("shortid");
-const fs = require("fs");
 const bodyParser = require("body-parser");
 
 const File = require("../models/file");
 
-// const fileService = require('../services/file.service.js');
 const profileService = require("../services/profile.service.js");
-const { aggregateByMonth } = require("../utils/normalization");
-const extractAnonymizedTinderData = require("../utils/extractAnonymizedTinderData");
-// const app = express();
-// router.get('/files', fileService.getAll);
 
 router.get("/", (req, res) => {
-  res.send("Hello Kristian");
+  res.send("Health ok");
 });
-
-// Get one subscriber
-// router.get('/:id', (req, res) => {
-// })
-
-// Create one subscriber
-router.post("/", (req, res) => {});
-
-// Update one subscriber
-router.patch("/:id", (req, res) => {});
-
-// Delete one subscriber
-router.delete("/:id", (req, res) => {});
 
 const fileConfig = {
   supportedMimes: {
@@ -39,6 +20,9 @@ const fileConfig = {
   dbConnection: "mongodb://127.0.0.1:27017/fileuploaddb"
 };
 const multer = require("multer");
+
+// File upload is no longer used. Instead data is purely JSON based. However, it is kept for reference
+// START FILE UPLOAD
 
 const multerUpload = multer({
   storage: multer.diskStorage({
@@ -81,6 +65,8 @@ router.post(
     return res.send(fileId);
   }
 );
+
+// END FILE UPLOAD
 
 function treatAsUTC(date) {
   var result = new Date(date);
@@ -211,34 +197,12 @@ router.post(
   }
 );
 
-router.get("/get-kristian", (req, res, next) => {
-  const kristianTinderData = require("../models/data.json");
-  // console.log(kristianTinderData.User);
-
-  const mySwipeStatsData = extractAnonymizedTinderData(kristianTinderData);
-  return res.json(mySwipeStatsData);
-});
-
 router.get("/profileData/:profileId", async (req, res, next) => {
   const { profileId } = req.params;
   console.log("getting data for", profileId);
 
   const profileData = await profileService.getOne(profileId);
   console.log("got profileData", profileData.userId);
-
-  const matchesByMonth = aggregateByMonth(profileData.matches);
-  const appOpensByMonth = aggregateByMonth(profileData.appOpens);
-  console.log("aggregation complete");
-
-  const messagesByMonth = {
-    sent: aggregateByMonth(profileData.messages.sent),
-    received: aggregateByMonth(profileData.messages.received)
-  };
-
-  console.log(
-    "profileData keys to be sent to client",
-    Object.keys(profileData)
-  );
 
   return res.status(200).json(profileData || {});
 });

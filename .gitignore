@@ -100,4 +100,4 @@ server/models/trainingData
 
 # tinderdata
 utils/data.json
-utils/kyleTinderData.json
+utils/testData1.json

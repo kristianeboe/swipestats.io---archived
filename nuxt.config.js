@@ -14,7 +14,7 @@ module.exports = {
         hid: "description",
         name: "description",
         content:
-          "See how you stack up against other Tinder users across the world"
+          "Upload your dating data anonymously and compare it to demographics from around the world!"
       },
       {
         hid: "og:title",
@@ -25,7 +25,7 @@ module.exports = {
         hid: "og:description",
         name: "og:description",
         content:
-          "See how you stack up against other Tinder users across the world"
+          "Upload your dating data anonymously and compare it to demographics from around the world!"
       },
       {
         hid: "og:image",
