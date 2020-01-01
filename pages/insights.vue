@@ -41,7 +41,8 @@
         class="mt-2 shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
         type="button"
         @click="
-          showNotImplemented('Global average') && trackDemographics('global-average')
+          showNotImplemented('Global average') &&
+            trackDemographics('global-average')
         "
       >Global average</button>
       <button
@@ -95,6 +96,7 @@
 </template>
 
 <script>
+import ky from "ky-universal";
 import Matches from "@/components/Matches";
 import AppOpens from "@/components/AppOpens";
 import Conversations from "@/components/Conversations";
@@ -151,10 +153,20 @@ export default {
     }
   },
   async mounted() {
-    const swipeStatsId = window.localStorage.getItem("swipeStatsId");
+    try {
+      const { swipestatsid } = this.$router.history.current.query;
+      const profile = await this.getProfileData(swipestatsid);
+      // this.$store.commit("setSwipeStats", profile);
+      this.profiles.push(profile);
+      return;
+    } catch (error) {
+      console.log("failed fetching from query", error);
+    }
 
-    if (swipeStatsId) {
-      const myProfile = await this.getProfileData(swipeStatsId);
+    const swipeStatsLocalId = window.localStorage.getItem("swipeStatsId");
+
+    if (swipeStatsLocalId) {
+      const myProfile = await this.getProfileData(swipeStatsLocalId);
       this.mySwipeStatsData = myProfile;
       this.profiles.push(myProfile);
     }

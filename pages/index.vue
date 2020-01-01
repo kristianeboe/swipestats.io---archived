@@ -188,7 +188,7 @@ export default {
         this.$ga.event("uploadData", "submitSwipeStats", "success");
         window.localStorage.setItem("swipeStatsId", this.swipeStatsData.userId);
         this.$router.push({
-          path: `/insights`
+          path: `/insights?swipestatsid=${this.swipeStatsData.userId}`
         });
       } else {
         this.$ga.event("uploadData", "submitSwipeStats", "fail");
