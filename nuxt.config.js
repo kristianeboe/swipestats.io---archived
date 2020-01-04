@@ -65,12 +65,12 @@ module.exports = {
   modules: [
     "@nuxtjs/pwa",
     "nuxt-webfontloader",
-    //    "@nuxtjs/sentry",
+    "@nuxtjs/sentry",
     // 'nuxt-purgecss',
     "@nuxtjs/toast"
   ],
   sentry: {
-    dsn: "https://75d5f3020a0c4552b1b3fbc1d7cc6fe0@sentry.io/1320169", // Enter your project's DSN here
+    dsn: "https://86d0bff07b6b4bcd8013481479aa3b20@sentry.io/1871644", // Enter your project's DSN here
     config: {} // Additional config
   },
   toast: {

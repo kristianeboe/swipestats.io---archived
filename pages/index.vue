@@ -79,10 +79,13 @@
 </template>
 
 <script>
-import * as Sentry from "@sentry/browser";
-Sentry.init({
-  dsn: "https://75d5f3020a0c4552b1b3fbc1d7cc6fe0@sentry.io/1320169"
-});
+// import * as Sentry from "@sentry/browser";
+// import * as Integrations from "@sentry/integrations";
+// Sentry.init({
+//   dsn: "https://86d0bff07b6b4bcd8013481479aa3b20@sentry.io/1871644",
+//   integrations: [new Integrations.Vue({ Vue, attachProps: true })]
+// });
+
 import vueFilePond from "vue-filepond";
 // import "filepond/dist/filepond.min.css";
 import * as md5 from "md5";
