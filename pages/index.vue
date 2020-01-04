@@ -70,6 +70,14 @@
               </button>
             </div>
           </div>
+          <div class="errors">
+            <ErrorAlert
+              v-for="error in errors"
+              :key="error.body"
+              :title="error.title"
+              :body="error.body"
+            />
+          </div>
         </div>
       </div>
     </section>
@@ -94,6 +102,7 @@ import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 
 import TinderProfileCard from "@/components/TinderProfileCard";
 import Process from "@/components/Process";
+import ErrorAlert from "@/components/ErrorAlert";
 import HowDoIGetMyData from "@/components/HowDoIGetMyData";
 
 import extractAnonymizedTinderData from "@/utils/extractAnonymizedTinderData";
@@ -107,6 +116,7 @@ export default {
   name: "app",
   components: {
     FilePond,
+    ErrorAlert,
     TinderProfileCard,
     Process,
     HowDoIGetMyData
@@ -123,7 +133,8 @@ export default {
       uploading: false,
       myTinderData: null,
       messagessent: {},
-      userData: null
+      userData: null,
+      errors: []
     };
   },
   async mounted() {
@@ -140,6 +151,10 @@ export default {
           this.$ga.event("uploadData", "addFile", "success");
         } catch (e) {
           console.log("Add file failed", e);
+          this.errors.push({
+            title: "File fail!",
+            body: "Failed to add json file"
+          });
           this.$ga.event("uploadData", "addFile", "fail");
         }
         setTimeout(() => {
@@ -151,6 +166,10 @@ export default {
             this.$toast.success("Successfully parsed file").goAway();
           } catch (e) {
             console.log("Parse file failed", e);
+            this.errors.push({
+              title: "File fail!",
+              body: "Failed to parse json file"
+            });
             this.$ga.event("uploadData", "parseFile", "fail");
           }
         }, 500);
@@ -201,12 +220,25 @@ export default {
         });
       } else {
         this.$ga.event("uploadData", "submitSwipeStats", "fail");
+        this.errors.push({
+          title: "Submission fail!",
+          body: "Failed to submit swipestats to server.",
+          res: res
+        });
         this.$toast.error("Something went wrong with upload").goAway();
       }
     },
     removeKeyFromUserData(key) {
-      this.$store.commit("removeKeyFromSwipeStatsUser", key);
-      this.$ga.event("uploadData", "remove", key);
+      try {
+        this.$store.commit("removeKeyFromSwipeStatsUser", key);
+        this.$ga.event("uploadData", "remove", key);
+      } catch (e) {
+        this.$ga.event("uploadData", "removeKeyFail", key);
+        this.errors.push({
+          title: "Remove data fail!",
+          body: "Failed to remove data from swipestats"
+        });
+      }
     },
     async loadMe() {
       const res = await fetch("/api/get-kristian");
