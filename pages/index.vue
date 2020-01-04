@@ -5,7 +5,9 @@
         <div
           class="intro w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 pt-24 md:py-16"
         >
-          <h1 class="text-4xl md:text-6xl text-white font-black">Visualize your Tinder data</h1>
+          <h1 class="text-4xl md:text-6xl text-white font-black">
+            Visualize your Tinder data
+          </h1>
           <p class="text-white text-xl pt-4">
             Upload your data anonymously and compare it to demographics from
             around the world!
@@ -77,6 +79,10 @@
 </template>
 
 <script>
+import * as Sentry from "@sentry/browser";
+Sentry.init({
+  dsn: "https://75d5f3020a0c4552b1b3fbc1d7cc6fe0@sentry.io/1320169"
+});
 import vueFilePond from "vue-filepond";
 // import "filepond/dist/filepond.min.css";
 import * as md5 from "md5";
