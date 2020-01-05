@@ -168,7 +168,7 @@ export default {
             console.log("Parse file failed", e);
             this.errors.push({
               title: "File fail!",
-              body: "Failed to parse json file"
+              body: e
             });
             this.$ga.event("uploadData", "parseFile", "fail");
           }

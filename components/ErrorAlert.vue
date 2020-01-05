@@ -20,7 +20,15 @@
         />
       </svg>
     </span>
-    <div class="res">
+    <div class="error" v-if="error">
+      <div>
+        {{ error.message }}
+      </div>
+      <div>
+        {{ error.body }}
+      </div>
+    </div>
+    <div class="res" v-if="res">
       <div>
         {res.status}
       </div>
@@ -36,7 +44,7 @@
 
 <script>
 export default {
-  props: ["title", "body", "res"],
+  props: ["title", "body", "error", "res"],
   data() {
     return {
       hidden: false
