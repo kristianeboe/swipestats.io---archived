@@ -201,10 +201,24 @@ router.get("/profileData/:profileId", async (req, res, next) => {
   const { profileId } = req.params;
   console.log("getting data for", profileId);
 
-  const profileData = await profileService.getOne(profileId);
-  console.log("got profileData", profileData.userId);
+  if (typeof profileId !== String && profileId.length < 5) {
+    return res
+      .status(401)
+      .json({ message: "ProfileId is malformed or too short" });
+  }
 
-  return res.status(200).json(profileData || {});
+  try {
+    const profileData = await profileService.getOne(profileId);
+    return res.status(200).json(profileData || {});
+  } catch (e) {
+    console.log("profile fetch failed", e);
+    return res.status(500).json({
+      message: `Profile fetch for ${profileId} failed`,
+      profileId
+    });
+  }
+
+  console.log("got profileData", profileData.userId);
 });
 
 router.get("/get-all", async (req, res, next) => {
