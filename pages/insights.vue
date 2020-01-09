@@ -135,10 +135,32 @@ export default {
         return {};
       }
     },
+    trimProfileData(profile) {
+      if(this.profiles.length === 0 ) return profile
 
+      const userProfile = this.profiles[0]
+
+      const userProfileStartDate = Object.keys(userProfile.matches)[0]
+
+      console.log('matches length', Object.keys(profile.matches).length)
+
+      const trimmedMatches = Object.entries(profile.matches).filter(([k, v]) => k > userProfileStartDate).reduce((acc, [k,v]) => {
+        return {
+          ...acc,
+          [k]: v,
+        }
+      }, {})
+
+      return {
+        ...profile,
+        matches: trimmedMatches
+        }
+    },
     async getComparisonData(profileId) {
-      const profile = await this.getProfileData(profileId);
-      this.comparisonData.push(profile);
+      const profileData = await this.getProfileData(profileId);
+      // this.comparisonData.push(profile);
+
+      const profile = this.trimProfileData(profileData)
       this.profiles.push(profile);
       this.compareId = "";
     },

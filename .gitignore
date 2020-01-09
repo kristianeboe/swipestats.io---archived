@@ -101,3 +101,6 @@ server/models/trainingData
 # tinderdata
 utils/data.json
 utils/testData1.json
+
+k-data.json
+r-data.json

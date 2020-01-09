@@ -4,7 +4,10 @@ import {
   aggregateTotal,
   getMonthsArray
 } from "./timeLineUtils";
+
 import tinderData from "./testData1.json";
+import kData from "./k-data.json";
+import rData from "./r-data.json";
 
 const timeSeriesObject = {
   "2014-12-05": 5,
@@ -84,3 +87,13 @@ describe("Aggregation totals", () => {
     expect(monthSum).toEqual(yearSum);
   });
 });
+
+describe("sadf", () => {
+  const kMatches = kData.Usage.matches;
+  const rMatches = rData.Usage.matches;
+
+  // a has start date 2014, b has start date 2015
+  // if b is loaded first, no keys should be before 2015
+
+
+})

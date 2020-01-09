@@ -133,9 +133,9 @@ export default {
 
       const borderColors = {
         0: "#f87979",
-        1: "green",
-        2: "yellow",
-        3: "blue"
+        1: "#0080FF",
+        2: "green",
+        3: "yellow",
       };
 
       const [labels, myDataset] = this.createDataset(
@@ -182,10 +182,6 @@ export default {
     }
   },
   watch: {
-    comparisonData() {
-      this.updateDataCollection(this.data, this.comparisonData);
-      this.aggregateDataByMonth();
-    },
     profiles() {
       // const diff = this.profiles.length - this.categoryData.length
       this.categoryData.push(
