@@ -41,6 +41,14 @@
         class="mt-2 shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
         type="button"
         @click="
+            getRandomComparison() &&
+            trackDemographics('random')
+        "
+      >Random</button>
+      <button
+        class="mt-2 shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
+        type="button"
+        @click="
           showNotImplemented('Global average') &&
             trackDemographics('global-average')
         "
@@ -163,6 +171,20 @@ export default {
       const profile = this.trimProfileData(profileData)
       this.profiles.push(profile);
       this.compareId = "";
+      return {}
+    },
+    async getRandomComparison() {
+      const res = await fetch(`/api/get-all`);
+      if (res.ok) {
+        const data = await res.json();
+
+        const profileId = data[Math.floor(Math.random() * data.length)]
+
+        return this.getComparisonData(profileId)
+
+      } else {
+        return {};
+      }
     },
     trackComparisons() {
       this.$ga.event("insights", "comparePerson", this.comparisonData.length);
