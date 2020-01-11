@@ -55,7 +55,7 @@ module.exports = {
   /*
    ** Nuxt.js dev-modules
    */
-  buildModules: ["@nuxtjs/google-analytics"],
+  buildModules: ["@nuxtjs/google-analytics", "@nuxtjs/eslint-module"],
   googleAnalytics: {
     id: "UA-155039033-1"
   },
@@ -130,6 +130,7 @@ module.exports = {
       whitelistPatterns: [/filepond$/],
       whitelistPatternsChildren: [/filepond$/]
     },
+    // eslint-disable-next-line no-unused-vars
     extend(config, ctx) {}
   }
 };

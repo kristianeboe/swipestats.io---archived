@@ -10,7 +10,7 @@
         {{ `${userData.gender === "M" ? "Male" : "Female"}` }},
         {{ getAge(userData.birthDate) }}
       </div>
-      <p class="text-gray-700 text-base" v-if="userData.cityName">
+      <p v-if="userData.cityName" class="text-gray-700 text-base">
         {{ userData.cityName }}, {{ userData.country }}
       </p>
       <div>
@@ -33,7 +33,7 @@
         {{ userId }}
       </h2>
 
-      <section class="mt-4" v-if="userData.jobs.length > 0">
+      <section v-if="userData.jobs.length > 0" class="mt-4">
         <h2 class="font-bold">Jobs data</h2>
         <div v-for="job in userData.jobs" :key="job.title">
           <button
@@ -48,7 +48,7 @@
           <div>Show company: {{ job.companyDisplayed }}</div>
         </div>
       </section>
-      <section class="mt-4" v-if="userData.schools.length > 0">
+      <section v-if="userData.schools.length > 0" class="mt-4">
         <h2 class="font-bold">School data</h2>
         <div v-for="school in userData.schools" :key="school.name">
           <button

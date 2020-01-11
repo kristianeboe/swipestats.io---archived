@@ -1,22 +1,22 @@
-const express = require('express');
-const consola = require('consola');
-require('dotenv').config();
+const express = require("express");
+const consola = require("consola");
+require("dotenv").config();
 
-const { Nuxt, Builder } = require('nuxt');
+const { Nuxt, Builder } = require("nuxt");
 const app = express();
 
 // Import and Set Nuxt.js options
-const config = require('../nuxt.config.js');
-config.dev = process.env.NODE_ENV !== 'production';
+const config = require("../nuxt.config.js");
+config.dev = process.env.NODE_ENV !== "production";
 
-const apiRoutes = require('./routes/api');
-app.use('/api', apiRoutes);
+const apiRoutes = require("./routes/api");
+app.use("/api", apiRoutes);
 
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 mongoose.connect(process.env.MONGODB_URI, { useNewUrlParser: true });
 const db = mongoose.connection;
-db.on('error', error => console.error(error));
-db.once('open', () => console.log('connected to database'));
+db.on("error", error => console.error(error));
+db.once("open", () => console.log("connected to database"));
 
 async function start() {
   // Init Nuxt.js
@@ -39,7 +39,7 @@ async function start() {
   app.listen(port, host);
   consola.ready({
     message: `Server listening on http://${host}:${port}`,
-    badge: true,
+    badge: true
   });
 }
 start();

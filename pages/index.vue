@@ -23,17 +23,17 @@
           class="upload w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 pt-8 md:pt-24 md:py-16"
         >
           <client-only>
-            <form class="upload-form-filepond" v-if="!swipeStatsData.user">
-              <file-pond
+            <form v-if="!swipeStatsData.user" class="upload-form-filepond">
+              <FilePond
                 ref="pond"
                 class="cursor-pointer"
-                :instantUpload="false"
+                :instant-upload="false"
                 label-idle="Drop your Tinder data file (data.json) here..."
                 accepted-file-types="application/json"
                 :server="null"
                 :files="myFiles"
-                v-on:init="handleFilePondInit"
-                v-on:addfile="handleFilePondAddFile"
+                @init="handleFilePondInit"
+                @addfile="handleFilePondAddFile"
               />
               <p class="text-white">
                 The file is NOT uploaded to a server, just used to extract your
@@ -43,12 +43,12 @@
           </client-only>
           <div v-if="swipeStatsData.user" class="create-user">
             <TinderProfileCard
-              ref="profileCard"
               id="profile-card"
+              ref="profileCard"
               class="mx-4 profile-card"
-              :userId="swipeStatsData.userId"
-              :userData="swipeStatsData.user"
-              :removeKeyFromUserData="removeKeyFromUserData"
+              :user-id="swipeStatsData.userId"
+              :user-data="swipeStatsData.user"
+              :remove-key-from-user-data="removeKeyFromUserData"
             />
 
             <div class="m-4">
@@ -96,7 +96,6 @@
 
 import vueFilePond from "vue-filepond";
 // import "filepond/dist/filepond.min.css";
-import * as md5 from "md5";
 
 import FilePondPluginFileValidateType from "filepond-plugin-file-validate-type";
 
@@ -107,24 +106,17 @@ import HowDoIGetMyData from "@/components/HowDoIGetMyData";
 
 import extractAnonymizedTinderData from "@/utils/extractAnonymizedTinderData";
 
-import { mapMutations } from "vuex";
-
 // Create component
 const FilePond = vueFilePond(FilePondPluginFileValidateType);
 
 export default {
-  name: "app",
+  name: "App",
   components: {
     FilePond,
     ErrorAlert,
     TinderProfileCard,
     Process,
     HowDoIGetMyData
-  },
-  computed: {
-    swipeStatsData() {
-      return this.$store.state.swipeStats;
-    }
   },
   data: function() {
     return {
@@ -137,11 +129,16 @@ export default {
       errors: []
     };
   },
+  computed: {
+    swipeStatsData() {
+      return this.$store.state.swipeStats;
+    }
+  },
   async mounted() {
     //     this.loadMe();
   },
   methods: {
-    handleFilePondAddFile: function(error, file) {
+    handleFilePondAddFile: function(_error, file) {
       this.$ga.event("uploadData", "addFile", "start");
       const reader = new FileReader();
       const onReaderLoad = event => {

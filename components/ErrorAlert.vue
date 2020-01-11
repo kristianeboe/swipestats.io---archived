@@ -8,11 +8,11 @@
     <span class="block sm:inline">{{ body }}</span>
     <span class="absolute top-0 bottom-0 right-0 px-4 py-3">
       <svg
-        @click="hide"
         class="fill-current h-6 w-6 text-red-500"
         role="button"
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 0 20 20"
+        @click="hide"
       >
         <title>Close</title>
         <path
@@ -20,7 +20,7 @@
         />
       </svg>
     </span>
-    <div class="error" v-if="error">
+    <div v-if="error" class="error">
       <div>
         {{ error.message }}
       </div>
@@ -28,7 +28,7 @@
         {{ error.body }}
       </div>
     </div>
-    <div class="res" v-if="res">
+    <div v-if="res" class="res">
       <div>
         {res.status}
       </div>

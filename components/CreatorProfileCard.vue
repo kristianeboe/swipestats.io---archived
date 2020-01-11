@@ -1,6 +1,8 @@
 <template>
   <div>
-    <div class="max-w-4xl flex items-center h-auto flex-wrap mx-auto pb-24 mt-16 md:mt-0">
+    <div
+      class="max-w-4xl flex items-center h-auto flex-wrap mx-auto pb-24 mt-16 md:mt-0"
+    >
       <!--Main Col-->
       <div
         id="profile"
@@ -8,7 +10,9 @@
       >
         <div class="p-4 md:p-12 text-center lg:text-left">
           <!-- Image for mobile view-->
-          <div class="block lg:hidden rounded-full shadow-xl mx-auto -mt-16 h-48 w-48">
+          <div
+            class="block lg:hidden rounded-full shadow-xl mx-auto -mt-16 h-48 w-48"
+          >
             <img
               class="rounded-full shadow-xl mx-auto -mt-16 h-48 w-48 object-cover"
               src="~assets/images/RemoteKristian-min.jpg"
@@ -16,7 +20,9 @@
           </div>
 
           <h1 class="text-3xl font-bold pt-8 lg:pt-0">Kristian Elset Bø</h1>
-          <div class="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-teal-500 opacity-25"></div>
+          <div
+            class="mx-auto lg:mx-0 w-4/5 pt-3 border-b-2 border-teal-500 opacity-25"
+          ></div>
           <p
             class="pt-6 md:pt-4 text-base font-bold flex flex-wrap items-center justify-center lg:justify-start"
           >
@@ -42,17 +48,21 @@
               <path
                 d="M10 20a10 10 0 1 1 0-20 10 10 0 0 1 0 20zm7.75-8a8.01 8.01 0 0 0 0-4h-3.82a28.81 28.81 0 0 1 0 4h3.82zm-.82 2h-3.22a14.44 14.44 0 0 1-.95 3.51A8.03 8.03 0 0 0 16.93 14zm-8.85-2h3.84a24.61 24.61 0 0 0 0-4H8.08a24.61 24.61 0 0 0 0 4zm.25 2c.41 2.4 1.13 4 1.67 4s1.26-1.6 1.67-4H8.33zm-6.08-2h3.82a28.81 28.81 0 0 1 0-4H2.25a8.01 8.01 0 0 0 0 4zm.82 2a8.03 8.03 0 0 0 4.17 3.51c-.42-.96-.74-2.16-.95-3.51H3.07zm13.86-8a8.03 8.03 0 0 0-4.17-3.51c.42.96.74 2.16.95 3.51h3.22zm-8.6 0h3.34c-.41-2.4-1.13-4-1.67-4S8.74 3.6 8.33 6zM3.07 6h3.22c.2-1.35.53-2.55.95-3.51A8.03 8.03 0 0 0 3.07 6z"
               />
-            </svg> Oslo, Norway / The World
+            </svg>
+            Oslo, Norway / The World
           </p>
-          <p
-            class="pt-8 text-sm"
-          >Ambitious young professional working in consulting, starting startups, learning new technologies and traveling the world.</p>
+          <p class="pt-8 text-sm">
+            Ambitious young professional working in consulting, starting
+            startups, learning new technologies and traveling the world.
+          </p>
 
           <a href="mailto:kristian@boe.ventures" target="blank">
             <div class="py-6 flex items-center flex-wrap justify-center">
               <button
                 class="bg-teal-700 hover:bg-teal-900 text-white font-bold py-2 px-4 rounded-full"
-              >Get In Touch</button>
+              >
+                Get In Touch
+              </button>
               <div class="m-4">kristian@boe.ventures</div>
             </div>
           </a>
@@ -135,7 +145,11 @@
                 />
               </svg>
             </a>
-            <a class="link" href="https://kristianeboe.me" data-tippy-content="@blog_handle">
+            <a
+              class="link"
+              href="https://kristianeboe.me"
+              data-tippy-content="@blog_handle"
+            >
               <svg
                 class="h-6 fill-current text-gray-600 hover:text-teal-700"
                 role="img"
@@ -199,5 +213,4 @@
 export default {};
 </script>
 
-<style>
-</style>
+<style></style>

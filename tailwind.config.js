@@ -1,19 +1,19 @@
-const defaultTheme = require('tailwindcss/defaultTheme');
+const defaultTheme = require("tailwindcss/defaultTheme");
 
 module.exports = {
-  prefix: '',
+  prefix: "",
   important: false,
-  separator: ':',
+  separator: ":",
   theme: {
     extend: {
       fontFamily: {
-        sans: ['Lato', ...defaultTheme.fontFamily.sans],
+        sans: ["Lato", ...defaultTheme.fontFamily.sans]
       },
       colors: {
-        tinder: '#FE3C72',
-      },
-    },
+        tinder: "#FE3C72"
+      }
+    }
   },
   variants: {},
-  plugins: [],
+  plugins: []
 };

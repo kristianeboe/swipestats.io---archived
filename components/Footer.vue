@@ -19,13 +19,11 @@
 </template>
 
 <script>
-import SocialIcons from "./SocialIcons";
 import CreatorProfileCard from "./CreatorProfileCard";
 
 export default {
   name: "Footer",
   components: {
-    SocialIcons,
     CreatorProfileCard
   },
   data() {

@@ -113,7 +113,7 @@ export function aggregateByMonth(timeSeriesObject) {
 
 export function aggregateTotal(timeSeriesObject) {
   return Object.entries(timeSeriesObject).reduce(
-    (acc, [key, value]) => (acc += value),
+    (acc, [, value]) => (acc += value),
     0
   );
 }

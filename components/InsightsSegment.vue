@@ -11,8 +11,8 @@
       @click="fullWidth = !fullWidth"
     >
       <svg
-        class="w-4 h-4"
         id="Layer_1"
+        class="w-4 h-4"
         viewBox="0 0 352.054 352.054"
         style="enable-background:new 0 0 352.054 352.054"
         xml:space="preserve"
@@ -72,11 +72,14 @@ import {
 } from "@/utils/timeLineUtils";
 
 export default {
+  components: {
+    Statistic,
+    TimeLineChart
+  },
   props: {
-    title: String,
-    dataKey: String,
-    profileData: Array,
-    profiles: Array
+    title: { type: String, default: "" },
+    dataKey: { type: String, default: "" },
+    profiles: { type: Array, default: () => [] }
   },
   data() {
     return {
@@ -90,6 +93,26 @@ export default {
       totalComparisonData: [],
       categoryData: []
     };
+  },
+
+  computed: {
+    total() {
+      return !this.data.userId
+        ? 0
+        : Object.entries(this.data[this.dataKey]).reduce(
+            (acc, [_date, value]) => acc + value,
+            0
+          );
+    }
+  },
+  watch: {
+    profiles() {
+      // const diff = this.profiles.length - this.categoryData.length
+      this.categoryData.push(
+        this.profiles[this.profiles.length - 1][this.dataKey]
+      );
+      this.aggregateDataByMonth();
+    }
   },
   mounted() {
     this.categoryData = this.profiles.map(profile => profile[this.dataKey]);
@@ -127,15 +150,11 @@ export default {
 
       const datasets = [];
 
-      const titles = {
-        0: "You"
-      };
-
       const borderColors = {
         0: "#f87979",
         1: "#0080FF",
         2: "green",
-        3: "yellow",
+        3: "yellow"
       };
 
       const [labels, myDataset] = this.createDataset(
@@ -148,7 +167,7 @@ export default {
       datasets.push(myDataset);
 
       timeLines.slice(1).forEach((timeLine, i) => {
-        const [_, dataset] = this.createDataset(
+        const [, dataset] = this.createDataset(
           "rival " + (i + 1),
           "transparent",
           borderColors[i + 1],
@@ -180,30 +199,6 @@ export default {
 
       return [labels, dataset];
     }
-  },
-  watch: {
-    profiles() {
-      // const diff = this.profiles.length - this.categoryData.length
-      this.categoryData.push(
-        this.profiles[this.profiles.length - 1][this.dataKey]
-      );
-      this.aggregateDataByMonth();
-    }
-  },
-
-  computed: {
-    total() {
-      return !this.data.userId
-        ? 0
-        : Object.entries(this.data[this.dataKey]).reduce(
-            (acc, [date, value]) => acc + value,
-            0
-          );
-    }
-  },
-  components: {
-    Statistic,
-    TimeLineChart
   }
 };
 </script>

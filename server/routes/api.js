@@ -3,11 +3,9 @@ const router = express.Router();
 const shortid = require("shortid");
 const bodyParser = require("body-parser");
 
-const File = require("../models/file");
-
 const profileService = require("../services/profile.service.js");
 
-router.get("/", (req, res) => {
+router.get("/", (_req, res) => {
   res.send("Health ok");
 });
 
@@ -38,7 +36,7 @@ const multerUpload = multer({
       cb(null, fileName);
     }
   }),
-  fileFilter: (req, file, cb) => {
+  fileFilter: (_req, file, cb) => {
     let extension = fileConfig.supportedMimes[file.mimetype];
     if (!extension) {
       return cb(null, false);
@@ -50,13 +48,13 @@ const multerUpload = multer({
 
 router.post(
   "/upload",
-  (req, res, next) => {
+  (req, _res, next) => {
     const fileId = shortid.generate();
     req._fileId = fileId;
     next();
   },
   multerUpload.any(),
-  async (req, res, next) => {
+  async (req, res) => {
     console.log("initiate upload");
 
     const fileId = req._fileId;
@@ -165,7 +163,7 @@ function getConversationsMeta(conversations) {
 router.post(
   "/uploadData",
   bodyParser.json({ limit: "10mb", extended: true }),
-  async (req, res, next) => {
+  async (req, res) => {
     console.log("creating new profile");
     let data;
 
@@ -197,7 +195,7 @@ router.post(
   }
 );
 
-router.get("/profileData/:profileId", async (req, res, next) => {
+router.get("/profileData/:profileId", async (req, res) => {
   const { profileId } = req.params;
   console.log("getting data for", profileId);
 
@@ -217,11 +215,9 @@ router.get("/profileData/:profileId", async (req, res, next) => {
       profileId
     });
   }
-
-  console.log("got profileData", profileData.userId);
 });
 
-router.get("/get-all", async (req, res, next) => {
+router.get("/get-all", async (_req, res) => {
   const allProfiles = await profileService.getAllProfiles();
   const allProfileIds = allProfiles.map(profile => profile._id);
   // const allProfileIds = await profileService.getAllIds();
@@ -229,8 +225,17 @@ router.get("/get-all", async (req, res, next) => {
   return res.json(allProfileIds);
 });
 
-router.get("/deleteProfile/:profileId", async (req, res, next) => {
+router.get("/deleteProfile/:profileId", async (req, res) => {
   const deleteRes = await profileService.deleteProfile(req.params.profileId);
+
+  return res.json(deleteRes);
+});
+
+router.get("/deleteRandomProfile/:adminId", async (req, res) => {
+  if (req.params.adminId !== process.env.ADMIN_PROFILE) {
+    return res.status(401).json({});
+  }
+  const deleteRes = await profileService.deleteRandomProfile();
 
   return res.json(deleteRes);
 });

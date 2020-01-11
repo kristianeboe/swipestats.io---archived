@@ -1,5 +1,9 @@
 <template>
-  <InsightsSegment title="Matches" :data="matches" :comparisonData="matchesComparisonData" />
+  <InsightsSegment
+    title="Matches"
+    :data="matches"
+    :comparison-data="matchesComparisonData"
+  />
 </template>
 
 <script>

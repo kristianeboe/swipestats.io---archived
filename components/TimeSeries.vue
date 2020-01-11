@@ -1,5 +1,9 @@
 <template>
-  <InsightsSegment title="App opens" :data="appOpens" :comparisonData="appOpensComparisonData" />
+  <InsightsSegment
+    title="App opens"
+    :data="appOpens"
+    :comparison-data="appOpensComparisonData"
+  />
 </template>
 
 <script>
@@ -26,5 +30,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

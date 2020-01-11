@@ -15,10 +15,23 @@ export default {
       }
     };
   },
+  mounted() {
+    // this.chartData is created in the mixin.
+    // If you want to pass options please create a local options object
+    this.renderChart(this.chartData, {
+      ...this.defaultOptions,
+      ...this.options,
+      responsive: true,
+      maintainAspectRatio: false
+    });
+  },
   methods: {
     formatNumber(num) {
       let numString = Math.round(num).toString();
-      let numberFormatMapping = [[6, "m"], [3, "k"]];
+      let numberFormatMapping = [
+        [6, "m"],
+        [3, "k"]
+      ];
       for (let [numberOfDigits, replacement] of numberFormatMapping) {
         if (numString.length > numberOfDigits) {
           let decimal = "";
@@ -34,19 +47,8 @@ export default {
       }
       return numString;
     }
-  },
-  mounted() {
-    // this.chartData is created in the mixin.
-    // If you want to pass options please create a local options object
-    this.renderChart(this.chartData, {
-      ...this.defaultOptions,
-      ...this.options,
-      responsive: true,
-      maintainAspectRatio: false
-    });
   }
 };
 </script>
 
-<style>
-</style>
+<style></style>

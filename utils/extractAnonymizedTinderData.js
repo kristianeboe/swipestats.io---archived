@@ -3,7 +3,7 @@ import * as md5 from "md5";
 function anonymizeConversations(conversations) {
   return conversations.map(({ match_id, messages }) => ({
     match_id,
-    messages: messages.map(({ message, ...messageMeta }) => messageMeta)
+    messages: messages.map(({ _message, ...messageMeta }) => messageMeta)
   }));
 }
 

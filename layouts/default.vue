@@ -1,7 +1,9 @@
 <template>
   <div>
     <Nav />
-    <nuxt class="antialiased leading-tight font-sans flex flex-col min-h-screen" />
+    <nuxt
+      class="antialiased leading-tight font-sans flex flex-col min-h-screen"
+    />
     <Footer />
   </div>
 </template>
@@ -17,5 +19,4 @@ export default {
 };
 </script>
 
-<style>
-</style>
+<style></style>

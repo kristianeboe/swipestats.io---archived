@@ -4,13 +4,13 @@
     <div class="flex flex-wrap mx-auto w-full justify-center">
       <Statistic
         v-for="meta in Object.keys(metaTitles)"
+        :key="meta"
         :name="metaTitles[meta]"
         :statistics="
           conversationsMetaArray.map(
             conversationsMeta => conversationsMeta[meta]
           )
         "
-        :key="meta"
         class="shadow-md m-4 rounded w-48 text-center"
       />
     </div>
@@ -23,6 +23,16 @@ import Statistic from "@/components/Statistic";
 export default {
   components: {
     Statistic
+  },
+  props: {
+    profiles: {
+      type: Array,
+      default: () => []
+    },
+    conversationsMeta: {
+      type: Object,
+      default: () => ({})
+    }
   },
   data() {
     return {
@@ -40,16 +50,6 @@ export default {
           "Nr of ghostings after initial message"
       }
     };
-  },
-  props: {
-    profiles: {
-      type: Array,
-      default: () => []
-    },
-    conversationsMeta: {
-      type: Object,
-      default: () => ({})
-    }
   },
   computed: {
     conversationsMetaArray() {

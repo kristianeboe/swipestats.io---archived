@@ -94,6 +94,4 @@ describe("sadf", () => {
 
   // a has start date 2014, b has start date 2015
   // if b is loaded first, no keys should be before 2015
-
-
-})
+});

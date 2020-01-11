@@ -76,24 +76,24 @@
       <div class="text-sm flex flex-col justify-around items-center mx-auto">
         <nuxt-link class="" to="/#process">
           <button
-            @click="toggleNav"
             class="p-6 mt-8 w-64 rounded block bg-tinder text-white text-xl "
+            @click="toggleNav"
           >
             How does this work?
           </button>
         </nuxt-link>
         <nuxt-link class="" to="/#how-do-i-get-my-data">
           <button
-            @click="toggleNav"
             class="p-6 mt-8 w-64 rounded block bg-tinder text-white text-xl "
+            @click="toggleNav"
           >
             How do I get my data?
           </button>
         </nuxt-link>
         <nuxt-link class="" to="/">
           <button
-            @click="toggleNav"
             class="p-6 mt-8 w-64 rounded block bg-tinder text-white text-xl "
+            @click="toggleNav"
           >
             Upload
           </button>
