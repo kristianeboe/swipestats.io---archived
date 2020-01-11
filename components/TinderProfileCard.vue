@@ -8,7 +8,7 @@
     <div class="px-6 py-4">
       <div class="font-bold text-xl">
         {{ `${userData.gender === "M" ? "Male" : "Female"}` }},
-        {{ getAge(userData.birthDate) }}
+        {{ getAgeFromBirthdate(userData.birthDate) }}
       </div>
       <p v-if="userData.cityName" class="text-gray-700 text-base">
         {{ userData.cityName }}, {{ userData.country }}
@@ -81,6 +81,7 @@
 <script>
 import male_avatar from "@/assets/svgs/undraw/male_avatar.svg";
 import female_avatar from "@/assets/svgs/undraw/female_avatar.svg";
+import { getAgeFromBirthdate } from "@/utils/profileUtils";
 
 export default {
   props: {
@@ -94,12 +95,7 @@ export default {
     }
   },
   methods: {
-    getAge(birthDateString) {
-      const birthDate = new Date(birthDateString);
-      const ageDifMs = Date.now() - birthDate.getTime();
-      const ageDate = new Date(ageDifMs); // miliseconds from epoch
-      return Math.abs(ageDate.getUTCFullYear() - 1970);
-    }
+    getAgeFromBirthdate
   }
 };
 </script>

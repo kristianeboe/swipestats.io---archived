@@ -90,6 +90,16 @@
       </button>
     </div>
     <section
+      class="container mx-auto flex flex-wrap justify-center max-w-5xl py-8"
+    >
+      <ProfileInsightsCard
+        v-for="profile in profiles"
+        :key="profile.userId"
+        :profile="profile"
+        class="m-4"
+      />
+    </section>
+    <section
       v-if="profiles.length > 0"
       class="insights flex flex-wrap justify-center px-4"
     >
@@ -149,11 +159,13 @@
 import Conversations from "@/components/Conversations";
 import InsightsSegment from "@/components/InsightsSegment";
 // import TinderProfileCard from "@/components/TinderProfileCard";
+import ProfileInsightsCard from "@/components/ProfileInsightsCard";
 
 export default {
   components: {
     Conversations,
-    InsightsSegment
+    InsightsSegment,
+    ProfileInsightsCard
     //TinderProfileCard
     // swipes
   },
