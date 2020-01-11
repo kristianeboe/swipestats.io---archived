@@ -106,7 +106,7 @@
         :profiles="profiles"
       />
       <Conversations :profiles="profiles" />
-      <TinderProfileCard
+      <!-- <TinderProfileCard
         v-for="profile in profiles"
         id="profile-card"
         :key="profile.userId"
@@ -116,7 +116,7 @@
         :user-data="profile.user"
         :remove-key-from-user-data="() => {}"
         read-only
-      />
+      /> -->
       <InsightsSegment
         class="m-4"
         title="Messages sent"
@@ -148,13 +148,13 @@
 <script>
 import Conversations from "@/components/Conversations";
 import InsightsSegment from "@/components/InsightsSegment";
-import TinderProfileCard from "@/components/TinderProfileCard";
+// import TinderProfileCard from "@/components/TinderProfileCard";
 
 export default {
   components: {
     Conversations,
-    InsightsSegment,
-    TinderProfileCard
+    InsightsSegment
+    //TinderProfileCard
     // swipes
   },
   data() {
