@@ -7,7 +7,7 @@
         <article
           v-for="(step, index) in steps"
           :key="index"
-          class="w-full md:max-w-xs m-8"
+          class="w-64 md:max-w-xs m-8"
         >
           <img :src="step.illustration" :alt="step.step" class="w-48 mx-auto" />
           <div>
