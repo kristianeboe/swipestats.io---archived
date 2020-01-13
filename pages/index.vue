@@ -189,10 +189,13 @@ export default {
       this.$store.commit("setSwipeStats", swipeStatsData);
 
       this.$nextTick(() => {
-        document.querySelector(".profile-card").scrollIntoView({
-          block: "center",
-          behavior: "smooth"
-        });
+        const profileCard = document.querySelector(".profile-card");
+        if (profileCard) {
+          profileCard.scrollIntoView({
+            block: "center",
+            behavior: "smooth"
+          });
+        }
       });
     },
     async submitSwipeStats() {
