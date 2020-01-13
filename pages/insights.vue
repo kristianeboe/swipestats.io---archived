@@ -97,6 +97,7 @@
         :key="profile.userId"
         :profile="profile"
         class="m-4"
+        @click.native="removeProfile(profile.userId)"
       />
     </section>
     <section
@@ -252,6 +253,9 @@ export default {
       } else {
         return {};
       }
+    },
+    removeProfile(id) {
+      this.profiles = this.profiles.filter(profile => profile.userId !== id);
     },
     trackComparisons() {
       this.$ga.event("insights", "comparePerson", this.comparisonData.length);

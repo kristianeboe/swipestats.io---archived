@@ -48,7 +48,10 @@
           <div>Show company: {{ job.companyDisplayed }}</div>
         </div>
       </section>
-      <section v-if="userData.schools.length > 0" class="mt-4">
+      <section
+        v-if="userData.schools && userData.schools.length > 0"
+        class="mt-4"
+      >
         <h2 class="font-bold">School data</h2>
         <div v-for="school in userData.schools" :key="school.name">
           <button
