@@ -33,7 +33,7 @@
         {{ userId }}
       </h2>
 
-      <section v-if="userData.jobs.length > 0" class="mt-4">
+      <section v-if="userData.jobs && userData.jobs.length > 0" class="mt-4">
         <h2 class="font-bold">Jobs data</h2>
         <div v-for="job in userData.jobs" :key="job.title">
           <button
