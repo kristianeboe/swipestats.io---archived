@@ -6,11 +6,11 @@ require("dotenv").config();
 const { Nuxt, Builder } = require("nuxt");
 const app = express();
 
-app.use(enforce.HTTPS({ trustProtoHeader: true }));
-
 // Import and Set Nuxt.js options
 const config = require("../nuxt.config.js");
 config.dev = process.env.NODE_ENV !== "production";
+
+if (!config.dev) app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
 const apiRoutes = require("./routes/api");
 app.use("/api", apiRoutes);

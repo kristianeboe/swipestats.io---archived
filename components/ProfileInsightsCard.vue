@@ -5,7 +5,15 @@
     <!-- <div class="p-4">
       Avatar
     </div> -->
-    <div class="p-4 flex flex-col">
+    <div class="p-4 flex flex-col w-full">
+      <div class="self-end absolute">
+        <img
+          class="h-6 w-6 pr-2"
+          src="~assets/svgs/icons/trash.svg"
+          alt="delete profile"
+          @click="$emit('remove-profile')"
+        />
+      </div>
       <h2 class="font-bold text-xl">
         {{ `${user.gender === "M" ? "Male" : "Female"}` }},
         {{ getAgeFromBirthdate(user.birthDate) }}

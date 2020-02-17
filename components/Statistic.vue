@@ -2,7 +2,7 @@
   <div class="wrapper p-4">
     <h3 class="name text-base font-light">{{ name }}</h3>
     <h2 class="statistic text-xl font-bold">{{ statisticString }}</h2>
-    <h5 v-for="c in comparisonStrings" :key="c">{{ c }}</h5>
+    <h5 v-for="(c, index) in comparisonStrings" :key="index + c">{{ c }}</h5>
   </div>
 </template>
 

@@ -90,6 +90,9 @@
         Country
       </button>
     </div>
+    <div v-if="loading">
+      <Spinner />
+    </div>
     <section
       class="container mx-auto flex flex-wrap justify-center max-w-5xl py-8"
     >
@@ -98,7 +101,7 @@
         :key="profile.userId"
         :profile="profile"
         class="m-4"
-        @click.native="removeProfile(profile.userId)"
+        @remove-profile="removeProfile(profile.userId)"
       />
     </section>
     <section
@@ -161,6 +164,7 @@
 import Conversations from "@/components/Conversations";
 import InsightsSegment from "@/components/InsightsSegment";
 import Alert from "@/components/Alert";
+import Spinner from "@/components/Spinner";
 // import TinderProfileCard from "@/components/TinderProfileCard";
 import ProfileInsightsCard from "@/components/ProfileInsightsCard";
 
@@ -169,13 +173,15 @@ export default {
     Conversations,
     InsightsSegment,
     ProfileInsightsCard,
-    Alert
+    Alert,
+    Spinner
     //TinderProfileCard
     // swipes
   },
   data() {
     return {
       compareId: "",
+      loading: false,
       comparisonData: [],
       messagesSent: [],
       mySwipeStatsData: {},
@@ -190,6 +196,7 @@ export default {
   computed: {},
   async mounted() {
     this.$nextTick(() => {
+      this.loading = true;
       this.$nuxt.$loading.start();
     });
     try {
@@ -197,6 +204,7 @@ export default {
       const profile = await this.getProfileData(swipestatsid);
       // this.$store.commit("setSwipeStats", profile);
       this.profiles.push(profile);
+      this.loading = false;
       this.$nuxt.$loading.finish();
       return;
     } catch (error) {
@@ -210,6 +218,7 @@ export default {
       this.mySwipeStatsData = myProfile;
       this.profiles.push(myProfile);
     }
+    this.loading = false;
     this.$nuxt.$loading.finish();
   },
   methods: {
@@ -262,6 +271,7 @@ export default {
       if (!this.validProfileId(profileId)) return;
       this.$nextTick(() => {
         this.$nuxt.$loading.start();
+        this.loading = true;
       });
       const profileData = await this.getProfileData(profileId);
       // this.comparisonData.push(profile);
@@ -269,10 +279,12 @@ export default {
       const profile = this.trimProfileData(profileData);
       this.profiles.push(profile);
       this.compareId = "";
+      this.loading = false;
       this.$nuxt.$loading.finish();
       return {};
     },
     async getRandomComparison() {
+      this.loading = true;
       const res = await fetch(`/api/get-all`);
       if (res.ok) {
         const data = await res.json();
@@ -285,7 +297,9 @@ export default {
       }
     },
     removeProfile(id) {
+      console.log("before", this.profiles);
       this.profiles = this.profiles.filter(profile => profile.userId !== id);
+      console.log("after ", this.profiles);
     },
     trackComparisons() {
       this.$ga.event("insights", "comparePerson", this.comparisonData.length);

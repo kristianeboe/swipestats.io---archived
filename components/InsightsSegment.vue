@@ -107,10 +107,10 @@ export default {
   },
   watch: {
     profiles() {
-      // const diff = this.profiles.length - this.categoryData.length
-      this.categoryData.push(
-        this.profiles[this.profiles.length - 1][this.dataKey]
-      );
+      this.categoryData = this.profiles.map(profile => profile[this.dataKey]);
+      // this.categoryData.push(
+      //   this.profiles[this.profiles.length - 1][this.dataKey]
+      // );
       this.aggregateDataByMonth();
     }
   },
@@ -158,7 +158,7 @@ export default {
       };
 
       const [labels, myDataset] = this.createDataset(
-        `you`,
+        `profile 1`,
         "transparent",
         borderColors[0],
         timeLines[0]
@@ -168,7 +168,7 @@ export default {
 
       timeLines.slice(1).forEach((timeLine, i) => {
         const [, dataset] = this.createDataset(
-          "rival " + (i + 1),
+          "profile " + (i + 2),
           "transparent",
           borderColors[i + 1],
           timeLine

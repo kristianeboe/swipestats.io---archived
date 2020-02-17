@@ -39,9 +39,7 @@ module.exports = {
    ** Customize the progress-bar color
    */
   loading: {
-    height: "15px",
-    color: "#FE3C72",
-    throttle: 0
+    color: "#FE3C72"
   },
   /*
    ** Global CSS
