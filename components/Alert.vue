@@ -25,7 +25,20 @@
 
 <script>
 export default {
-  props: ["heading", "body"]
+  props: {
+    type: {
+      type: String,
+      default: "info"
+    },
+    heading: {
+      type: String,
+      default: ""
+    },
+    body: {
+      type: String,
+      default: ""
+    }
+  }
 };
 </script>
 

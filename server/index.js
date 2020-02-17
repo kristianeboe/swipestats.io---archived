@@ -1,9 +1,12 @@
 const express = require("express");
 const consola = require("consola");
+const enforce = require("express-sslify");
 require("dotenv").config();
 
 const { Nuxt, Builder } = require("nuxt");
 const app = express();
+
+app.use(enforce.HTTPS({ trustProtoHeader: true }));
 
 // Import and Set Nuxt.js options
 const config = require("../nuxt.config.js");

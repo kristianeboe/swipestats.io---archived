@@ -59,6 +59,7 @@
         <nuxt-link to="/#how-do-i-get-my-data" class="nav-link mr-8"
           >How do I get my data?</nuxt-link
         >
+        <nuxt-link to="/test" class="nav-link mr-8">Test</nuxt-link>
 
         <nuxt-link to="/">
           <button

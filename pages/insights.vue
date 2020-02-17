@@ -27,6 +27,7 @@
         </button>
       </div>
     </div>
+    <Alert v-if="alert.display" :heading="alert.heading" :body="alert.info" />
     <div class="md:flex md:items-center mx-6 justify-center">
       <label
         class="block text-gray-500 font-bold md:text-right mb-1 mt-2 md:mb-0"
@@ -159,6 +160,7 @@
 <script>
 import Conversations from "@/components/Conversations";
 import InsightsSegment from "@/components/InsightsSegment";
+import Alert from "@/components/Alert";
 // import TinderProfileCard from "@/components/TinderProfileCard";
 import ProfileInsightsCard from "@/components/ProfileInsightsCard";
 
@@ -166,7 +168,8 @@ export default {
   components: {
     Conversations,
     InsightsSegment,
-    ProfileInsightsCard
+    ProfileInsightsCard,
+    Alert
     //TinderProfileCard
     // swipes
   },
@@ -176,16 +179,25 @@ export default {
       comparisonData: [],
       messagesSent: [],
       mySwipeStatsData: {},
-      profiles: []
+      profiles: [],
+      alert: {
+        display: false,
+        heading: "",
+        body: ""
+      }
     };
   },
   computed: {},
   async mounted() {
+    this.$nextTick(() => {
+      this.$nuxt.$loading.start();
+    });
     try {
       const { swipestatsid } = this.$router.history.current.query;
       const profile = await this.getProfileData(swipestatsid);
       // this.$store.commit("setSwipeStats", profile);
       this.profiles.push(profile);
+      this.$nuxt.$loading.finish();
       return;
     } catch (error) {
       console.log("failed fetching from query", error);
@@ -198,6 +210,7 @@ export default {
       this.mySwipeStatsData = myProfile;
       this.profiles.push(myProfile);
     }
+    this.$nuxt.$loading.finish();
   },
   methods: {
     async getProfileData(profileId) {
@@ -233,13 +246,30 @@ export default {
         matches: trimmedMatches
       };
     },
+    validProfileId(profileId) {
+      if (profileId.length < 16) {
+        this.alert = {
+          display: true,
+          heading: "Profile Id in worng format",
+          body:
+            "Did you try to submit your tinder id instead of your swipestatsid?"
+        };
+        return false;
+      }
+      return true;
+    },
     async getComparisonData(profileId) {
+      if (!this.validProfileId(profileId)) return;
+      this.$nextTick(() => {
+        this.$nuxt.$loading.start();
+      });
       const profileData = await this.getProfileData(profileId);
       // this.comparisonData.push(profile);
 
       const profile = this.trimProfileData(profileData);
       this.profiles.push(profile);
       this.compareId = "";
+      this.$nuxt.$loading.finish();
       return {};
     },
     async getRandomComparison() {
