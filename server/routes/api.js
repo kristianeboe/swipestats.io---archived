@@ -92,6 +92,8 @@ function getConversationsMeta(conversations) {
     //nrOfGhostings
   };
 
+  if (conversations.length === 0) return meta;
+
   const conversationLengths = [];
 
   conversations.forEach(conversation => {
@@ -186,7 +188,7 @@ router.post(
       ...profile
     });
 
-    console.log("newProfile", newProfile);
+    console.log("newProfile", userId, newProfile);
 
     return res.status(201).json({
       userId,
