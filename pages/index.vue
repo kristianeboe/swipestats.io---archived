@@ -12,12 +12,20 @@
             Upload your data anonymously and compare it to demographics from
             around the world!
           </p>
-          <!-- <div class="cta pt-8 mx-auto md:mx-0">
-            <button
-              class="bg-tinder hover:bg-red-300 text-white font-bold py-2 px-4 rounded"
-              @click="loadMe"
-            >Test</button>
-          </div>-->
+          <div
+            class="flex mt-6 justify-start md:justify-center xl:justify-start"
+          >
+            <a
+              href="/"
+              class="rounded-lg px-4 md:px-5 xl:px-4 py-3 md:py-4 xl:py-3 bg-tinder hover:bg-red-300 md:text-lg xl:text-base text-white font-semibold leading-tight shadow-md"
+              >Upload</a
+            >
+            <a
+              href="/insights?swipestatsid=b98535635fe77db6324d881ac92190e5&demo=true"
+              class="ml-4 rounded-lg px-4 md:px-5 xl:px-4 py-3 md:py-4 xl:py-3 bg-white hover:bg-gray-200 md:text-lg xl:text-base text-gray-800 font-semibold leading-tight shadow-md"
+              >Live demo</a
+            >
+          </div>
         </div>
         <div
           class="upload w-full md:w-1/2 flex flex-col justify-center px-8 md:px-16 pt-8 md:pt-24 md:py-16"

@@ -65,7 +65,7 @@
           </article>
         </a>
         <a
-          href="/insights?swipestatsid=b98535635fe77db6324d881ac92190e5"
+          href="/insights?swipestatsid=b98535635fe77db6324d881ac92190e5&demo=true"
           target="blank"
         >
           <article
