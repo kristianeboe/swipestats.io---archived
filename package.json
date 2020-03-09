@@ -31,10 +31,12 @@
     "got": "^10.2.0",
     "ky": "^0.15.0",
     "ky-universal": "^0.3.0",
+    "logrocket": "^1.0.6",
     "md5": "^2.2.1",
     "mongoose": "^5.7.5",
     "multer": "^1.4.2",
     "nuxt": "^2.0.0",
+    "nuxt-logrocket": "^1.2.7",
     "shortid": "^2.2.15",
     "vue-chartjs": "^3.4.2",
     "vue-filepond": "^5.1.3"

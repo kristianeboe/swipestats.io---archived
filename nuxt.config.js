@@ -68,12 +68,17 @@ module.exports = {
     "@nuxtjs/pwa",
     "nuxt-webfontloader",
     "@nuxtjs/sentry",
+    "nuxt-logrocket",
     // 'nuxt-purgecss',
     "@nuxtjs/toast"
   ],
   sentry: {
     dsn: "https://86d0bff07b6b4bcd8013481479aa3b20@sentry.io/1871644", // Enter your project's DSN here
     config: {} // Additional config
+  },
+  logRocket: {
+    logRocketId: "8zzlud/swipestatsio",
+    devModeAllowed: false
   },
   toast: {
     position: "bottom-right",
