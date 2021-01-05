@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { getMaxListeners } = require("../models/profile");
 const Profile = require("../models/profile");
 
 const mongoDB = process.env.MONGODB_URI;
@@ -28,6 +29,11 @@ module.exports = {
   },
   async getAllProfiles() {
     return Profile.find()
+      .lean()
+      .exec();
+  },
+  async getProfiles(filter) {
+    return Profile.find(filter)
       .lean()
       .exec();
   },

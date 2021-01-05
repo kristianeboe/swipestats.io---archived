@@ -242,4 +242,34 @@ router.get("/deleteRandomProfile/:adminId", async (req, res) => {
   return res.json(deleteRes);
 });
 
+const profileAverages = p => {
+  const matches = Object.entries(p.matches);
+  // const swipes = Object.entries(p.);
+  // .sort((a, b) =>
+  //   a[0].localeCompare(b[0])
+  // );
+  const total = matches.reduce((acc, cur) => acc + cur[1], 0);
+  return {
+    id: p._id,
+    firstMatch: matches[0],
+    lastMatch: matches[matches.length - 1],
+    total,
+    daysCounted: matches.length,
+    averagePrDay: total / matches.length
+  };
+};
+
+router.get("/profiles/analytics", async (req, res) => {
+  const males = await profileService.getProfiles({ "user.gender": "M" });
+  const females = await profileService.getProfiles({ "user.gender": "F" });
+
+  return res.json({
+    m: males.length,
+    maleAverages: males.slice(0, 5).map(profileAverages),
+    f: females.length,
+    femaleAverages: females.slice(0, 5).map(profileAverages),
+    example: Object.keys(males[0])
+  });
+});
+
 module.exports = router;
