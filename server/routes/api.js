@@ -303,6 +303,7 @@ const profileAverages = p => {
   };
 
   const ratios = {
+    matchesToSwipeLikes: totals.matches / totals.swipeLikes,
     swipesPositiveNegative: totals.swipeLikes / totals.swipePasses,
     messagesSentReceived: totals.messagesSent / totals.messagesReceived
   };
