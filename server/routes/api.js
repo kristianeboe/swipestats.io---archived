@@ -242,20 +242,63 @@ router.get("/deleteRandomProfile/:adminId", async (req, res) => {
   return res.json(deleteRes);
 });
 
+const aggregateObjects = (arr, valueMapping) =>
+  arr.reduce((aggregate, [key, value]) => {
+    //for (const [key, value] of entry) {
+    if (!aggregate[key]) {
+      aggregate[key] = 0;
+    }
+
+    aggregate[key] = valueMapping(aggregate[key], value);
+
+    // aggregate[date] += value;
+    //}
+
+    return aggregate;
+  }, {});
+
 const profileAverages = p => {
   const matches = Object.entries(p.matches);
-  // const swipes = Object.entries(p.);
-  // .sort((a, b) =>
-  //   a[0].localeCompare(b[0])
-  // );
-  const total = matches.reduce((acc, cur) => acc + cur[1], 0);
+  const swipeLikes = Object.entries(p.swipeLikes);
+  const swipePasses = Object.entries(p.swipePasses);
+  const messagesSent = Object.entries(p.messagesSent);
+  const messagesReceived = Object.entries(p.messagesReceived);
+  const allMessages = Object.entries(
+    aggregateObjects(messagesSent.concat(messagesReceived), (a, b) => a + b)
+  );
+  const allSwipes = Object.entries(
+    aggregateObjects(swipeLikes.concat(swipePasses), (a, b) => a + b)
+  );
+
+  const totals = {
+    matches: matches.reduce((acc, cur) => acc + cur[1], 0),
+    messages: allMessages.reduce((acc, cur) => acc + cur[1], 0),
+    swipes: allSwipes.reduce((acc, cur) => acc + cur[1], 0),
+    swipeLikes: swipeLikes.reduce((acc, cur) => acc + cur[1], 0),
+    swipePasses: swipePasses.reduce((acc, cur) => acc + cur[1], 0),
+    messagesSent: messagesSent.reduce((acc, cur) => acc + cur[1], 0),
+    messagesReceived: messagesReceived.reduce((acc, cur) => acc + cur[1], 0)
+  };
+
+  const averages = {
+    matches: totals.matches / matches.length,
+    messages: totals.messages / allMessages.length,
+    swipes: totals.swipes / allSwipes.length
+  };
+
+  const ratios = {
+    swipesPositiveNegative: totals.swipeLikes / totals.swipePasses,
+    messagesSentReceibed: totals.messagesSent / totals.messagesReceived
+  };
+
   return {
     id: p._id,
-    firstMatch: matches[0],
-    lastMatch: matches[matches.length - 1],
-    total,
+    firstMatchDate: matches[0][0],
+    lastMatchDate: matches[matches.length - 1][0],
     daysCounted: matches.length,
-    averagePrDay: total / matches.length
+    totals,
+    averages,
+    ratios
   };
 };
 
