@@ -180,11 +180,16 @@ router.post(
 
     const { userId, conversations, ...profile } = data;
     console.log(userId);
+    const now = Date.now();
 
     const newProfile = await profileService.createProfile({
       userId,
       conversationsMeta: getConversationsMeta(conversations),
       conversations,
+      meta: {
+        created: now,
+        updated: now
+      },
       ...profile
     });
 
@@ -257,6 +262,17 @@ const aggregateObjects = (arr, valueMapping) =>
     return aggregate;
   }, {});
 
+function calculateAge(birthday) {
+  // birthday is a date
+  var ageDifMs = Date.now() - birthday;
+  var ageDate = new Date(ageDifMs); // miliseconds from epoch
+  return Math.abs(ageDate.getUTCFullYear() - 1970);
+}
+
+function calculateYearDiff(date1, date2) {
+  return Math.abs(date1.getUTCFullYear() - date2.getUTCFullYear());
+}
+
 const profileAverages = p => {
   const matches = Object.entries(p.matches);
   const swipeLikes = Object.entries(p.swipeLikes);
@@ -288,7 +304,7 @@ const profileAverages = p => {
 
   const ratios = {
     swipesPositiveNegative: totals.swipeLikes / totals.swipePasses,
-    messagesSentReceibed: totals.messagesSent / totals.messagesReceived
+    messagesSentReceived: totals.messagesSent / totals.messagesReceived
   };
 
   return {
@@ -298,7 +314,19 @@ const profileAverages = p => {
     daysCounted: matches.length,
     totals,
     averages,
-    ratios
+    ratios,
+    profile: {
+      gender: p.user.gender,
+      age: calculateAge(new Date(p.user.birthDate)),
+      ageFilterMin: p.user.ageFilterMin,
+      ageFilterMax: p.user.ageFilterMax,
+      cityName: p.user.cityName,
+      country: p.user.country,
+      createdTinderWhenTheyWereAge: calculateYearDiff(
+        new Date(p.user.birthDate),
+        new Date(p.user.createDate)
+      )
+    }
   };
 };
 
@@ -311,7 +339,8 @@ router.get("/profiles/analytics", async (req, res) => {
     maleAverages: males.slice(0, 5).map(profileAverages),
     f: females.length,
     femaleAverages: females.slice(0, 5).map(profileAverages),
-    example: Object.keys(males[0])
+    example: Object.keys(males[0]),
+    exampleUser: Object.keys(males[0].user)
   });
 });
 
