@@ -274,62 +274,79 @@ function calculateYearDiff(date1, date2) {
 }
 
 const profileAverages = p => {
-  const matches = Object.entries(p.matches);
-  const swipeLikes = Object.entries(p.swipeLikes);
-  const swipePasses = Object.entries(p.swipePasses);
-  const messagesSent = Object.entries(p.messagesSent);
-  const messagesReceived = Object.entries(p.messagesReceived);
-  const allMessages = Object.entries(
-    aggregateObjects(messagesSent.concat(messagesReceived), (a, b) => a + b)
-  );
-  const allSwipes = Object.entries(
-    aggregateObjects(swipeLikes.concat(swipePasses), (a, b) => a + b)
-  );
+  try {
+    const matches = Object.entries(p.matches);
+    const swipeLikes = Object.entries(p.swipeLikes);
+    const swipePasses = Object.entries(p.swipePasses);
+    const messagesSent = Object.entries(p.messagesSent);
+    const messagesReceived = Object.entries(p.messagesReceived);
+    const allMessages = Object.entries(
+      aggregateObjects(messagesSent.concat(messagesReceived), (a, b) => a + b)
+    );
+    const allSwipes = Object.entries(
+      aggregateObjects(swipeLikes.concat(swipePasses), (a, b) => a + b)
+    );
 
-  const totals = {
-    matches: matches.reduce((acc, cur) => acc + cur[1], 0),
-    messages: allMessages.reduce((acc, cur) => acc + cur[1], 0),
-    swipes: allSwipes.reduce((acc, cur) => acc + cur[1], 0),
-    swipeLikes: swipeLikes.reduce((acc, cur) => acc + cur[1], 0),
-    swipePasses: swipePasses.reduce((acc, cur) => acc + cur[1], 0),
-    messagesSent: messagesSent.reduce((acc, cur) => acc + cur[1], 0),
-    messagesReceived: messagesReceived.reduce((acc, cur) => acc + cur[1], 0)
-  };
+    const totals = {
+      matches: matches.reduce((acc, cur) => acc + cur[1], 0),
+      messages: allMessages.reduce((acc, cur) => acc + cur[1], 0),
+      swipes: allSwipes.reduce((acc, cur) => acc + cur[1], 0),
+      swipeLikes: swipeLikes.reduce((acc, cur) => acc + cur[1], 0),
+      swipePasses: swipePasses.reduce((acc, cur) => acc + cur[1], 0),
+      messagesSent: messagesSent.reduce((acc, cur) => acc + cur[1], 0),
+      messagesReceived: messagesReceived.reduce((acc, cur) => acc + cur[1], 0)
+    };
 
-  const averages = {
-    matches: totals.matches / matches.length,
-    messages: totals.messages / allMessages.length,
-    swipes: totals.swipes / allSwipes.length
-  };
+    const averages = {
+      matches: totals.matches / matches.length,
+      messages: totals.messages / allMessages.length,
+      swipes: totals.swipes / allSwipes.length
+    };
 
-  const ratios = {
-    matchesToSwipeLikes: totals.matches / totals.swipeLikes,
-    swipesPositiveNegative: totals.swipeLikes / totals.swipePasses,
-    messagesSentReceived: totals.messagesSent / totals.messagesReceived
-  };
+    const ratios = {
+      matchesToSwipeLikes: totals.matches / totals.swipeLikes,
+      swipesPositiveNegative: totals.swipeLikes / totals.swipePasses,
+      messagesSentReceived: totals.messagesSent / totals.messagesReceived
+    };
 
-  return {
-    id: p._id,
-    firstMatchDate: matches[0][0],
-    lastMatchDate: matches[matches.length - 1][0],
-    daysCounted: matches.length,
-    totals,
-    averages,
-    ratios,
-    profile: {
-      gender: p.user.gender,
-      age: calculateAge(new Date(p.user.birthDate)),
-      ageFilterMin: p.user.ageFilterMin,
-      ageFilterMax: p.user.ageFilterMax,
-      cityName: p.user.cityName,
-      country: p.user.country,
-      createdTinderWhenTheyWereAge: calculateYearDiff(
-        new Date(p.user.birthDate),
-        new Date(p.user.createDate)
-      )
-    }
-  };
+    return {
+      id: p._id,
+      firstMatchDate: matches[0][0],
+      lastMatchDate: matches[matches.length - 1][0],
+      daysCounted: matches.length,
+      totals,
+      // averages,
+      ratios,
+      profile: {
+        gender: p.user.gender,
+        age: calculateAge(new Date(p.user.birthDate)),
+        ageFilterMin: p.user.ageFilterMin,
+        ageFilterMax: p.user.ageFilterMax,
+        cityName: p.user.cityName,
+        country: p.user.country,
+        createdTinderWhenTheyWereAge: calculateYearDiff(
+          new Date(p.user.birthDate),
+          new Date(p.user.createDate)
+        )
+      }
+    };
+  } catch (error) {
+    return {};
+  }
 };
+
+function flattenObject(yourObject) {
+  return Object.assign(
+    {},
+    ...(function _flatten(o) {
+      return [].concat(
+        ...Object.keys(o).map(k =>
+          typeof o[k] === "object" ? _flatten(o[k]) : { [k]: o[k] }
+        )
+      );
+    })(yourObject)
+  );
+}
 
 router.get("/profiles/analytics", async (req, res) => {
   const males = await profileService.getProfiles({ "user.gender": "M" });
@@ -337,6 +354,14 @@ router.get("/profiles/analytics", async (req, res) => {
 
   return res.json({
     m: males.length,
+    mAverage: reduceListOfObjectsByKey(
+      males.map(profileAverages),
+      values => values.reduce((a, b) => a + b) / values.length
+    ),
+    fAverage: reduceListOfObjectsByKey(
+      females.map(profileAverages),
+      values => values.reduce((a, b) => a + b) / values.length
+    ),
     maleAverages: males.slice(0, 5).map(profileAverages),
     f: females.length,
     femaleAverages: females.slice(0, 5).map(profileAverages),
@@ -344,5 +369,30 @@ router.get("/profiles/analytics", async (req, res) => {
     exampleUser: Object.keys(males[0].user)
   });
 });
+
+function reduceListOfObjectsByKey(data, func) {
+  return Array.from(
+    data.reduce((acc, obj) => {
+      try {
+        const flatObj = flattenObject(obj);
+        return Object.keys(flatObj).reduce(
+          (acc, key) =>
+            typeof flatObj[key] == "number"
+              ? acc.set(key, (acc.get(key) || []).concat(flatObj[key]))
+              : acc,
+          acc
+        );
+      } catch (error) {
+        return acc;
+      }
+    }, new Map())
+  ).reduce(
+    (acc, [name, values]) =>
+      Object.assign(acc, {
+        [name]: func(values)
+      }),
+    {}
+  );
+}
 
 module.exports = router;
