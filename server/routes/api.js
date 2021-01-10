@@ -342,6 +342,7 @@ const profileAverages = p => {
       firstMatchDate: matchesPrDay[0][0],
       lastMatchDate: matchesPrDay[matchesPrDay.length - 1][0],
       daysCounted: matchesPrDay.length,
+      totalMatches2: totals.totalMatches,
       totals,
       averages,
       medians,
@@ -423,6 +424,21 @@ function getMax(numbers) {
     0
   );
 }
+function getMinObject(objects, key) {
+  return objects.reduce(
+    (minCandidate, object) =>
+      minCandidate[key] < object[key] ? minCandidate[key] : number[key],
+    0
+  );
+}
+
+function getMaxObject(objects, key) {
+  return objects.reduce(
+    (minCandidate, object) =>
+      minCandidate[key] > object[key] ? minCandidate[key] : number[key],
+    0
+  );
+}
 
 router.get("/profiles/analytics", async (req, res) => {
   const males = await profileService.getProfiles({ "user.gender": "M" });
@@ -463,6 +479,10 @@ router.get("/profiles/analytics", async (req, res) => {
     fMedian: reduceListOfObjectsByKey(females.map(profileAverages), getMedian),
     fMax: reduceListOfObjectsByKey(females.map(profileAverages), getMax),
     fMin: reduceListOfObjectsByKey(females.map(profileAverages), getMin),
+    maxMaleProfile: getMaxObject(males.map(profileAverages), ["totalMatches2"]),
+    maxFemaleProfile: getMaxObject(females.map(profileAverages), [
+      "totalMatches2"
+    ]),
 
     //maleAverages: males.slice(0, 5).map(profileAverages),
     f: females.length,
