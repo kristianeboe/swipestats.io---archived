@@ -247,6 +247,22 @@ router.get("/deleteRandomProfile/:adminId", async (req, res) => {
   return res.json(deleteRes);
 });
 
+router.get("/profiles", async (req, res) => {
+  const auth = req.headers.authorization;
+  if (auth !== "Bearer swipestatsIsCool") {
+    return res.status(401).send("401 Unauthorized");
+  }
+  const { gender } = req.query;
+
+  if (gender === "M") {
+    return res.json(await profileService.getProfiles({ "user.gender": "M" }));
+  } else if (gender === "F") {
+    return res.json(await profileService.getProfiles({ "user.gender": "F" }));
+  }
+
+  return res.json(await profileService.getProfiles({}));
+});
+
 const aggregateObjectsByKey = (arr, valueMapping) =>
   arr.reduce((aggregate, [key, value]) => {
     //for (const [key, value] of entry) {
@@ -273,7 +289,7 @@ function calculateYearDiff(date1, date2) {
   return Math.abs(date1.getUTCFullYear() - date2.getUTCFullYear());
 }
 
-const profileAverages = p => {
+function aggregateProfile(p) {
   try {
     const matchesPrDay = Object.entries(p.matches);
     const swipeLikesPrDay = Object.entries(p.swipeLikes);
@@ -364,7 +380,7 @@ const profileAverages = p => {
     console.log(error);
     return {};
   }
-};
+}
 
 function flattenObject(yourObject) {
   return Object.assign(
@@ -427,26 +443,33 @@ function getMax(numbers) {
 function getMinObject(objects, key) {
   return objects.reduce(
     (minCandidate, object) =>
-      minCandidate[key] < object[key] ? minCandidate[key] : number[key],
+      minCandidate[key] < object[key] ? minCandidate : object,
     0
   );
 }
 
 function getMaxObject(objects, key) {
   return objects.reduce(
-    (minCandidate, object) =>
-      minCandidate[key] > object[key] ? minCandidate[key] : number[key],
+    (maxCandidate, object) =>
+      maxCandidate[key] > object[key] ? maxCandidate : object,
     0
   );
 }
+
+// function getAnalyticsForDemographic(demographicList) {
+//   const profileAverages = demographicList.map(profileAverages);
+//   return
+
+// }
 
 router.get("/profiles/analytics", async (req, res) => {
   const males = await profileService.getProfiles({ "user.gender": "M" });
   const females = await profileService.getProfiles({ "user.gender": "F" });
 
+  const maleProfileAggregates = males.map(aggregateProfile);
+  const femaleProfileAggregates = females.map(aggregateProfile);
   return res.json({
-    m: males.length,
-    mMeta: {
+    malesMeta: {
       n: males.length,
       cities: statusCounter(
         males.map(m => m.user),
@@ -457,11 +480,14 @@ router.get("/profiles/analytics", async (req, res) => {
         ["country"]
       )
     },
-    mAverage: reduceListOfObjectsByKey(males.map(profileAverages), getAverage),
-    mMedian: reduceListOfObjectsByKey(males.map(profileAverages), getMedian),
-    mMax: reduceListOfObjectsByKey(males.map(profileAverages), getMax),
-    mMin: reduceListOfObjectsByKey(males.map(profileAverages), getMin),
-    fMeta: {
+    maleAverages: reduceListOfObjectsByKey(maleProfileAggregates, getAverage),
+    maleMedians: reduceListOfObjectsByKey(maleProfileAggregates, getMedian),
+    maleMaximums: reduceListOfObjectsByKey(maleProfileAggregates, getMax),
+    maleMinimums: reduceListOfObjectsByKey(maleProfileAggregates, getMin),
+    maleProfileWithMostMatches: getMaxObject(maleProfileAggregates, [
+      "totalMatches2"
+    ]),
+    femalesMeta: {
       n: females.length,
       cities: statusCounter(
         females.map(f => f.user),
@@ -472,23 +498,16 @@ router.get("/profiles/analytics", async (req, res) => {
         ["country"]
       )
     },
-    fAverage: reduceListOfObjectsByKey(
-      females.map(profileAverages),
+    femaleAverages: reduceListOfObjectsByKey(
+      femaleProfileAggregates,
       getAverage
     ),
-    fMedian: reduceListOfObjectsByKey(females.map(profileAverages), getMedian),
-    fMax: reduceListOfObjectsByKey(females.map(profileAverages), getMax),
-    fMin: reduceListOfObjectsByKey(females.map(profileAverages), getMin),
-    maxMaleProfile: getMaxObject(males.map(profileAverages), ["totalMatches2"]),
-    maxFemaleProfile: getMaxObject(females.map(profileAverages), [
+    femaleMedians: reduceListOfObjectsByKey(femaleProfileAggregates, getMedian),
+    femaleMaximums: reduceListOfObjectsByKey(femaleProfileAggregates, getMax),
+    femaleMinimums: reduceListOfObjectsByKey(femaleProfileAggregates, getMin),
+    femaleProfileWithMostMatches: getMaxObject(femaleProfileAggregates, [
       "totalMatches2"
-    ]),
-
-    //maleAverages: males.slice(0, 5).map(profileAverages),
-    f: females.length,
-    // femaleAverages: females.slice(0, 5).map(profileAverages),
-    example: Object.keys(males[0]),
-    exampleUser: Object.keys(males[0].user)
+    ])
   });
 });
 
