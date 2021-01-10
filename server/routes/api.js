@@ -247,7 +247,7 @@ router.get("/deleteRandomProfile/:adminId", async (req, res) => {
   return res.json(deleteRes);
 });
 
-const aggregateObjects = (arr, valueMapping) =>
+const aggregateObjectsByKey = (arr, valueMapping) =>
   arr.reduce((aggregate, [key, value]) => {
     //for (const [key, value] of entry) {
     if (!aggregate[key]) {
@@ -275,47 +275,76 @@ function calculateYearDiff(date1, date2) {
 
 const profileAverages = p => {
   try {
-    const matches = Object.entries(p.matches);
-    const swipeLikes = Object.entries(p.swipeLikes);
-    const swipePasses = Object.entries(p.swipePasses);
-    const messagesSent = Object.entries(p.messagesSent);
-    const messagesReceived = Object.entries(p.messagesReceived);
-    const allMessages = Object.entries(
-      aggregateObjects(messagesSent.concat(messagesReceived), (a, b) => a + b)
+    const matchesPrDay = Object.entries(p.matches);
+    const swipeLikesPrDay = Object.entries(p.swipeLikes);
+    const swipePassesPrDay = Object.entries(p.swipePasses);
+    const messagesSentPrDay = Object.entries(p.messagesSent);
+    const messagesReceivedPrDay = Object.entries(p.messagesReceived);
+    const allMessagesPrDay = Object.entries(
+      aggregateObjectsByKey(
+        messagesSentPrDay.concat(messagesReceivedPrDay),
+        (a, b) => a + b
+      )
     );
-    const allSwipes = Object.entries(
-      aggregateObjects(swipeLikes.concat(swipePasses), (a, b) => a + b)
+    const allSwipesPrDay = Object.entries(
+      aggregateObjectsByKey(
+        swipeLikesPrDay.concat(swipePassesPrDay),
+        (a, b) => a + b
+      )
     );
 
     const totals = {
-      matches: matches.reduce((acc, cur) => acc + cur[1], 0),
-      messages: allMessages.reduce((acc, cur) => acc + cur[1], 0),
-      swipes: allSwipes.reduce((acc, cur) => acc + cur[1], 0),
-      swipeLikes: swipeLikes.reduce((acc, cur) => acc + cur[1], 0),
-      swipePasses: swipePasses.reduce((acc, cur) => acc + cur[1], 0),
-      messagesSent: messagesSent.reduce((acc, cur) => acc + cur[1], 0),
-      messagesReceived: messagesReceived.reduce((acc, cur) => acc + cur[1], 0)
+      totalMatches: matchesPrDay.reduce((acc, cur) => acc + cur[1], 0),
+      totalMessages: allMessagesPrDay.reduce((acc, cur) => acc + cur[1], 0),
+      totalSwipes: allSwipesPrDay.reduce((acc, cur) => acc + cur[1], 0),
+      totalSwipeLikes: swipeLikesPrDay.reduce((acc, cur) => acc + cur[1], 0),
+      totalSwipePasses: swipePassesPrDay.reduce((acc, cur) => acc + cur[1], 0),
+      totalMessagesSent: messagesSentPrDay.reduce(
+        (acc, cur) => acc + cur[1],
+        0
+      ),
+      totalMessagesReceived: messagesReceivedPrDay.reduce(
+        (acc, cur) => acc + cur[1],
+        0
+      )
     };
 
     const averages = {
-      matches: totals.matches / matches.length,
-      messages: totals.messages / allMessages.length,
-      swipes: totals.swipes / allSwipes.length
+      averageMatches: totals.totalMatches / matchesPrDay.length,
+      averageMessages: totals.totalMessages / allMessagesPrDay.length,
+      averageMessagesSent: totals.totalMessagesSent / messagesSentPrDay.length,
+      averageMessagesReceived:
+        totals.totalMessagesReceived / messagesReceivedPrDay.length,
+      averageSwipes: totals.totalSwipes / allSwipesPrDay.length,
+      averageSwipeLikes: totals.totalSwipeLikes / swipeLikesPrDay.length,
+      averageSwipePasses: totals.totalSwipePasses / swipePassesPrDay.length
+    };
+
+    const medians = {
+      medianMatches: getMedian(matchesPrDay.map(m => m[1])),
+      medianMessages: getMedian(allMessagesPrDay.map(m => m[1])),
+      medianMessagesSent: getMedian(messagesSentPrDay.map(m => m[1])),
+      medianMessagesReceived: getMedian(messagesReceivedPrDay.map(m => m[1])),
+      medianSwipes: getMedian(allSwipesPrDay.map(m => m[1])),
+      medianSwipeLikes: getMedian(swipeLikesPrDay.map(m => m[1])),
+      medianSwipesPasses: getMedian(swipePassesPrDay.map(m => m[1]))
     };
 
     const ratios = {
-      matchesToSwipeLikes: totals.matches / totals.swipeLikes,
-      swipesPositiveNegative: totals.swipeLikes / totals.swipePasses,
-      messagesSentReceived: totals.messagesSent / totals.messagesReceived
+      matchesToSwipeLikes: totals.totalMatches / totals.swipeLikes,
+      swipesPositiveNegative: totals.totalSwipeLikes / totals.totalSwipePasses,
+      messagesSentReceived:
+        totals.totalMessagesSent / totals.totalMessagesReceived
     };
 
     return {
       id: p._id,
-      firstMatchDate: matches[0][0],
-      lastMatchDate: matches[matches.length - 1][0],
-      daysCounted: matches.length,
+      firstMatchDate: matchesPrDay[0][0],
+      lastMatchDate: matchesPrDay[matchesPrDay.length - 1][0],
+      daysCounted: matchesPrDay.length,
       totals,
-      // averages,
+      averages,
+      medians,
       ratios,
       profile: {
         gender: p.user.gender,
@@ -331,6 +360,7 @@ const profileAverages = p => {
       }
     };
   } catch (error) {
+    console.log(error);
     return {};
   }
 };
@@ -348,23 +378,95 @@ function flattenObject(yourObject) {
   );
 }
 
+function statusCounter(list, keys) {
+  return list.reduce((acc, cur) => {
+    if (keys) {
+      for (const key of keys) {
+        acc[cur[key]] = (acc[cur[key]] || 0) + 1;
+      }
+    } else {
+      Object.keys(cur).forEach(key => {
+        acc[cur[key]] = (acc[cur[key]] || 0) + 1;
+      });
+    }
+    return acc;
+  }, {});
+}
+
+function getAverage(numberList) {
+  return numberList.reduce((a, b) => a + b) / numberList.length;
+}
+
+function getMedian(numbers) {
+  if (numbers.length === 0) return 0;
+
+  numbers.sort(function(a, b) {
+    return a - b;
+  });
+
+  const half = Math.floor(numbers.length / 2);
+
+  if (numbers.length % 2) return numbers[half];
+
+  return (numbers[half - 1] + numbers[half]) / 2.0;
+}
+
+function getMin(numbers) {
+  return numbers.reduce(
+    (minCandidate, number) => (minCandidate < number ? minCandidate : number),
+    0
+  );
+}
+function getMax(numbers) {
+  return numbers.reduce(
+    (maxCandidate, number) => (maxCandidate > number ? maxCandidate : number),
+    0
+  );
+}
+
 router.get("/profiles/analytics", async (req, res) => {
   const males = await profileService.getProfiles({ "user.gender": "M" });
   const females = await profileService.getProfiles({ "user.gender": "F" });
 
   return res.json({
     m: males.length,
-    mAverage: reduceListOfObjectsByKey(
-      males.map(profileAverages),
-      values => values.reduce((a, b) => a + b) / values.length
-    ),
+    mMeta: {
+      n: males.length,
+      cities: statusCounter(
+        males.map(m => m.user),
+        ["cityName"]
+      ),
+      countries: statusCounter(
+        males.map(m => m.user),
+        ["country"]
+      )
+    },
+    mAverage: reduceListOfObjectsByKey(males.map(profileAverages), getAverage),
+    mMedian: reduceListOfObjectsByKey(males.map(profileAverages), getMedian),
+    mMax: reduceListOfObjectsByKey(males.map(profileAverages), getMax),
+    mMin: reduceListOfObjectsByKey(males.map(profileAverages), getMin),
+    fMeta: {
+      n: females.length,
+      cities: statusCounter(
+        females.map(f => f.user),
+        ["cityName"]
+      ),
+      countries: statusCounter(
+        females.map(f => f.user),
+        ["country"]
+      )
+    },
     fAverage: reduceListOfObjectsByKey(
       females.map(profileAverages),
-      values => values.reduce((a, b) => a + b) / values.length
+      getAverage
     ),
-    maleAverages: males.slice(0, 5).map(profileAverages),
+    fMedian: reduceListOfObjectsByKey(females.map(profileAverages), getMedian),
+    fMax: reduceListOfObjectsByKey(females.map(profileAverages), getMax),
+    fMin: reduceListOfObjectsByKey(females.map(profileAverages), getMin),
+
+    //maleAverages: males.slice(0, 5).map(profileAverages),
     f: females.length,
-    femaleAverages: females.slice(0, 5).map(profileAverages),
+    // femaleAverages: females.slice(0, 5).map(profileAverages),
     example: Object.keys(males[0]),
     exampleUser: Object.keys(males[0].user)
   });

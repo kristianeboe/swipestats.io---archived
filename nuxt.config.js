@@ -73,7 +73,10 @@ module.exports = {
     "@nuxtjs/toast"
   ],
   sentry: {
-    dsn: "https://86d0bff07b6b4bcd8013481479aa3b20@sentry.io/1871644", // Enter your project's DSN here
+    dsn:
+      process.env.NODE_ENV !== "development"
+        ? "https://86d0bff07b6b4bcd8013481479aa3b20@sentry.io/1871644"
+        : "", // Enter your project's DSN here
     config: {} // Additional config
   },
   logRocket: {

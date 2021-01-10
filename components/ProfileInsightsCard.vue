@@ -38,6 +38,16 @@
         />
         <p class="font-thin text-gray-500 text-sm">{{ school.name }}</p>
       </div>
+      <div v-if="location" class="flex items-center">
+        <img
+          class="h-6 w-6 pr-2 text-gray-500"
+          src="~assets/svgs/icons/location.svg"
+          alt="location icon"
+        />
+        <p class="font-thin text-gray-500 text-sm">
+          {{ location }}
+        </p>
+      </div>
       <div class="flex items-center">
         <img
           class="h-6 w-6 pr-2"
@@ -68,6 +78,19 @@ export default {
         ...this.profile.user
       }
     };
+  },
+  computed: {
+    location() {
+      if (this.user.cityName && this.user.country) {
+        return `${this.user.cityName}, ${this.user.country}`;
+      } else if (this.user.cityName) {
+        return this.user.cityName;
+      } else if (this.user.country) {
+        return this.user.country;
+      } else {
+        return "";
+      }
+    }
   },
   methods: {
     getAgeFromBirthdate
