@@ -202,6 +202,11 @@ router.post(
   }
 );
 
+function createSwipeStatsProfile({ userId, conversations, ...profile }) {
+  const now = Date.now();
+  const conversationMeta = getConversationsMeta(conversations);
+}
+
 router.get("/profileData/:profileId", async (req, res) => {
   const { profileId } = req.params;
   console.log("getting data for", profileId);
@@ -414,6 +419,26 @@ function getAverage(numberList) {
   return numberList.reduce((a, b) => a + b) / numberList.length;
 }
 
+function getPercentile(arr, p) {
+  if (arr.length === 0) return 0;
+  if (typeof p !== "number") throw new TypeError("p must be a number");
+
+  if (p <= 0) return arr[0];
+  if (p >= 1) return arr[arr.length - 1];
+
+  arr.sort(function(a, b) {
+    return a - b;
+  });
+
+  var index = (arr.length - 1) * p,
+    lower = Math.floor(index),
+    upper = lower + 1,
+    weight = index % 1;
+
+  if (upper >= arr.length) return arr[lower];
+  return arr[lower] * (1 - weight) + arr[upper] * weight;
+}
+
 function getMedian(numbers) {
   if (numbers.length === 0) return 0;
 
@@ -485,8 +510,14 @@ router.get("/profiles/analytics", async (req, res) => {
         ["country"]
       )
     },
+    male90Percentile: maleProfileAggregates.sort(
+      (a, b) => a.totalMatches2 - b.totalMatches2
+    )[Math.round(0.9 * maleProfileAggregates.length)], // 90 percentile
     maleAverages: reduceListOfObjectsByKey(maleProfileAggregates, getAverage),
     maleMedians: reduceListOfObjectsByKey(maleProfileAggregates, getMedian),
+    male90Percentiles: reduceListOfObjectsByKey(maleProfileAggregates, arr =>
+      getPercentile(arr, 0.9)
+    ),
     maleMaximums: reduceListOfObjectsByKey(maleProfileAggregates, getMax),
     maleMinimums: reduceListOfObjectsByKey(maleProfileAggregates, getMin),
     maleProfileWithMostMatches: getMaxObject(maleProfileAggregates, [
@@ -508,6 +539,13 @@ router.get("/profiles/analytics", async (req, res) => {
       getAverage
     ),
     femaleMedians: reduceListOfObjectsByKey(femaleProfileAggregates, getMedian),
+    female90Percentile: femaleProfileAggregates.sort(
+      (a, b) => a.totalMatches2 - b.totalMatches2
+    )[Math.round(0.9 * femaleProfileAggregates.length)], // 90 percentile
+    female90Percentiles: reduceListOfObjectsByKey(
+      femaleProfileAggregates,
+      arr => getPercentile(arr, 0.9)
+    ),
     femaleMaximums: reduceListOfObjectsByKey(femaleProfileAggregates, getMax),
     femaleMinimums: reduceListOfObjectsByKey(femaleProfileAggregates, getMin),
     femaleProfileWithMostMatches: getMaxObject(femaleProfileAggregates, [
@@ -540,5 +578,14 @@ function reduceListOfObjectsByKey(data, func) {
     {}
   );
 }
+
+router.post("/profiles/global", async (req, res) => {
+  const allProfiles = await profileService.getProfiles();
+  const profileId = "global";
+
+  const globalProfile = profileService.createProfile({});
+
+  res.json({});
+});
 
 module.exports = router;
