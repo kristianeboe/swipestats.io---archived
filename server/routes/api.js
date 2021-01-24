@@ -510,14 +510,21 @@ router.get("/profiles/analytics", async (req, res) => {
         ["country"]
       )
     },
-    male90Percentile: maleProfileAggregates.sort(
-      (a, b) => a.totalMatches2 - b.totalMatches2
-    )[Math.round(0.9 * maleProfileAggregates.length)], // 90 percentile
+
     maleAverages: reduceListOfObjectsByKey(maleProfileAggregates, getAverage),
     maleMedians: reduceListOfObjectsByKey(maleProfileAggregates, getMedian),
+    male25Percentiles: reduceListOfObjectsByKey(maleProfileAggregates, arr =>
+      getPercentile(arr, 0.25)
+    ),
+    male75Percentiles: reduceListOfObjectsByKey(maleProfileAggregates, arr =>
+      getPercentile(arr, 0.75)
+    ),
     male90Percentiles: reduceListOfObjectsByKey(maleProfileAggregates, arr =>
       getPercentile(arr, 0.9)
     ),
+    male90Percentile: maleProfileAggregates.sort(
+      (a, b) => a.totalMatches2 - b.totalMatches2
+    )[Math.round(0.9 * maleProfileAggregates.length)], // 90 percentile
     maleMaximums: reduceListOfObjectsByKey(maleProfileAggregates, getMax),
     maleMinimums: reduceListOfObjectsByKey(maleProfileAggregates, getMin),
     maleProfileWithMostMatches: getMaxObject(maleProfileAggregates, [
@@ -539,13 +546,21 @@ router.get("/profiles/analytics", async (req, res) => {
       getAverage
     ),
     femaleMedians: reduceListOfObjectsByKey(femaleProfileAggregates, getMedian),
-    female90Percentile: femaleProfileAggregates.sort(
-      (a, b) => a.totalMatches2 - b.totalMatches2
-    )[Math.round(0.9 * femaleProfileAggregates.length)], // 90 percentile
+    female25Percentiles: reduceListOfObjectsByKey(
+      femaleProfileAggregates,
+      arr => getPercentile(arr, 0.25)
+    ),
+    female75Percentiles: reduceListOfObjectsByKey(
+      femaleProfileAggregates,
+      arr => getPercentile(arr, 0.75)
+    ),
     female90Percentiles: reduceListOfObjectsByKey(
       femaleProfileAggregates,
       arr => getPercentile(arr, 0.9)
     ),
+    female90Percentile: femaleProfileAggregates.sort(
+      (a, b) => a.totalMatches2 - b.totalMatches2
+    )[Math.round(0.9 * femaleProfileAggregates.length)], // 90 percentile
     femaleMaximums: reduceListOfObjectsByKey(femaleProfileAggregates, getMax),
     femaleMinimums: reduceListOfObjectsByKey(femaleProfileAggregates, getMin),
     femaleProfileWithMostMatches: getMaxObject(femaleProfileAggregates, [

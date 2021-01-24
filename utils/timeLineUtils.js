@@ -10,7 +10,7 @@ export function dataNormalizer(timeSeriesObject) {
 }
 
 export function timeSeriesNormalizer(timeSeriesObject) {
-  const keys = Object.keys(timeSeriesObject);
+  const keys = Object.keys(timeSeriesObject || {});
   const start = keys[0];
   const end = keys[keys.length - 1];
   console.log("start end", start, end);
@@ -37,7 +37,7 @@ export function getDaysInMonth(month, year) {
 }
 
 export function aggregateByYear(timeSeriesObject) {
-  const valuesByYear = Object.entries(timeSeriesObject).reduce(
+  const valuesByYear = Object.entries(timeSeriesObject || {}).reduce(
     (acc, [date, value]) => {
       const year = date.substr(0, 4);
       acc[year] = (acc[year] || 0) + value;
@@ -86,6 +86,7 @@ export function getMonthsArray(startDate, endDate) {
   return dates;
 }
 export function aggregateByMonth(timeSeriesObject) {
+  if (!timeSeriesObject) return {};
   const valuesByMonth = Object.entries(timeSeriesObject).reduce(
     (acc, [date, value]) => {
       const yearMonth = date.substr(0, 7);
@@ -112,8 +113,8 @@ export function aggregateByMonth(timeSeriesObject) {
 }
 
 export function aggregateTotal(timeSeriesObject) {
-  return Object.entries(timeSeriesObject).reduce(
-    (acc, [, value]) => (acc += value),
+  return Object.entries(timeSeriesObject || {}).reduce(
+    (acc, [_, value]) => (acc += value),
     0
   );
 }

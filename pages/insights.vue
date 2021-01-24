@@ -37,6 +37,13 @@
       <button
         class="mt-2 shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
         type="button"
+        @click="duplicate"
+      >
+        Test
+      </button>
+      <button
+        class="mt-2 shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
+        type="button"
         @click="
           getComparisonData('b98535635fe77db6324d881ac92190e5') &&
             trackDemographics('creator')
@@ -167,6 +174,7 @@ import Alert from "@/components/Alert";
 import Spinner from "@/components/Spinner";
 // import TinderProfileCard from "@/components/TinderProfileCard";
 import ProfileInsightsCard from "@/components/ProfileInsightsCard";
+import { duplicateProfile } from "../utils/helpers";
 
 export default {
   components: {
@@ -222,6 +230,12 @@ export default {
     this.$nuxt.$loading.finish();
   },
   methods: {
+    async duplicate() {
+      const profile = this.profiles[0];
+      const dup = duplicateProfile(profile);
+      const dupProfile = this.trimProfileData(dup);
+      this.profiles.push(dupProfile);
+    },
     async getProfileData(profileId) {
       const res = await fetch(`/api/profileData/${profileId}`);
       if (res.ok) {
@@ -237,12 +251,12 @@ export default {
 
       const userProfile = this.profiles[0];
 
-      const userProfileStartDate = Object.keys(userProfile.matches)[0];
+      const userProfileStartDate = Object.keys(userProfile.appOpens)[0];
 
-      console.log("matches length", Object.keys(profile.matches).length);
+      console.log("appOpens length", Object.keys(profile.appOpens).length);
 
       const trimmedMatches = Object.entries(profile.matches)
-        .filter(([k]) => k > userProfileStartDate)
+        .filter(([k]) => k.localeCompare(userProfileStartDate))
         .reduce((acc, [k, v]) => {
           return {
             ...acc,

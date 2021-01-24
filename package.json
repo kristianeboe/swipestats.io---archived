@@ -5,7 +5,7 @@
   "author": "Kristian Elset Bø",
   "private": true,
   "scripts": {
-    "dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
+    "start:dev": "cross-env NODE_ENV=development nodemon server/index.js --watch server",
     "build": "nuxt build",
     "start:db": "mongod --dbpath ./server/data",
     "start": "cross-env NODE_ENV=production node server/index.js",

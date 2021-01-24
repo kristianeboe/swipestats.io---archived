@@ -43,14 +43,16 @@
       >
         Year
       </button>
+      <!-- class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4" -->
       <button
-        class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4"
+        class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r"
         :class="{ 'bg-gray-400': aggregateBy === 'month' }"
         @click="aggregateDataByMonth"
       >
         Month
       </button>
       <button
+        v-if="false"
         class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded-r"
         :class="{ 'bg-gray-400': aggregateBy === 'day' }"
         @click="aggregateDataByDay"
@@ -108,6 +110,7 @@ export default {
   watch: {
     profiles() {
       this.categoryData = this.profiles.map(profile => profile[this.dataKey]);
+      console.log(this.title, this.categoryData);
       // this.categoryData.push(
       //   this.profiles[this.profiles.length - 1][this.dataKey]
       // );
