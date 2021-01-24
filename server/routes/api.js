@@ -513,6 +513,9 @@ router.get("/profiles/analytics", async (req, res) => {
 
     maleAverages: reduceListOfObjectsByKey(maleProfileAggregates, getAverage),
     maleMedians: reduceListOfObjectsByKey(maleProfileAggregates, getMedian),
+    male10Percentiles: reduceListOfObjectsByKey(maleProfileAggregates, arr =>
+      getPercentile(arr, 0.1)
+    ),
     male25Percentiles: reduceListOfObjectsByKey(maleProfileAggregates, arr =>
       getPercentile(arr, 0.25)
     ),
@@ -546,6 +549,10 @@ router.get("/profiles/analytics", async (req, res) => {
       getAverage
     ),
     femaleMedians: reduceListOfObjectsByKey(femaleProfileAggregates, getMedian),
+    female10Percentiles: reduceListOfObjectsByKey(
+      femaleProfileAggregates,
+      arr => getPercentile(arr, 0.1)
+    ),
     female25Percentiles: reduceListOfObjectsByKey(
       femaleProfileAggregates,
       arr => getPercentile(arr, 0.25)
