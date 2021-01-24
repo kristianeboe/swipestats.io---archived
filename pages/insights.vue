@@ -34,13 +34,13 @@
         for="inline-full-name"
         >or a specific Demographic</label
       >
-      <button
+      <!-- <button
         class="mt-2 shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
         type="button"
         @click="duplicate"
       >
         Test
-      </button>
+      </button> -->
       <button
         class="mt-2 shadow bg-tinder hover:bg-red-300 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded md:ml-4"
         type="button"
