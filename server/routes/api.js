@@ -510,7 +510,7 @@ router.get("/profiles/analytics/index", async (req, res) => {
       profileAggregates.sort((a, b) => a.totalMatches2 - b.totalMatches2)[index]
     );
   } else {
-    res.json({
+    return req.json({
       message: "index out of bounds",
       maxIndex: profiles.length,
       gender,
