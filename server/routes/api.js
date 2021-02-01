@@ -496,11 +496,6 @@ function getMaxObject(objects, key) {
 router.get("/profiles/analytics/index", async (req, res) => {
   const { index, gender } = req.query;
 
-  return res.json({
-    index,
-    gender
-  });
-
   let profiles;
   if (gender === "M") {
     profiles = await profileService.getProfiles({ "user.gender": "M" });
