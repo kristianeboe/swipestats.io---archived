@@ -496,6 +496,11 @@ function getMaxObject(objects, key) {
 router.get("/profiles/analytics/index", async (req, res) => {
   const { index, gender } = req.query;
 
+  return res.json({
+    index,
+    gender
+  });
+
   let profiles;
   if (gender === "M") {
     profiles = await profileService.getProfiles({ "user.gender": "M" });
@@ -506,11 +511,11 @@ router.get("/profiles/analytics/index", async (req, res) => {
   const profileAggregates = profiles.map(aggregateProfile);
 
   if (index < profiles.length) {
-    return req.json(
+    return res.json(
       profileAggregates.sort((a, b) => a.totalMatches2 - b.totalMatches2)[index]
     );
   } else {
-    return req.json({
+    return res.json({
       message: "index out of bounds",
       maxIndex: profiles.length,
       gender,
