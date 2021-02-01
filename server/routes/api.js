@@ -473,6 +473,12 @@ function getMinObject(objects, key) {
   );
 }
 
+function getMedianIshObject(objects, key) {
+  return objects.sort((a, b) => a[key] - b[key])[
+    Math.floor(objects.length / 2)
+  ];
+}
+
 function getMaxObject(objects, key) {
   return objects.reduce(
     (maxCandidate, object) =>
@@ -533,6 +539,9 @@ router.get("/profiles/analytics", async (req, res) => {
     maleProfileWithMostMatches: getMaxObject(maleProfileAggregates, [
       "totalMatches2"
     ]),
+    maleProfileWithMedianMatches: getMedianIshObject(maleProfileAggregates, [
+      "totalMatches2"
+    ]),
     femalesMeta: {
       n: females.length,
       cities: statusCounter(
@@ -572,7 +581,11 @@ router.get("/profiles/analytics", async (req, res) => {
     femaleMinimums: reduceListOfObjectsByKey(femaleProfileAggregates, getMin),
     femaleProfileWithMostMatches: getMaxObject(femaleProfileAggregates, [
       "totalMatches2"
-    ])
+    ]),
+    femaleProfileWithMedianMatches: getMedianIshObject(
+      femaleProfileAggregates,
+      ["totalMatches2"]
+    )
   });
 });
 
