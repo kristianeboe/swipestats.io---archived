@@ -493,6 +493,32 @@ function getMaxObject(objects, key) {
 
 // }
 
+router.get("/profiles/analytics/index", async (req, res) => {
+  const { index, gender } = req.query;
+
+  let profiles;
+  if (gender === "M") {
+    profiles = await profileService.getProfiles({ "user.gender": "M" });
+  } else if (gender === "F") {
+    profiles = await profileService.getProfiles({ "user.gender": "F" });
+  }
+
+  const profileAggregates = profiles.map(aggregateProfile);
+
+  if (index < profiles.length) {
+    return req.json(
+      profileAggregates.sort((a, b) => a.totalMatches2 - b.totalMatches2)[index]
+    );
+  } else {
+    res.json({
+      message: "index out of bounds",
+      maxIndex: profiles.length,
+      gender,
+      index
+    });
+  }
+});
+
 router.get("/profiles/analytics", async (req, res) => {
   const auth = req.headers.authorization;
   // if (auth !== "Bearer " + process.env.ADMIN_PASSWORD) {
