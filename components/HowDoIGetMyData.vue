@@ -112,7 +112,7 @@ export default {
       steps: [
         {
           step:
-            '<a target="blank" href="https://account.gotinder.com/request-data" >Go to this <span class="text-blue-500">link</span> and log in</a> ',
+            '<a target="blank" href="https://account.gotinder.com/data" >Go to this <span class="text-blue-500">link</span> and log in</a> ',
           illustration: Step1
         },
         { step: "Enter your email address and confirm", illustration: Step2 },

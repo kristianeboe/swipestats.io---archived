@@ -4,7 +4,7 @@
 
 ## How to use
 
-1. Get your data from Tinder from this [link](https://account.gotinder.com/request-data)
+1. Get your data from Tinder from this [link](https://account.gotinder.com/data)
 2. Parse the the data.json file in [swipestats.io](https://swipestats.io)
 3. Upload the anonymized version
 4. View insights and graphs
