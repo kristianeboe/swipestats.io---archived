@@ -14,40 +14,40 @@ module.exports = {
         hid: "description",
         name: "description",
         content:
-          "Upload your dating data anonymously and compare it to demographics from around the world!"
+          "Upload your dating data anonymously and compare it to demographics from around the world!",
       },
       {
         hid: "og:title",
         name: "title",
-        content: "Visualize your tinder data | Swipestats.io"
+        content: "Visualize your tinder data | Swipestats.io",
       },
       {
         hid: "og:description",
         name: "og:description",
         content:
-          "Upload your dating data anonymously and compare it to demographics from around the world!"
+          "Upload your dating data anonymously and compare it to demographics from around the world!",
       },
       {
         hid: "og:image",
         property: "og:image",
-        content: "/swipestats-logo.png"
-      }
+        content: "/swipestats-logo.png",
+      },
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }]
+    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
   },
   /*
    ** Customize the progress-bar color
    */
   loading: {
-    color: "#FE3C72"
+    color: "#FE3C72",
   },
   /*
    ** Global CSS
    */
   css: [
-    "~assets/scss/tailwind.scss",
-    "~assets/scss/swipestats.scss",
-    "~assets/scss/filepond.scss"
+    "~assets/css/tailwind.css",
+    "~assets/css/swipestats.css",
+    "~assets/css/filepond.css",
     //'filepond/dist/filepond.min.css',
   ],
   /*
@@ -59,7 +59,7 @@ module.exports = {
    */
   buildModules: ["@nuxtjs/google-analytics", "@nuxtjs/eslint-module"],
   googleAnalytics: {
-    id: "UA-155039033-1"
+    id: "UA-155039033-1",
   },
   /*
    ** Nuxt.js modules
@@ -70,18 +70,18 @@ module.exports = {
     "@nuxtjs/sentry",
     "nuxt-logrocket",
     // 'nuxt-purgecss',
-    "@nuxtjs/toast"
+    "@nuxtjs/toast",
   ],
   sentry: {
     dsn:
       process.env.NODE_ENV !== "development"
         ? "https://86d0bff07b6b4bcd8013481479aa3b20@sentry.io/1871644"
         : "", // Enter your project's DSN here
-    config: {} // Additional config
+    config: {}, // Additional config
   },
   logRocket: {
     logRocketId: "8zzlud/swipestatsio",
-    devModeAllowed: false
+    devModeAllowed: false,
   },
   toast: {
     position: "bottom-right",
@@ -91,15 +91,15 @@ module.exports = {
         name: "success-parsed",
         message: "Success!! File parsed :)",
         options: {
-          type: "success"
-        }
-      }
-    ]
+          type: "success",
+        },
+      },
+    ],
   },
   webfontloader: {
     google: {
-      families: ["Lato:400,700"] //Loads Lato font with weights 400 and 700
-    }
+      families: ["Lato:400,700"], //Loads Lato font with weights 400 and 700
+    },
   },
   pwa: {
     manifest: {
@@ -109,18 +109,18 @@ module.exports = {
         {
           src: "/android-chrome-192x192.png",
           sizes: "192x192",
-          type: "image/png"
+          type: "image/png",
         },
         {
           src: "/android-chrome-512x512.png",
           sizes: "512x512",
-          type: "image/png"
-        }
+          type: "image/png",
+        },
       ],
       theme_color: "#fe3c72",
       background_color: "#ffffff",
-      display: "standalone"
-    }
+      display: "standalone",
+    },
   },
   /*
    ** Build configuration
@@ -132,15 +132,15 @@ module.exports = {
     extractCSS: true,
     postcss: {
       plugins: {
-        tailwindcss: path.resolve(__dirname, "./tailwind.config.js")
-      }
+        tailwindcss: path.resolve(__dirname, "./tailwind.config.js"),
+      },
     },
     purgeCSS: {
       mode: "postcss",
       whitelistPatterns: [/filepond$/],
-      whitelistPatternsChildren: [/filepond$/]
+      whitelistPatternsChildren: [/filepond$/],
     },
     // eslint-disable-next-line no-unused-vars
-    extend(config, ctx) {}
-  }
+    extend(config, ctx) {},
+  },
 };

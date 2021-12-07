@@ -260,13 +260,9 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style  scoped>
 .landing {
   min-height: 100vh;
-  // display: flex;
-  // flex-direction: column;
-  // justify-content: center;
-  // align-items: center;
   background: center / cover no-repeat fixed url("~assets/svgs/Rose-Petals.svg");
 }
 

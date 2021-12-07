@@ -42,7 +42,7 @@ export default {
 };
 </script>
 
-<style lang="scss" scoped>
+<style  scoped>
 .swing-out-top-bck {
   -webkit-animation: swing-out-top-bck 0.45s
     cubic-bezier(0.6, -0.28, 0.735, 0.045) both;
